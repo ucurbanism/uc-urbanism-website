@@ -1,0 +1,260 @@
+:root {
+  --bg: #ffffff;
+  --fg: #007ea3;
+  --oval: url('/pictures/cincinnati-street-network-oval-light.png');
+}
+
+html.night {
+  --bg: #007ea3;
+  --fg: #ffffff;
+  --oval: url('/pictures/cincinnati-street-network-oval-dark.png');
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'IBM Plex Sans', sans-serif;
+  background-color: var(--bg);
+  color: var(--fg);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: canada-type-gibson, 'IBM Plex Sans', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1.1;
+  margin: 0 0 0.5em;
+  color: var(--fg);
+}
+
+html.night h1,
+html.night h2,
+html.night h3 {
+  color: #007ea3;
+  -webkit-text-stroke: 1px #ffffff;
+  paint-order: fill stroke;
+}
+
+h1 { font-size: clamp(2.4em, 6vw, 4.75em); }
+h2 { font-size: clamp(1.8em, 4vw, 2.7em); margin-top: 2em; }
+h3 { font-size: 1.35em; }
+
+a {
+  color: var(--fg);
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---------- Nav ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--bg);
+  border-bottom: 2px solid var(--fg);
+}
+
+.nav-inner {
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 0.6em 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.nav-logo img {
+  height: 2.2em;
+  width: auto;
+  display: block;
+}
+
+.nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.25em;
+  margin: 0;
+  padding: 0;
+}
+
+.nav a {
+  text-decoration: none;
+  font-family: canada-type-gibson, 'IBM Plex Sans', sans-serif;
+  font-weight: 700;
+}
+
+.nav a:hover,
+.nav a[aria-current="page"] {
+  text-decoration: underline;
+}
+
+/* ---------- Layout ---------- */
+.site {
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 0 1em 4em;
+}
+
+.hero {
+  position: relative;
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 2.5em 1em 2em;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 160%;
+  max-width: none;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--oval);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  aspect-ratio: 4223 / 3039;
+}
+
+.tagline p {
+  margin: 0.35em 0;
+}
+
+/* ---------- Content blocks ---------- */
+.lines p {
+  margin: 0.2em 0;
+}
+
+.image p {
+  margin: 1em 0;
+}
+
+figure {
+  margin: 1.5em 0;
+}
+
+.embed {
+  position: relative;
+  width: 100%;
+  margin: 1em auto;
+  padding-bottom: 66.666%;
+  height: 0;
+  overflow: hidden;
+}
+
+.embed iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 99%;
+  height: 99%;
+  border: 0;
+}
+
+.embed--short {
+  padding-bottom: 33.333%;
+}
+
+/* ---------- Goals / affiliates / QR grids ---------- */
+.goals {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5em;
+  margin: 1em 0;
+}
+
+.goals h3 {
+  margin-bottom: 0.4em;
+}
+
+.logo-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+  margin: 1.5em 0;
+}
+
+.logo-row img {
+  height: 5.5em;
+  width: auto;
+}
+
+.qr-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5em;
+  margin: 1.5em 0;
+  text-align: center;
+}
+
+.qr-grid a {
+  text-decoration: none;
+  font-family: canada-type-gibson, 'IBM Plex Sans', sans-serif;
+  font-weight: 700;
+}
+
+.qr-grid a:hover {
+  text-decoration: underline;
+}
+
+.qr-grid img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 0.5em;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  border-top: 2px solid var(--fg);
+  margin-top: 3em;
+}
+
+.footer-inner {
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 1.5em 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer img {
+  height: 4em;
+  width: auto;
+}
+
+@media (max-width: 600px) {
+  .goals {
+    grid-template-columns: 1fr;
+  }
+
+  .qr-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .nav-inner {
+    flex-direction: column;
+    gap: 0.4em;
+    padding-bottom: 0.5em;
+  }
+}
