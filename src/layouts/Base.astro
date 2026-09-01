@@ -1,5 +1,6 @@
 ---
 import { Image, getImage } from 'astro:assets';
+import { getEntry } from 'astro:content';
 import '../styles/global.css';
 import navLogo from '../assets/urbanism-club-logo.png';
 import skyline from '../assets/urbanism-club-skyline.jpg';
@@ -8,9 +9,14 @@ import ovalDarkSrc from '../assets/cincinnati-street-network-oval-dark.png';
 
 interface Props {
   title: string;
+  description: string;
+  ogImage?: string;
+  noindex?: boolean;
 }
 
-const { title } = Astro.props;
+const { title, description, ogImage = '/og-image.png', noindex = false } = Astro.props;
+const site = (await getEntry('settings', 'site'))!.data;
+
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const nav = [
   { href: '/', label: 'About Us' },
@@ -18,6 +24,11 @@ const nav = [
   { href: '/events', label: 'Events' },
   { href: '/resources', label: 'Resources' },
 ];
+const cta = { href: '/join', label: 'Join' };
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImageUrl = new URL(ogImage, Astro.site).href;
+const gaId = site.google_analytics_id;
 
 const ovalLight = await getImage({ src: ovalLightSrc, width: 1200, format: 'webp', quality: 50 });
 const ovalDark = await getImage({ src: ovalDarkSrc, width: 1200, format: 'webp', quality: 50 });
@@ -28,7 +39,28 @@ const ovalDark = await getImage({ src: ovalDarkSrc, width: 1200, format: 'webp',
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {site.google_site_verification && (
+      <meta name="google-site-verification" content={site.google_site_verification} />
+    )}
 
+    <!-- Share cards -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.site_name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -49,20 +81,24 @@ const ovalDark = await getImage({ src: ovalDarkSrc, width: 1200, format: 'webp',
     <!-- Adobe Fonts -->
     <link rel="stylesheet" href="https://use.typekit.net/ewz8zez.css" />
 
-    <!-- Google tag (gtag.js) -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-4KX380T5BD"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-4KX380T5BD');
-    </script>
+    {gaId && (
+      <>
+        <!-- Google tag (gtag.js) -->
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+        <script is:inline define:vars={{ gaId }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', gaId);
+        </script>
+      </>
+    )}
   </head>
 
   <body>
     <nav class="nav">
       <div class="nav-inner">
-        <a href="/" class="nav-logo" aria-label="Urbanism Club home">
+        <a href="/" class="nav-logo" aria-label={`${site.site_name} home`}>
           <Image src={navLogo} alt="Title of the website: Urbanism Club" width={240} densities={[1, 2]} format="webp" loading="eager" />
         </a>
         <ul>
@@ -73,6 +109,11 @@ const ovalDark = await getImage({ src: ovalDarkSrc, width: 1200, format: 'webp',
               </a>
             </li>
           ))}
+          <li>
+            <a href={cta.href} class="nav-cta" aria-current={path === cta.href ? 'page' : undefined}>
+              {cta.label}
+            </a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -81,8 +122,8 @@ const ovalDark = await getImage({ src: ovalDarkSrc, width: 1200, format: 'webp',
 
     <footer class="footer">
       <div class="footer-inner">
-        <a href="/" aria-label="Urbanism Club home">
-          <Image src={skyline} alt="Urbanism Club" width={180} densities={[1, 2]} format="webp" />
+        <a href="/" aria-label={`${site.site_name} home`}>
+          <Image src={skyline} alt={site.site_name} width={180} densities={[1, 2]} format="webp" />
         </a>
       </div>
     </footer>

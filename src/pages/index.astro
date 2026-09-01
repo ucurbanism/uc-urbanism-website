@@ -1,93 +1,87 @@
 ---
 import { Image } from 'astro:assets';
+import { getCollection, getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import { md, mdInline, lines } from '../lib/text';
 import logo from '../assets/urbanism-club-logo.png';
 import groupPhoto from '../assets/urbanism-club-group.png';
 import groupPark from '../assets/group-park.jpg';
 import campusWalk from '../assets/campus-walk.jpg';
 import clubMeeting from '../assets/club-meeting.jpg';
-import psoLogo from '../assets/pso.png';
-import apaLogo from '../assets/apa.png';
-import allAboardLogo from '../assets/all-aboard-ohio.png';
+
+const page = (await getEntry('pages', 'about'))!.data as Record<string, any>;
+const leadership = (await getCollection('leadership')).sort((a, b) => a.data.order - b.data.order);
+const affiliates = (await getCollection('affiliates')).sort((a, b) => a.data.order - b.data.order);
 
 const sizes = '(max-width: 782px) 100vw, 750px';
 ---
 
-<Base title="About Us">
+<Base title={page.seo_title} description={page.seo_description}>
   <header class="hero">
     <div class="title_image">
-      <p><Image src={logo} alt="Title of the website: Urbanism Club" widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="eager" fetchpriority="high" /></p>
+      <p><Image src={logo} alt={page.logo_alt} widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="eager" fetchpriority="high" /></p>
     </div>
     <div class="tagline">
-      <p>University of Cincinnati <a href="https://www.uc.edu/campus-life/csi.html">Registered Student Organization</a></p>
-      <p>Student chapter of the <a href="https://planning.org">American Planning Association</a> (Planning Student Organization)</p>
-      <p>UC Urbanism <a href="https://strongtowns.org">Strong Towns</a> Local Conversation</p>
+      {page.taglines.map((t: string) => <p set:html={mdInline(t)} />)}
     </div>
   </header>
 
   <section class="hero">
     <div class="hero-bg" aria-hidden="true"></div>
     <div class="image">
-      <p><Image src={groupPhoto} alt="Urbanism Club Group" widths={[480, 750, 1500]} sizes={sizes} format="webp" /></p>
+      <p><Image src={groupPhoto} alt={page.group_photo_alt} widths={[480, 750, 1500]} sizes={sizes} format="webp" /></p>
     </div>
     <div class="lines lines--flow">
-      <p>Urbanism Club aims to connect students and other members of the Uptown community; through </p>
-      <p>discussions with local experts and others in the know; sharing new projects and ideas; and group</p>
-      <p>projects and activities. Host to the University of Cincinnati student chapter of the American Planning </p>
-      <p>Association(APA) (Planning Student Organization(PSO)), and the UC Urbanism Strong Towns Local </p>
-      <p>Conversation, we support UC DAAP planning students, and embody Strong Towns principles.</p>
+      {lines(page.intro_lines).map((l) => <p>{l}</p>)}
     </div>
   </section>
 
   <main class="site">
-    <h2>About us</h2>
-    <p>Urbanism Club is a student-led, community organization that aims to connect students and other members of the Uptown community who are interested in urbanism. </p>
-    <p>Our members learn about and advocate for better communities through: discussions with local experts and community organizations, projects focused on regional issues, volunteer opportunities, workshops, and more.</p>
+    <h2>{page.about_heading}</h2>
+    <Fragment set:html={md(page.about_text)} />
 
     <figure><Image src={groupPark} alt="" widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="lazy" /></figure>
 
-    <h2>What is Urbanism?</h2>
-    <p>Urbanism refers to the way of life or characteristics or a city or town. We think of it as “being of the city,” an active participant in your locality.</p>
+    <h2>{page.what_is_heading}</h2>
+    <Fragment set:html={md(page.what_is_text)} />
 
     <figure><Image src={campusWalk} alt="" widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="lazy" /></figure>
 
-    <h2>Our Main Goals</h2>
+    <h2>{page.goals_heading}</h2>
     <div class="goals">
-      <div>
-        <h3>Educate</h3>
-        <p>Provide opportunities to learn more about urban challenges, initiatives, organizations, and more from the area and beyond. </p>
-      </div>
-      <div>
-        <h3>Connect</h3>
-        <p>Create a space for individuals interested in urbanism to connect with each other, local experts, community organizers, and more. </p>
-      </div>
-      <div>
-        <h3>Advocate</h3>
-        <p>Support local initiatives and organizations by volunteering, campaigning, and sharing resources.</p>
-      </div>
+      {page.goals.map((g: { title: string; text: string }) => (
+        <div>
+          <h3>{g.title}</h3>
+          <p>{g.text}</p>
+        </div>
+      ))}
     </div>
 
     <figure><Image src={clubMeeting} alt="" widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="lazy" /></figure>
 
-    <h2>Affiliate Organizations</h2>
-    <p>Urbanism Club is home to the University of Cincinnati Planning Student Organization, officially registered with the American Planning Organization. Additionally, we are an official local StrongTowns Conversation, alongside friend of the club Civic Cincinnati, and an All Aboard Ohio Affiliate Club. </p>
+    <h2>{page.affiliates_heading}</h2>
+    <Fragment set:html={md(page.affiliates_text)} />
     <div class="logo-row">
-      <Image src={psoLogo} alt="" height={176} densities={[1, 2]} format="webp" loading="lazy" />
-      <Image src={apaLogo} alt="" height={176} densities={[1, 2]} format="webp" loading="lazy" />
-      <img src="/media/strong-towns.svg" alt="" loading="lazy" />
-      <Image src={allAboardLogo} alt="" height={176} densities={[1, 2]} format="webp" loading="lazy" />
+      {affiliates.map(({ data }) => {
+        const img = (
+          <Image
+            src={data.logo}
+            alt={data.name}
+            height={176}
+            loading="lazy"
+            {...(data.logo.format === 'svg' ? {} : { format: 'webp', densities: [1, 2] })}
+          />
+        );
+        return data.link ? <a href={data.link}>{img}</a> : img;
+      })}
     </div>
-    <p>To get more information on any of these organizations, check out our Resources page!</p>
+    <p>{page.affiliates_note}</p>
 
-    <h2>Leadership Team</h2>
+    <h2>{page.leadership_heading}</h2>
     <div class="lines">
-      <p>President and Treasurer, <a href="https://www.fenleyjones.com">Fenley Jones</a></p>
-      <p>Engagement Coordinator, Matthew Sayers</p>
-      <p>Education Coordinator, Michael Uhlemann</p>
-      <p>Advocacy Coordinator, AJ Domelle</p>
-      <p>Advocacy Coordinator, James McDermott</p>
-      <p>APA (PSO) Chair, Henry Bogzevitz</p>
-      <p>Strong Towns Chair, Michael Uhlemann</p>
+      {leadership.map(({ data }) => (
+        <p>{data.role}, {data.link ? <a href={data.link}>{data.name}</a> : data.name}</p>
+      ))}
     </div>
   </main>
 </Base>

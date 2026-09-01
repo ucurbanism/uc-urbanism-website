@@ -1,0 +1,162 @@
+# Decap CMS configuration. Editors log in with GitHub (they need write access to the repo).
+# Locally: run `npm run dev` and `npm run cms`, then open http://localhost:4321/admin
+backend:
+  name: github
+  repo: ActuallyNotAPerson/uc-urbanism-website
+  branch: main
+  commit_messages:
+    create: "Content: create {{collection}} \"{{slug}}\""
+    update: "Content: update {{collection}} \"{{slug}}\""
+    delete: "Content: delete {{collection}} \"{{slug}}\""
+    uploadMedia: "Content: upload \"{{path}}\""
+    deleteMedia: "Content: delete \"{{path}}\""
+
+# Lets the local proxy (npm run cms) take over when running on localhost.
+local_backend: true
+
+site_url: https://uc-urbanism.netlify.app
+display_url: https://uc-urbanism.netlify.app
+media_folder: public/uploads
+public_folder: /uploads
+editor:
+  preview: false
+
+collections:
+  - name: settings
+    label: Site settings
+    editor: { preview: false }
+    files:
+      - name: site
+        label: Links & analytics
+        file: src/content/settings/site.yml
+        fields:
+          - { name: site_name, label: Site name, widget: string }
+          - { name: google_analytics_id, label: Google Analytics ID, widget: string, required: false }
+          - { name: google_site_verification, label: Google Search Console verification token, widget: string, required: false, hint: "Paste the content value of the google-site-verification meta tag." }
+          - name: qr_links
+            label: QR code links (Connect & Join pages)
+            widget: list
+            fields:
+              - { name: label, label: Label, widget: string }
+              - { name: url, label: URL, widget: string }
+              - { name: image, label: QR image path, widget: string, hint: "e.g. /media/qr-instagram.svg" }
+          - name: text_links
+            label: Text links (Connect page)
+            widget: list
+            fields:
+              - { name: label, label: Label, widget: string }
+              - { name: url, label: URL, widget: string }
+
+  - name: pages
+    label: Pages
+    editor: { preview: false }
+    files:
+      - name: about
+        label: About Us (home)
+        file: src/content/pages/about.yml
+        fields:
+          - { name: seo_title, label: Browser/tab title, widget: string }
+          - { name: seo_description, label: Search/share description, widget: text }
+          - { name: logo_alt, label: Logo alt text, widget: string }
+          - { name: taglines, label: Taglines under the logo, widget: list, field: { name: line, label: Line (markdown links allowed), widget: string } }
+          - { name: group_photo_alt, label: Group photo alt text, widget: string }
+          - { name: intro_lines, label: Intro paragraph, widget: text }
+          - { name: about_heading, label: About heading, widget: string }
+          - { name: about_text, label: About text, widget: markdown }
+          - { name: what_is_heading, label: "What is Urbanism heading", widget: string }
+          - { name: what_is_text, label: "What is Urbanism text", widget: markdown }
+          - { name: goals_heading, label: Goals heading, widget: string }
+          - name: goals
+            label: Goals
+            widget: list
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: text, label: Text, widget: text }
+          - { name: affiliates_heading, label: Affiliates heading, widget: string }
+          - { name: affiliates_text, label: Affiliates text, widget: markdown }
+          - { name: affiliates_note, label: Affiliates note, widget: string }
+          - { name: leadership_heading, label: Leadership heading, widget: string }
+      - name: connect
+        label: Connect
+        file: src/content/pages/connect.yml
+        fields:
+          - { name: seo_title, label: Browser/tab title, widget: string }
+          - { name: seo_description, label: Search/share description, widget: text }
+          - { name: get_connected_heading, label: Heading, widget: string }
+          - { name: get_connected_text, label: Text, widget: markdown }
+          - { name: instagram_embed_src, label: Instagram embed URL, widget: string }
+          - { name: meetings_heading, label: Meetings heading, widget: string }
+          - { name: meetings_lines, label: Meetings text, widget: text }
+          - { name: meetings_address, label: Meetings address, widget: string }
+          - { name: meetings_photo_alt, label: Meetings photo alt text, widget: string }
+      - name: events
+        label: Events
+        file: src/content/pages/events.yml
+        fields:
+          - { name: seo_title, label: Browser/tab title, widget: string }
+          - { name: seo_description, label: Search/share description, widget: text }
+          - { name: club_heading, label: Club events heading, widget: string }
+          - { name: club_text, label: Club events text, widget: markdown }
+          - { name: club_calendar_src, label: Club events Google Calendar embed URL, widget: string }
+          - { name: general_heading, label: General events heading, widget: string }
+          - { name: general_lines, label: General events text, widget: text }
+          - { name: general_agenda_src, label: General events agenda embed URL, widget: string }
+          - { name: general_calendar_src, label: General events calendar embed URL, widget: string }
+      - name: resources
+        label: Resources
+        file: src/content/pages/resources.yml
+        fields:
+          - { name: seo_title, label: Browser/tab title, widget: string }
+          - { name: seo_description, label: Search/share description, widget: text }
+          - { name: projects_heading, label: Projects heading, widget: string }
+          - { name: projects_form_label, label: Project form link text, widget: string }
+          - { name: projects_form_url, label: Project form URL, widget: string }
+          - { name: projects_sheet_src, label: Projects spreadsheet embed URL, widget: string }
+          - { name: slides_src, label: Slides embed URL, widget: string }
+      - name: join
+        label: Join
+        file: src/content/pages/join.yml
+        fields:
+          - { name: seo_title, label: Browser/tab title, widget: string }
+          - { name: seo_description, label: Search/share description, widget: text }
+          - { name: heading, label: Heading, widget: string }
+          - { name: email_label, label: Email field label, widget: string }
+          - { name: submit_label, label: Button label, widget: string }
+          - { name: thanks_text, label: Thank-you message, widget: string }
+
+  - name: leadership
+    label: Leadership
+    label_singular: Leader
+    folder: src/content/leadership
+    extension: yml
+    format: yml
+    create: true
+    slug: "{{order}}-{{slug}}"
+    identifier_field: name
+    summary: "{{order}}. {{role}}, {{name}}"
+    sortable_fields: [order, name]
+    editor: { preview: false }
+    fields:
+      - { name: order, label: Order, widget: number, value_type: int, min: 1 }
+      - { name: role, label: Role, widget: string }
+      - { name: name, label: Name, widget: string }
+      - { name: link, label: Link, widget: string, required: false }
+
+  - name: affiliates
+    label: Affiliate organizations
+    label_singular: Affiliate
+    folder: src/content/affiliates
+    media_folder: logos
+    public_folder: logos
+    extension: yml
+    format: yml
+    create: true
+    identifier_field: name
+    summary: "{{order}}. {{name}}"
+    sortable_fields: [order, name]
+    editor: { preview: false }
+    fields:
+      - { name: order, label: Order, widget: number, value_type: int, min: 1 }
+      - { name: name, label: Name, widget: string }
+      - { name: logo, label: Logo, widget: image }
+      - { name: link, label: Link, widget: string, required: false }

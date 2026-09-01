@@ -87,9 +87,16 @@ img {
 .nav ul {
   list-style: none;
   display: flex;
-  gap: 1.25em;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em 1.25em;
   margin: 0;
   padding: 0;
+}
+
+.nav ul a {
+  white-space: nowrap;
 }
 
 .nav a {
@@ -101,6 +108,66 @@ img {
 .nav a:hover,
 .nav a[aria-current="page"] {
   text-decoration: underline;
+}
+
+.nav a.nav-cta {
+  display: inline-block;
+  background-color: var(--fg);
+  color: var(--bg);
+  padding: 0.3em 1em;
+  border-radius: 999px;
+  text-decoration: none;
+  line-height: 1.2;
+}
+
+.nav a.nav-cta:hover,
+.nav a.nav-cta[aria-current="page"] {
+  text-decoration: none;
+  filter: brightness(1.12);
+}
+
+/* ---------- Join / signup form ---------- */
+.signup {
+  margin: 1em 0 2em;
+}
+
+.signup label {
+  display: block;
+  font-family: canada-type-gibson, 'IBM Plex Sans', sans-serif;
+  font-weight: 700;
+  margin-bottom: 0.4em;
+}
+
+.signup-row {
+  display: flex;
+  gap: 0.6em;
+  flex-wrap: wrap;
+}
+
+.signup input[type="email"] {
+  flex: 1 1 16em;
+  font: inherit;
+  padding: 0.6em 0.8em;
+  border: 2px solid var(--fg);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.signup button {
+  font: inherit;
+  font-family: canada-type-gibson, 'IBM Plex Sans', sans-serif;
+  font-weight: 700;
+  padding: 0.6em 1.4em;
+  border: 2px solid var(--fg);
+  border-radius: 6px;
+  background: var(--fg);
+  color: var(--bg);
+  cursor: pointer;
+}
+
+.signup button:hover {
+  filter: brightness(1.12);
 }
 
 /* ---------- Layout ---------- */

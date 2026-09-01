@@ -1,26 +1,29 @@
 ---
+import { getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import { md, lines } from '../lib/text';
+
+const page = (await getEntry('pages', 'events'))!.data as Record<string, any>;
 ---
 
-<Base title="Events">
+<Base title={page.seo_title} description={page.seo_description}>
   <main class="site">
-    <h2>Club Events</h2>
-    <p>Check out our Calendar with Urbanism Club sponsored events, as well as other local Urbanist events! Click on the calendar below to view the full Google Calendar. </p>
-    <!-- PLACEHOLDER: swap this iframe src for the final club-events Google Calendar when ready -->
+    <h2>{page.club_heading}</h2>
+    <Fragment set:html={md(page.club_text)} />
+    <!-- PLACEHOLDER: the club-events calendar URL lives in src/content/pages/events.yml (editable in the CMS) -->
     <div class="embed">
-      <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FNew_York&showPrint=0&title=UC%20Urbanism%20Club&showTz=0&showTitle=0&src=YWxleGlzc3B1cmxvY2syQGdtYWlsLmNvbQ&src=MGU4MDQ5ZDFmMjk5OWYxNjFjMDBiNzgwNjU3NWFmYmM0MGZjMWFhOGM1NTVmYzQxYjY0NDBjNzdlZWEwM2Y0ZEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=MGM3MjAxYjdhMjY1ZDc4MDlkY2FjMzc0ZDU3MmNjZTc5N2Y4OWEwOTEzYWZkOWFhODE1ODAxOWRhYmQ0NjVjZEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=Y19udHI0MXBscTBlM2w1bXBtbXBxNXJ0MDkxa0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=MzNhZmZjZWU2NmNlYmZjM2I0NWI4MGQ4ZWU2NTUzNThlODM4YjUzZjRhNmRmYWVjOWQxYWZlZDQ4YmJjZTg5MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=Mmc3ZGlrNnU5N2NmcWVvb2llMGs4Y3I3dGF1b2llczdAaW1wb3J0LmNhbGVuZGFyLmdvb2dsZS5jb20&src=Y18zZDE3NzEzZWVkY2M0N2VkNzFlNGM5YTY3ZWQ1NDdmZWEzYWFkZWMzOTE2NTlmNmVkOGRmYjI1NDFhNGIwMzEwQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=bXRhZGFtc2NhQGdtYWlsLmNvbQ&src=bXRhdWJ1cm5jaW5jaW5uYXRpQGdtYWlsLmNvbQ&src=d2VzdHdvb2R0b3duaGFsbGRpc3RyaWN0QGdtYWlsLmNvbQ&color=%23ffffff&color=%23616161&color=%23a79b8e&color=%23e4c441&color=%237cb342&color=%23795548&color=%23d50000&color=%237986cb&color=%239e69af&color=%23a79b8e" style="border:solid 1px #007ea3" frameborder="0" scrolling="no" loading="lazy"></iframe>
+      <iframe src={page.club_calendar_src} style="border:solid 1px #007ea3" frameborder="0" scrolling="no" loading="lazy"></iframe>
     </div>
 
-    <h2>General Events</h2>
+    <h2>{page.general_heading}</h2>
     <div class="lines lines--flow">
-      <p>The most complete calendar of community engagement, development, and policy events in the</p>
-      <p>city of Cincinnati! Check out the interactive list of upcoming events or calendar below!</p>
+      {lines(page.general_lines).map((l) => <p>{l}</p>)}
     </div>
     <div class="embed embed--short">
-      <iframe src="https://calendar.google.com/calendar/embed?height=300&wkst=2&ctz=America%2FKentucky%2FLouisville&title=Cincinnati%20Meetings%20and%20Events&showTabs=0&mode=AGENDA&showDate=0&showTitle=0&showTz=0&src=MGU4MDQ5ZDFmMjk5OWYxNjFjMDBiNzgwNjU3NWFmYmM0MGZjMWFhOGM1NTVmYzQxYjY0NDBjNzdlZWEwM2Y0ZEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=MGM3MjAxYjdhMjY1ZDc4MDlkY2FjMzc0ZDU3MmNjZTc5N2Y4OWEwOTEzYWZkOWFhODE1ODAxOWRhYmQ0NjVjZEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=MzNhZmZjZWU2NmNlYmZjM3I0NWI4MGQ4ZWU2NTUzNThlODM4YjUzZjRhNmRmYWVjOWQxYWZlZDQ4YmJjZTg5MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23007ea3&color=%23348ca6&color=%23348ca6" style="border:solid 1px #007ea3" frameborder="0" scrolling="no" loading="lazy"></iframe>
+      <iframe src={page.general_agenda_src} style="border:solid 1px #007ea3" frameborder="0" scrolling="no" loading="lazy"></iframe>
     </div>
     <div class="embed">
-      <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=America%2FKentucky%2FLouisville&title=Cincinnati%20Meetings%20and%20Events&showTz=0&showTitle=0&showTabs=0&src=MGU4MDQ5ZDFmMjk5OWYxNjFjMDBiNzgwNjU3NWFmYmM0MGZjMWFhOGM1NTVmYzQxYjY0NDBjNzdlZWEwM2Y0ZEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=MGM3MjAxYjdhMjY1ZDc4MDlkY2FjMzc0ZDU3MmNjZTc5N2Y4OWEwOTEzYWZkOWFhODE1ODAxOWRhYmQ0NjVjZEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=MzNhZmZjZWU2NmNlYmZjM3I0NWI4MGQ4ZWU2NTUzNThlODM4YjUzZjRhNmRmYWVjOWQxYWZlZDQ4YmJjZTg5MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23007ea3&color=%23348ca6&color=%23348ca6" style="border:solid 1px #007ea3" frameborder="0" scrolling="no" loading="lazy"></iframe>
+      <iframe src={page.general_calendar_src} style="border:solid 1px #007ea3" frameborder="0" scrolling="no" loading="lazy"></iframe>
     </div>
   </main>
 </Base>

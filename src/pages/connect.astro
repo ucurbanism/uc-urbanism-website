@@ -1,52 +1,46 @@
 ---
 import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import { md, lines } from '../lib/text';
 import almsPhoto from '../assets/alms-6110-studio.jpg';
+
+const page = (await getEntry('pages', 'connect'))!.data as Record<string, any>;
+const site = (await getEntry('settings', 'site'))!.data;
 ---
 
-<Base title="Connect">
+<Base title={page.seo_title} description={page.seo_description}>
   <main class="site">
-    <h2>Get Connected!</h2>
-    <p>We stay connected with members and the general public through social media, messaging apps, and UC sanctioned websites. Scan the QR codes or click the links below to get connected with us!</p>
+    <h2>{page.get_connected_heading}</h2>
+    <Fragment set:html={md(page.get_connected_text)} />
 
     <div class="qr-grid">
-      <a href="https://www.instagram.com/uc_urbanism?igsh=MWdhc3JiaDhuMTk3MA%3D%3D&utm_source=qr">
-        <img src="/media/qr-instagram.svg" alt="" />
-        Instagram
-      </a>
-      <a href="https://www.linkedin.com/company/cincinnati-urbanism-club/">
-        <img src="/media/qr-linkedin.svg" alt="" />
-        LinkedIn
-      </a>
-      <a href="https://groupme.com/join_group/98790398/sG4VLf2B">
-        <img src="/media/qr-groupme.svg" alt="" />
-        GroupMe
-      </a>
-      <a href="https://campuslink.uc.edu/organization/planning-student-organization-undergrad">
-        <img src="/media/qr-getinvolveduc.svg" alt="" />
-        GetInvolvedUC
-      </a>
+      {site.qr_links.map((q) => (
+        <a href={q.url}>
+          <img src={q.image} alt="" />
+          {q.label}
+        </a>
+      ))}
     </div>
 
     <div class="embed embed--natural">
-      <iframe class="instagram-media instagram-media-rendered" id="instagram-embed-0" src="https://www.instagram.com/apastudents/embed/?cr=1&v=14&wp=1396&rd=https%3A%2F%2Fgeocities.ws&rp=%2Fuc_urbanism%2F#%7B%22ci%22%3A0%2C%22os%22%3A2270.800000011921%2C%22ls%22%3A386%2C%22le%22%3A2225%7D" allowtransparency="true" allowfullscreen="true" frameborder="0" height="688" data-instgrm-payload-id="instagram-media-payload-0" scrolling="no" loading="lazy" style="background: white; width: calc(100% - 2px); border-radius: 3px; border: 1px solid rgb(219, 219, 219); box-shadow: none; display: block; margin: 0px 0px 12px; min-width: 326px; padding: 0px;"></iframe>
+      <iframe class="instagram-media instagram-media-rendered" id="instagram-embed-0" src={page.instagram_embed_src} allowtransparency="true" allowfullscreen="true" frameborder="0" height="688" data-instgrm-payload-id="instagram-media-payload-0" scrolling="no" loading="lazy" style="background: white; width: calc(100% - 2px); border-radius: 3px; border: 1px solid rgb(219, 219, 219); box-shadow: none; display: block; margin: 0px 0px 12px; min-width: 326px; padding: 0px;"></iframe>
     </div>
-    <script async src="https://www.instagram.com/embed.js"></script>
+    <script is:inline async src="https://www.instagram.com/embed.js"></script>
     <div class="lines">
-      <p><a href="https://www.instagram.com/uc_urbanism/">Instagram</a></p>
-      <p><a href="https://groupme.com/join_group/98790398/sG4VLf2B">GroupMe</a></p>
-      <p><a href="https://www.linkedin.com/company/cincinnati-urbanism-club/">LinkedIn</a></p>
+      {site.text_links.map((l) => (
+        <p><a href={l.url}>{l.label}</a></p>
+      ))}
     </div>
 
-    <h2>Meetings</h2>
+    <h2>{page.meetings_heading}</h2>
     <div class="lines lines--flow">
-      <p>Most meetings are located in the DAAP first year planning studio, Alms 6110, within the College </p>
-      <p>of Design, Architecture, Art, and Planning (DAAP).</p>
+      {lines(page.meetings_lines).map((l) => <p>{l}</p>)}
     </div>
-    <p>348 (Alms Builiding) 342 (DAAP Building) Clifton Court, Cincinnati, Ohio 45219</p>
+    <p>{page.meetings_address}</p>
 
     <div class="image">
-      <p><Image src={almsPhoto} alt="Alms Building From the Outside" widths={[480, 750, 1500]} sizes="(max-width: 782px) 100vw, 750px" format="webp" loading="lazy" /></p>
+      <p><Image src={almsPhoto} alt={page.meetings_photo_alt} widths={[480, 750, 1500]} sizes="(max-width: 782px) 100vw, 750px" format="webp" loading="lazy" /></p>
     </div>
   </main>
 </Base>

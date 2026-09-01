@@ -6,9 +6,16 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "cms": "decap-server",
+    "test": "node scripts/check-fidelity.mjs"
   },
   "dependencies": {
-    "astro": "^5.13.0"
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^5.13.0",
+    "marked": "^18.0.11"
+  },
+  "devDependencies": {
+    "decap-server": "^3.11.0"
   }
 }

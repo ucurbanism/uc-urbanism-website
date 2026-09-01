@@ -1,0 +1,33 @@
+---
+import { getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const page = (await getEntry('pages', 'join'))!.data as Record<string, any>;
+const site = (await getEntry('settings', 'site'))!.data;
+---
+
+<Base title={page.seo_title} description={page.seo_description}>
+  <main class="site">
+    <h2>{page.heading}</h2>
+
+    <!-- Netlify Forms: detected at deploy time (enable "form detection" in the Netlify UI). -->
+    <form name="mailing-list" method="POST" action="/join/thanks/" data-netlify="true" netlify-honeypot="bot-field" class="signup">
+      <input type="hidden" name="form-name" value="mailing-list" />
+      <p hidden><input name="bot-field" tabindex="-1" autocomplete="off" /></p>
+      <label for="email">{page.email_label}</label>
+      <div class="signup-row">
+        <input id="email" type="email" name="email" required autocomplete="email" />
+        <button type="submit">{page.submit_label}</button>
+      </div>
+    </form>
+
+    <div class="qr-grid">
+      {site.qr_links.map((q) => (
+        <a href={q.url}>
+          <img src={q.image} alt="" />
+          {q.label}
+        </a>
+      ))}
+    </div>
+  </main>
+</Base>
