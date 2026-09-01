@@ -142,6 +142,13 @@ img {
   margin: 0.2em 0;
 }
 
+/* Source text that was hand-broken into one <p> per line: flow it as a paragraph
+   (the HTML whitespace between the <p>s becomes the word space) */
+.lines--flow p {
+  display: inline;
+  margin: 0;
+}
+
 .image p {
   margin: 1em 0;
 }
@@ -170,6 +177,19 @@ figure {
 
 .embed--short {
   padding-bottom: 33.333%;
+}
+
+/* Embeds that size themselves (Instagram): no aspect-ratio box, natural height */
+.embed--natural {
+  padding-bottom: 0;
+  height: auto;
+}
+
+.embed--natural iframe {
+  position: static;
+  width: 100%;
+  height: auto;
+  min-height: 688px;
 }
 
 /* ---------- Goals / affiliates / QR grids ---------- */
@@ -246,6 +266,26 @@ figure {
 @media (max-width: 600px) {
   .goals {
     grid-template-columns: 1fr;
+  }
+
+  /* Phone widths: aspect-ratio boxes get too short for calendars/sheets,
+     so use fixed usable heights instead (slides keep their 16:9-ish ratio) */
+  .embed {
+    padding-bottom: 0;
+    height: 480px;
+  }
+
+  .embed--short {
+    height: 300px;
+  }
+
+  .embed--ratio {
+    padding-bottom: 66.666%;
+    height: 0;
+  }
+
+  .embed--natural {
+    height: auto;
   }
 
   .qr-grid {
