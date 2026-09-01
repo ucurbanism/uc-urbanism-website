@@ -1,13 +1,13 @@
 :root {
   --bg: #ffffff;
   --fg: #007ea3;
-  --oval: url('/pictures/cincinnati-street-network-oval-light.png');
+  --oval: var(--oval-light);
 }
 
 html.night {
   --bg: #007ea3;
   --fg: #ffffff;
-  --oval: url('/pictures/cincinnati-street-network-oval-dark.png');
+  --oval: var(--oval-dark);
 }
 
 * {

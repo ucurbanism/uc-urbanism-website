@@ -1,11 +1,22 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import logo from '../assets/urbanism-club-logo.png';
+import groupPhoto from '../assets/urbanism-club-group.png';
+import groupPark from '../assets/group-park.jpg';
+import campusWalk from '../assets/campus-walk.jpg';
+import clubMeeting from '../assets/club-meeting.jpg';
+import psoLogo from '../assets/pso.png';
+import apaLogo from '../assets/apa.png';
+import allAboardLogo from '../assets/all-aboard-ohio.png';
+
+const sizes = '(max-width: 782px) 100vw, 750px';
 ---
 
 <Base title="About Us">
   <header class="hero">
     <div class="title_image">
-      <p><img src="/pictures/urbanism-club-logo.png" alt="Title of the website: Urbanism Club" /></p>
+      <p><Image src={logo} alt="Title of the website: Urbanism Club" widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="eager" fetchpriority="high" /></p>
     </div>
     <div class="tagline">
       <p>University of Cincinnati <a href="https://www.uc.edu/campus-life/csi.html">Registered Student Organization</a></p>
@@ -17,7 +28,7 @@ import Base from '../layouts/Base.astro';
   <section class="hero">
     <div class="hero-bg" aria-hidden="true"></div>
     <div class="image">
-      <p><img src="/pictures/urbanism-club-group.png" alt="Urbanism Club Group" /></p>
+      <p><Image src={groupPhoto} alt="Urbanism Club Group" widths={[480, 750, 1500]} sizes={sizes} format="webp" /></p>
     </div>
     <div class="lines">
       <p>Urbanism Club aims to connect students and other members of the Uptown community; through </p>
@@ -33,12 +44,12 @@ import Base from '../layouts/Base.astro';
     <p>Urbanism Club is a student-led, community organization that aims to connect students and other members of the Uptown community who are interested in urbanism. </p>
     <p>Our members learn about and advocate for better communities through: discussions with local experts and community organizations, projects focused on regional issues, volunteer opportunities, workshops, and more.</p>
 
-    <figure><img src="/media/group-park.jpg" alt="" /></figure>
+    <figure><Image src={groupPark} alt="" widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="lazy" /></figure>
 
     <h2>What is Urbanism?</h2>
     <p>Urbanism refers to the way of life or characteristics or a city or town. We think of it as “being of the city,” an active participant in your locality.</p>
 
-    <figure><img src="/media/campus-walk.jpg" alt="" /></figure>
+    <figure><Image src={campusWalk} alt="" widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="lazy" /></figure>
 
     <h2>Our Main Goals</h2>
     <div class="goals">
@@ -56,15 +67,15 @@ import Base from '../layouts/Base.astro';
       </div>
     </div>
 
-    <figure><img src="/media/club-meeting.jpg" alt="" /></figure>
+    <figure><Image src={clubMeeting} alt="" widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="lazy" /></figure>
 
     <h2>Affiliate Organizations</h2>
     <p>Urbanism Club is home to the University of Cincinnati Planning Student Organization, officially registered with the American Planning Organization. Additionally, we are an official local StrongTowns Conversation, alongside friend of the club Civic Cincinnati, and an All Aboard Ohio Affiliate Club. </p>
     <div class="logo-row">
-      <img src="/media/pso.png" alt="" />
-      <img src="/media/apa.png" alt="" />
-      <img src="/media/strong-towns.svg" alt="" />
-      <img src="/media/all-aboard-ohio.png" alt="" />
+      <Image src={psoLogo} alt="" height={176} densities={[1, 2]} format="webp" loading="lazy" />
+      <Image src={apaLogo} alt="" height={176} densities={[1, 2]} format="webp" loading="lazy" />
+      <img src="/media/strong-towns.svg" alt="" loading="lazy" />
+      <Image src={allAboardLogo} alt="" height={176} densities={[1, 2]} format="webp" loading="lazy" />
     </div>
     <p>To get more information on any of these organizations, check out our Resources page!</p>
 

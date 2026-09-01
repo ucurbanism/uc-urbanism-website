@@ -1,5 +1,10 @@
 ---
+import { Image, getImage } from 'astro:assets';
 import '../styles/global.css';
+import navLogo from '../assets/urbanism-club-logo.png';
+import skyline from '../assets/urbanism-club-skyline.jpg';
+import ovalLightSrc from '../assets/cincinnati-street-network-oval-light.png';
+import ovalDarkSrc from '../assets/cincinnati-street-network-oval-dark.png';
 
 interface Props {
   title: string;
@@ -10,15 +15,23 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const nav = [
   { href: '/', label: 'About Us' },
   { href: '/connect', label: 'Connect' },
+  { href: '/events', label: 'Events' },
   { href: '/resources', label: 'Resources' },
 ];
+
+const ovalLight = await getImage({ src: ovalLightSrc, width: 1200, format: 'webp', quality: 50 });
+const ovalDark = await getImage({ src: ovalDarkSrc, width: 1200, format: 'webp', quality: 50 });
 ---
 
-<html lang="en">
+<html lang="en" style={`--oval-light: url(${ovalLight.src}); --oval-dark: url(${ovalDark.src});`}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <!-- Night theme (8:00 PM to 7:59 AM) — set before paint to avoid flashing -->
     <script is:inline>
@@ -50,7 +63,7 @@ const nav = [
     <nav class="nav">
       <div class="nav-inner">
         <a href="/" class="nav-logo" aria-label="Urbanism Club home">
-          <img src="/pictures/urbanism-club-logo.png" alt="Title of the website: Urbanism Club" />
+          <Image src={navLogo} alt="Title of the website: Urbanism Club" width={240} densities={[1, 2]} format="webp" loading="eager" />
         </a>
         <ul>
           {nav.map((item) => (
@@ -69,7 +82,7 @@ const nav = [
     <footer class="footer">
       <div class="footer-inner">
         <a href="/" aria-label="Urbanism Club home">
-          <img src="/media/urbanism-club-skyline.jpg" alt="Urbanism Club" />
+          <Image src={skyline} alt="Urbanism Club" width={180} densities={[1, 2]} format="webp" />
         </a>
       </div>
     </footer>
