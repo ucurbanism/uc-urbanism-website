@@ -3,6 +3,7 @@ import { Image, getImage } from 'astro:assets';
 import { getEntry } from 'astro:content';
 import '../styles/global.css';
 import navLogo from '../assets/urbanism-club-logo.png';
+import navLogoInverted from '../assets/urbanism-club-logo-inverted.png';
 import skyline from '../assets/urbanism-club-skyline.jpg';
 import ovalLightSrc from '../assets/cincinnati-street-network-oval-light.png';
 import ovalDarkSrc from '../assets/cincinnati-street-network-oval-dark.png';
@@ -99,7 +100,8 @@ const ovalDark = await getImage({ src: ovalDarkSrc, width: 1200, format: 'webp',
     <nav class="nav">
       <div class="nav-inner">
         <a href="/" class="nav-logo" aria-label={`${site.site_name} home`}>
-          <Image src={navLogo} alt="Title of the website: Urbanism Club" width={240} densities={[1, 2]} format="webp" loading="eager" />
+          <Image class="logo-day" src={navLogoInverted} alt="Title of the website: Urbanism Club" width={240} densities={[1, 2]} format="webp" loading="eager" />
+          <Image class="logo-night" src={navLogo} alt="Title of the website: Urbanism Club" width={240} densities={[1, 2]} format="webp" loading="eager" />
         </a>
         <ul>
           {nav.map((item) => (

@@ -10,7 +10,20 @@ import campusWalk from '../assets/campus-walk.jpg';
 import clubMeeting from '../assets/club-meeting.jpg';
 
 const page = (await getEntry('pages', 'about'))!.data as Record<string, any>;
-const leadership = (await getCollection('leadership')).sort((a, b) => a.data.order - b.data.order);
+// One card per person: someone holding several roles is listed once with all of them.
+const leadership = (await getCollection('leadership'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .reduce((people, { data }) => {
+    const existing = people.find((p) => p.name === data.name);
+    if (existing) {
+      existing.roles.push(data.role);
+      existing.link ??= data.link;
+      existing.photo ??= data.photo;
+    } else {
+      people.push({ name: data.name, roles: [data.role], link: data.link, photo: data.photo });
+    }
+    return people;
+  }, [] as { name: string; roles: string[]; link?: string; photo?: any }[]);
 const affiliates = (await getCollection('affiliates')).sort((a, b) => a.data.order - b.data.order);
 
 const sizes = '(max-width: 782px) 100vw, 750px';
@@ -32,7 +45,7 @@ const sizes = '(max-width: 782px) 100vw, 750px';
       <p><Image src={groupPhoto} alt={page.group_photo_alt} widths={[480, 750, 1500]} sizes={sizes} format="webp" /></p>
     </div>
     <div class="lines lines--flow">
-      {lines(page.intro_lines).map((l) => <p>{l}</p>)}
+      {lines(page.intro_lines).map((l, i) => <>{i > 0 && ' '}<p>{l}</p></>)}
     </div>
   </section>
 
@@ -78,10 +91,22 @@ const sizes = '(max-width: 782px) 100vw, 750px';
     <p>{page.affiliates_note}</p>
 
     <h2>{page.leadership_heading}</h2>
-    <div class="lines">
-      {leadership.map(({ data }) => (
-        <p>{data.role}, {data.link ? <a href={data.link}>{data.name}</a> : data.name}</p>
-      ))}
+    <div class="leaders">
+      {leadership.map((person) => {
+        const initials = person.name.split(/\s+/).map((w: string) => w[0]).join('').slice(0, 3);
+        const photo = person.photo ? (
+          <Image src={person.photo} alt={person.name} width={320} height={320} format="webp" densities={[1, 2]} loading="lazy" />
+        ) : (
+          <div class="leader-placeholder" aria-hidden="true">{initials}</div>
+        );
+        const roles = person.roles.length > 1 ? person.roles.slice(0, -1).join(', ') + ' and ' + person.roles.at(-1) : person.roles[0];
+        return (
+          <div class="leader">
+            {person.link ? <a href={person.link}>{photo}</a> : photo}
+            <p>{roles}, {person.link ? <a href={person.link}>{person.name}</a> : person.name}</p>
+          </div>
+        );
+      })}
     </div>
   </main>
 </Base>

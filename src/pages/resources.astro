@@ -12,9 +12,5 @@ const page = (await getEntry('pages', 'resources'))!.data as Record<string, any>
     <div class="embed">
       <iframe src={page.projects_sheet_src} style="border:solid 1px #007ea3" frameborder="0" scrolling="yes" loading="lazy"></iframe>
     </div>
-
-    <div class="embed embed--ratio">
-      <iframe src={page.slides_src} style="border:solid 1px #007ea3" frameborder="0" loading="lazy">This is an embedded <a target="_blank" href="https://office.com">Microsoft Office</a> presentation, powered by <a target="_blank" href="https://office.com/webapps">Office</a>.</iframe>
-    </div>
   </main>
 </Base>

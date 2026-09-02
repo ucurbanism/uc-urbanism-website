@@ -1,7 +1,7 @@
 ---
 import { getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { md, lines } from '../lib/text';
+import { md } from '../lib/text';
 
 const page = (await getEntry('pages', 'events'))!.data as Record<string, any>;
 ---
@@ -10,20 +10,11 @@ const page = (await getEntry('pages', 'events'))!.data as Record<string, any>;
   <main class="site">
     <h2>{page.club_heading}</h2>
     <Fragment set:html={md(page.club_text)} />
-    <!-- PLACEHOLDER: the club-events calendar URL lives in src/content/pages/events.yml (editable in the CMS) -->
     <div class="embed">
       <iframe src={page.club_calendar_src} style="border:solid 1px #007ea3" frameborder="0" scrolling="no" loading="lazy"></iframe>
     </div>
 
     <h2>{page.general_heading}</h2>
-    <div class="lines lines--flow">
-      {lines(page.general_lines).map((l) => <p>{l}</p>)}
-    </div>
-    <div class="embed embed--short">
-      <iframe src={page.general_agenda_src} style="border:solid 1px #007ea3" frameborder="0" scrolling="no" loading="lazy"></iframe>
-    </div>
-    <div class="embed">
-      <iframe src={page.general_calendar_src} style="border:solid 1px #007ea3" frameborder="0" scrolling="no" loading="lazy"></iframe>
-    </div>
+    <p class="placeholder">{page.more_text}</p>
   </main>
 </Base>

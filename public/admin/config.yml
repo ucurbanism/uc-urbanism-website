@@ -97,11 +97,9 @@ collections:
           - { name: seo_description, label: Search/share description, widget: text }
           - { name: club_heading, label: Club events heading, widget: string }
           - { name: club_text, label: Club events text, widget: markdown }
-          - { name: club_calendar_src, label: Club events Google Calendar embed URL, widget: string }
+          - { name: club_calendar_src, label: Club events calendar embed URL, widget: string }
           - { name: general_heading, label: General events heading, widget: string }
-          - { name: general_lines, label: General events text, widget: text }
-          - { name: general_agenda_src, label: General events agenda embed URL, widget: string }
-          - { name: general_calendar_src, label: General events calendar embed URL, widget: string }
+          - { name: more_text, label: General events placeholder text, widget: string }
       - name: resources
         label: Resources
         file: src/content/pages/resources.yml
@@ -112,7 +110,6 @@ collections:
           - { name: projects_form_label, label: Project form link text, widget: string }
           - { name: projects_form_url, label: Project form URL, widget: string }
           - { name: projects_sheet_src, label: Projects spreadsheet embed URL, widget: string }
-          - { name: slides_src, label: Slides embed URL, widget: string }
       - name: join
         label: Join
         file: src/content/pages/join.yml
@@ -128,6 +125,8 @@ collections:
     label: Leadership
     label_singular: Leader
     folder: src/content/leadership
+    media_folder: photos
+    public_folder: photos
     extension: yml
     format: yml
     create: true
@@ -141,6 +140,7 @@ collections:
       - { name: role, label: Role, widget: string }
       - { name: name, label: Name, widget: string }
       - { name: link, label: Link, widget: string, required: false }
+      - { name: photo, label: Photo, widget: image, required: false, hint: "Square-ish headshot; it is cropped to a circle." }
 
   - name: affiliates
     label: Affiliate organizations

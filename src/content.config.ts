@@ -24,12 +24,14 @@ const pages = defineCollection({
 
 const leadership = defineCollection({
   loader: glob({ pattern: '*.yml', base: './src/content/leadership' }),
-  schema: z.object({
-    order: z.number(),
-    role: z.string(),
-    name: z.string(),
-    link: z.string().url().optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      order: z.number(),
+      role: z.string(),
+      name: z.string(),
+      link: z.string().url().optional(),
+      photo: image().optional(),
+    }),
 });
 
 const affiliates = defineCollection({

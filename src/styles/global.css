@@ -60,12 +60,16 @@ img {
 }
 
 /* ---------- Nav ---------- */
+/* The bar runs opposite to the page: club blue by day, white at night. */
 .nav {
+  --nav-bg: var(--fg);
+  --nav-fg: var(--bg);
   position: sticky;
   top: 0;
   z-index: 10;
-  background-color: var(--bg);
-  border-bottom: 2px solid var(--fg);
+  background-color: var(--nav-bg);
+  border-bottom: 2px solid var(--nav-fg);
+  color: var(--nav-fg);
 }
 
 .nav-inner {
@@ -84,6 +88,11 @@ img {
   display: block;
 }
 
+/* Day: white-on-blue logo. Night: the original blue logo on the white bar. */
+.nav-logo .logo-night { display: none; }
+html.night .nav-logo .logo-day { display: none; }
+html.night .nav-logo .logo-night { display: block; }
+
 .nav ul {
   list-style: none;
   display: flex;
@@ -100,6 +109,7 @@ img {
 }
 
 .nav a {
+  color: var(--nav-fg);
   text-decoration: none;
   font-family: canada-type-gibson, 'IBM Plex Sans', sans-serif;
   font-weight: 700;
@@ -112,8 +122,8 @@ img {
 
 .nav a.nav-cta {
   display: inline-block;
-  background-color: var(--fg);
-  color: var(--bg);
+  background-color: var(--nav-fg);
+  color: var(--nav-bg);
   padding: 0.3em 1em;
   border-radius: 999px;
   text-decoration: none;
@@ -216,6 +226,13 @@ img {
   margin: 0;
 }
 
+/* "More to come"-style placeholders */
+.placeholder {
+  text-align: center;
+  font-style: italic;
+  margin: 1.5em 0;
+}
+
 .image p {
   margin: 1em 0;
 }
@@ -242,10 +259,6 @@ figure {
   border: 0;
 }
 
-.embed--short {
-  padding-bottom: 33.333%;
-}
-
 /* Embeds that size themselves (Instagram): no aspect-ratio box, natural height */
 .embed--natural {
   padding-bottom: 0;
@@ -257,6 +270,43 @@ figure {
   width: 100%;
   height: auto;
   min-height: 688px;
+}
+
+/* ---------- Leadership ---------- */
+.leaders {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1.5em 1.25em;
+  margin: 1em 0;
+  text-align: center;
+}
+
+.leader img,
+.leader-placeholder {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  height: auto;
+  object-fit: cover;
+  border: 2px solid var(--fg);
+  border-radius: 50%;
+  margin: 0 auto 0.6em;
+}
+
+.leader-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: canada-type-gibson, 'IBM Plex Sans', sans-serif;
+  font-weight: 700;
+  font-size: 2.2em;
+  background: var(--fg);
+  color: var(--bg);
+}
+
+.leader p {
+  margin: 0;
+  line-height: 1.35;
 }
 
 /* ---------- Goals / affiliates / QR grids ---------- */
@@ -342,20 +392,12 @@ figure {
     height: 480px;
   }
 
-  .embed--short {
-    height: 300px;
-  }
-
-  .embed--ratio {
-    padding-bottom: 66.666%;
-    height: 0;
-  }
-
   .embed--natural {
     height: auto;
   }
 
-  .qr-grid {
+  .qr-grid,
+  .leaders {
     grid-template-columns: repeat(2, 1fr);
   }
 

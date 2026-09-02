@@ -35,7 +35,7 @@ const site = (await getEntry('settings', 'site'))!.data;
 
     <h2>{page.meetings_heading}</h2>
     <div class="lines lines--flow">
-      {lines(page.meetings_lines).map((l) => <p>{l}</p>)}
+      {lines(page.meetings_lines).map((l, i) => <>{i > 0 && ' '}<p>{l}</p></>)}
     </div>
     <p>{page.meetings_address}</p>
 

@@ -39,9 +39,8 @@ const text = {
     'To get more information on any of these organizations, check out our Resources page!',
     'Leadership Team',
     'President and Treasurer, Fenley Jones', 'Engagement Coordinator, Matthew Sayers',
-    'Education Coordinator, Michael Uhlemann', 'Advocacy Coordinator, AJ Domelle',
+    'Education Coordinator and Strong Towns Chair, Michael Uhlemann', 'Advocacy Coordinator, AJ Domelle',
     'Advocacy Coordinator, James McDermott', 'APA (PSO) Chair, Henry Bogzevitz',
-    'Strong Towns Chair, Michael Uhlemann',
   ],
   'connect/index.html': [
     'Get Connected!',
@@ -53,9 +52,7 @@ const text = {
   ],
   'events/index.html': [
     'Club Events', 'General Events',
-    'Check out our Calendar with Urbanism Club sponsored events, as well as other local Urbanist events! Click on the calendar below to view the full Google Calendar.',
-    'The most complete calendar of community engagement, development, and policy events in the',
-    'city of Cincinnati! Check out the interactive list of upcoming events or calendar below!',
+    'Check out our Calendar with Urbanism Club sponsored events, as well as other local Urbanist events!',
   ],
   'resources/index.html': ['Proposals, Projects, and Plans', 'Add your project!'],
   'join/index.html': ['Instagram', 'LinkedIn', 'GroupMe', 'GetInvolvedUC'],
@@ -67,21 +64,18 @@ const raw = {
     'https://www.fenleyjones.com',
   ],
   'connect/index.html': [
-    'https://www.instagram.com/apastudents/embed/?cr=1&v=14&wp=1396&rd=https%3A%2F%2Fgeocities.ws&rp=%2Fuc_urbanism%2F',
+    'https://www.instagram.com/uc_urbanism/embed/?cr=1&v=14&wp=1396&rd=https%3A%2F%2Fuc-urbanism.netlify.app&rp=%2Fconnect',
     'https://www.instagram.com/uc_urbanism/', 'https://groupme.com/join_group/98790398/sG4VLf2B',
     'https://www.linkedin.com/company/cincinnati-urbanism-club/',
     'https://campuslink.uc.edu/organization/planning-student-organization-undergrad',
     'igsh=MWdhc3JiaDhuMTk3MA',
   ],
   'events/index.html': [
-    'calendar/embed?height=600&wkst=1&ctz=America%2FNew_York',
-    'calendar/embed?height=300&wkst=2&ctz=America%2FKentucky%2FLouisville',
     'calendar/embed?height=600&wkst=2&ctz=America%2FKentucky%2FLouisville',
   ],
   'resources/index.html': [
     'https://forms.gle/SAtJWEXpx8rc3VcD7',
     'https://docs.google.com/spreadsheets/u/0/d/1Tm869v2oX6P1vC1LjsRj1BZLH3OpbDNuABfOtjlYxDg/htmlview#gid=0',
-    'https://mailuc-my.sharepoint.com/personal/spurloas_mail_uc_edu/_layouts/15/Doc.aspx?sourcedoc={5a98310d-07c6-4c75-8b81-c16f52a031b9}&action=embedview&wdAr=1.7777777777777777',
   ],
   'join/index.html': ['data-netlify="true"', 'name="form-name" value="mailing-list"', 'name="bot-field"'],
 };
