@@ -33,6 +33,7 @@ collections:
           - { name: site_name, label: Site name, widget: string }
           - { name: google_analytics_id, label: Google Analytics ID, widget: string, required: false }
           - { name: google_site_verification, label: Google Search Console verification token, widget: string, required: false, hint: "Paste the content value of the google-site-verification meta tag." }
+          - { name: contact_email, label: Contact email, widget: string, required: false, hint: "Shown in the footer as \"Questions?\". Leave blank to hide it." }
           - name: qr_links
             label: QR code links (Connect & Join pages)
             widget: list
@@ -57,9 +58,19 @@ collections:
         fields:
           - { name: seo_title, label: Browser/tab title, widget: string }
           - { name: seo_description, label: Search/share description, widget: text }
+          - { name: h1, label: Page heading (screen readers / SEO), widget: string, required: false, hint: "Not shown visually — the logo image is the visible title." }
           - { name: logo_alt, label: Logo alt text, widget: string }
+          - { name: lede, label: Opening sentence (what the club is), widget: text, hint: "The first thing a visitor reads. Say what the club does, plainly." }
+          - { name: cta_label, label: Main button label, widget: string, required: false }
+          - { name: cta_note, label: Note under the main button, widget: string, required: false }
           - { name: taglines, label: Taglines under the logo, widget: list, field: { name: line, label: Line (markdown links allowed), widget: string } }
           - { name: group_photo_alt, label: Group photo alt text, widget: string }
+          - { name: figure_park_alt, label: "Park photo: alt text", widget: string, required: false }
+          - { name: figure_park_caption, label: "Park photo: caption", widget: string, required: false }
+          - { name: figure_walk_alt, label: "Campus walk photo: alt text", widget: string, required: false }
+          - { name: figure_walk_caption, label: "Campus walk photo: caption", widget: string, required: false }
+          - { name: figure_meeting_alt, label: "Meeting photo: alt text", widget: string, required: false }
+          - { name: figure_meeting_caption, label: "Meeting photo: caption", widget: string, required: false }
           - { name: intro_lines, label: Intro paragraph, widget: text }
           - { name: about_heading, label: About heading, widget: string }
           - { name: about_text, label: About text, widget: markdown }
@@ -76,6 +87,8 @@ collections:
           - { name: affiliates_text, label: Affiliates text, widget: markdown }
           - { name: affiliates_note, label: Affiliates note, widget: string }
           - { name: leadership_heading, label: Leadership heading, widget: string }
+          - { name: closing_heading, label: Closing call-to-action heading, widget: string, required: false }
+          - { name: closing_text, label: Closing call-to-action text, widget: text, required: false }
       - name: connect
         label: Connect
         file: src/content/pages/connect.yml
@@ -84,6 +97,7 @@ collections:
           - { name: seo_description, label: Search/share description, widget: text }
           - { name: get_connected_heading, label: Heading, widget: string }
           - { name: get_connected_text, label: Text, widget: markdown }
+          - { name: qr_note, label: QR code note, widget: string, required: false }
           - { name: instagram_embed_src, label: Instagram embed URL, widget: string }
           - { name: meetings_heading, label: Meetings heading, widget: string }
           - { name: meetings_lines, label: Meetings text, widget: text }
@@ -107,6 +121,7 @@ collections:
           - { name: seo_title, label: Browser/tab title, widget: string }
           - { name: seo_description, label: Search/share description, widget: text }
           - { name: projects_heading, label: Projects heading, widget: string }
+          - { name: projects_text, label: Projects intro text, widget: text, required: false }
           - { name: projects_form_label, label: Project form link text, widget: string }
           - { name: projects_form_url, label: Project form URL, widget: string }
           - { name: projects_sheet_src, label: Projects spreadsheet embed URL, widget: string }
@@ -116,10 +131,18 @@ collections:
         fields:
           - { name: seo_title, label: Browser/tab title, widget: string }
           - { name: seo_description, label: Search/share description, widget: text }
+          - { name: thanks_seo_title, label: "Thank-you page: browser/tab title", widget: string, required: false }
           - { name: heading, label: Heading, widget: string }
+          - { name: intro_text, label: "What the mailing list is (shown above the form)", widget: text, required: false, hint: "What they're signing up for and how often you email." }
           - { name: email_label, label: Email field label, widget: string }
           - { name: submit_label, label: Button label, widget: string }
+          - { name: privacy_note, label: Privacy note under the form, widget: text, required: false }
+          - { name: qr_heading, label: QR section heading, widget: string, required: false }
+          - { name: qr_note, label: QR code note, widget: string, required: false }
+          - { name: thanks_heading, label: "Thank-you page: heading", widget: string, required: false }
           - { name: thanks_text, label: Thank-you message, widget: string }
+          - { name: thanks_next_heading, label: "Thank-you page: next-steps heading", widget: string, required: false }
+          - { name: thanks_next_text, label: "Thank-you page: next-steps text", widget: text, required: false }
 
   - name: leadership
     label: Leadership

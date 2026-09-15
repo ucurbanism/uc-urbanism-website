@@ -6,11 +6,12 @@ const page = (await getEntry('pages', 'resources'))!.data as Record<string, any>
 ---
 
 <Base title={page.seo_title} description={page.seo_description}>
-  <main class="site">
-    <h2>{page.projects_heading}</h2>
+  <main class="site" id="main">
+    <h1 class="page-title">{page.projects_heading}</h1>
+    {page.projects_text && <p class="lede">{page.projects_text}</p>}
     <p><a href={page.projects_form_url}>{page.projects_form_label}</a></p>
     <div class="embed">
-      <iframe src={page.projects_sheet_src} style="border:solid 1px #007ea3" frameborder="0" scrolling="yes" loading="lazy"></iframe>
+      <iframe title="Urbanism Club proposals, projects and plans" src={page.projects_sheet_src} style="border:solid 1px #007ea3" frameborder="0" scrolling="yes" loading="lazy"></iframe>
     </div>
   </main>
 </Base>

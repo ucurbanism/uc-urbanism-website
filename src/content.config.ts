@@ -10,6 +10,7 @@ const settings = defineCollection({
     site_name: z.string(),
     google_analytics_id: z.string().optional(),
     google_site_verification: z.string().optional(),
+    contact_email: z.string().optional(),
     qr_links: z.array(link.extend({ image: z.string() })),
     text_links: z.array(link),
   }),

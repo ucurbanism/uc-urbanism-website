@@ -1,6 +1,8 @@
 site_name: Urbanism Club
 google_analytics_id: G-4KX380T5BD
 google_site_verification: ""
+# Shown in the footer once set. Left blank until the club picks a shared address.
+contact_email: ""
 qr_links:
   - label: Instagram
     url: "https://www.instagram.com/uc_urbanism?igsh=MWdhc3JiaDhuMTk3MA%3D%3D&utm_source=qr"

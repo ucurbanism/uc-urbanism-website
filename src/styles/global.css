@@ -2,30 +2,96 @@
   --bg: #ffffff;
   --fg: #007ea3;
   --oval: var(--oval-light);
+
+  /* Body copy reads in a deep blue-black so the club blue is free to mean
+     "this is a heading / link / action" instead of meaning "this is text". */
+  --ink: #12333d;
+  --ink-muted: #4a6670;
+
+  /* Spacing scale — replaces the ad-hoc em values these rules used to carry. */
+  --space-1: 0.4rem;
+  --space-2: 0.75rem;
+  --space-3: 1.25rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 4.5rem;
+
+  --radius: 6px;
+  --radius-pill: 999px;
+  --rule: 2px;
 }
 
 html.night {
   --bg: #007ea3;
   --fg: #ffffff;
   --oval: var(--oval-dark);
+  --ink: #ffffff;
+  --ink-muted: #d6ecf3;
 }
 
 * {
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
+/* Honour the OS "reduce motion" setting instead of always animating. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
   font-family: 'IBM Plex Sans', sans-serif;
   background-color: var(--bg);
-  color: var(--fg);
+  color: var(--ink);
   margin: 0;
   padding: 0;
   line-height: 1.6;
   overflow-x: hidden;
+}
+
+/* ---------- Focus ---------- */
+/* Every interactive element gets a visible keyboard focus ring. */
+:focus-visible {
+  outline: 3px solid var(--fg);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.nav :focus-visible {
+  outline-color: var(--nav-fg);
+}
+
+/* Keyboard users land here first; invisible until focused. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--fg);
+  color: var(--bg);
+  padding: var(--space-2) var(--space-3);
+  font-family: canada-type-gibson, 'IBM Plex Sans', sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 0 0 var(--radius) 0;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -37,17 +103,24 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--fg);
 }
 
+/* Night mode: headings are solid white. The previous rule filled them with the
+   page's own background colour (#007ea3 on #007ea3) and relied on a 1px stroke
+   to carry the glyph, which is a 1:1 contrast failure. */
 html.night h1,
 html.night h2,
 html.night h3 {
-  color: #007ea3;
-  -webkit-text-stroke: 1px #ffffff;
-  paint-order: fill stroke;
+  color: #ffffff;
 }
 
 h1 { font-size: clamp(2.4em, 6vw, 4.75em); }
-h2 { font-size: clamp(1.8em, 4vw, 2.7em); margin-top: 2em; }
+h2 { font-size: clamp(1.6em, 3.2vw, 2.1em); margin-top: var(--space-6); }
 h3 { font-size: 1.35em; }
+
+/* Page title: the one heading per page that outranks its sections. */
+.page-title {
+  font-size: clamp(2.1em, 4.4vw, 2.9em);
+  margin-top: var(--space-4);
+}
 
 a {
   color: var(--fg);
@@ -113,6 +186,10 @@ html.night .nav-logo .logo-night { display: block; }
   text-decoration: none;
   font-family: canada-type-gibson, 'IBM Plex Sans', sans-serif;
   font-weight: 700;
+  /* 44px minimum touch target (WCAG 2.5.5) — these were ~20px tall. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 
 .nav a:hover,
@@ -121,19 +198,117 @@ html.night .nav-logo .logo-night { display: block; }
 }
 
 .nav a.nav-cta {
-  display: inline-block;
   background-color: var(--nav-fg);
   color: var(--nav-bg);
   padding: 0.3em 1em;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   text-decoration: none;
   line-height: 1.2;
+  min-height: 0;
+  padding-block: 0.55em;
 }
 
+/* Hover/active used `filter: brightness(1.12)`, which washed the pill's own
+   text down to 1.2:1 against its background. Invert the pill instead. */
 .nav a.nav-cta:hover,
+.nav a.nav-cta:focus-visible,
 .nav a.nav-cta[aria-current="page"] {
   text-decoration: none;
-  filter: brightness(1.12);
+  background-color: transparent;
+  color: var(--nav-fg);
+  box-shadow: inset 0 0 0 2px var(--nav-fg);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 44px;
+  padding: 0.7em 1.6em;
+  font-family: canada-type-gibson, 'IBM Plex Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.05em;
+  line-height: 1.2;
+  border: var(--rule) solid var(--fg);
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn--primary {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+.btn--primary:hover,
+.btn--primary:focus-visible {
+  background: transparent;
+  color: var(--fg);
+}
+
+.btn--secondary {
+  background: transparent;
+  color: var(--fg);
+}
+
+.btn--secondary:hover,
+.btn--secondary:focus-visible {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+/* ---------- Calls to action ---------- */
+.cta {
+  margin: var(--space-4) 0 var(--space-2);
+}
+
+.cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  margin-top: var(--space-2);
+}
+
+.cta-note {
+  margin: var(--space-2) 0 0;
+  color: var(--ink-muted);
+}
+
+/* Closing CTA at the end of the homepage: the convert-now moment. */
+.cta--closing {
+  margin-top: var(--space-6);
+  padding: var(--space-4);
+  border: var(--rule) solid var(--fg);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.cta--closing h2 {
+  margin-top: 0;
+}
+
+.cta--closing .cta-actions {
+  justify-content: center;
+}
+
+/* Lead sentence: the value proposition, above the registration taglines. */
+.lede {
+  font-size: 1.2em;
+  line-height: 1.5;
+  margin: 0 0 var(--space-2);
+}
+
+/* The three RSO/APA/Strong Towns lines are trust signals, not the headline. */
+.tagline {
+  font-size: 0.95em;
+  color: var(--ink-muted);
+}
+
+.tagline a {
+  color: inherit;
 }
 
 /* ---------- Join / signup form ---------- */
@@ -168,16 +343,48 @@ html.night .nav-logo .logo-night { display: block; }
   font: inherit;
   font-family: canada-type-gibson, 'IBM Plex Sans', sans-serif;
   font-weight: 700;
+  min-height: 44px;
   padding: 0.6em 1.4em;
-  border: 2px solid var(--fg);
-  border-radius: 6px;
+  border: var(--rule) solid var(--fg);
+  border-radius: var(--radius);
   background: var(--fg);
   color: var(--bg);
   cursor: pointer;
 }
 
-.signup button:hover {
-  filter: brightness(1.12);
+.signup button:hover,
+.signup button:focus-visible {
+  background: transparent;
+  color: var(--fg);
+}
+
+.signup button[aria-disabled="true"] {
+  opacity: 0.65;
+  cursor: progress;
+}
+
+/* Announced to screen readers; only takes up space once it has something to say. */
+.form-status {
+  margin: var(--space-2) 0 0;
+  font-weight: 700;
+}
+
+.form-status:empty {
+  margin: 0;
+}
+
+.form-status[data-state="error"] {
+  color: #b3261e;
+}
+
+html.night .form-status[data-state="error"] {
+  color: #ffd9d6;
+}
+
+.signup-note {
+  margin: var(--space-2) 0 0;
+  font-size: 0.95em;
+  color: var(--ink-muted);
 }
 
 /* ---------- Layout ---------- */
@@ -237,8 +444,24 @@ html.night .nav-logo .logo-night { display: block; }
   margin: 1em 0;
 }
 
+/* Figures filled 480–600px of a 718px column and sat flush left, so four
+   stacked images had four different right edges. Fill the column, and cap the
+   height so 800px portraits stop pushing every section a screen down. */
 figure {
-  margin: 1.5em 0;
+  margin: var(--space-4) 0;
+}
+
+figure img {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+figcaption {
+  margin-top: var(--space-1);
+  font-size: 0.95em;
+  color: var(--ink-muted);
 }
 
 .embed {
@@ -313,12 +536,19 @@ figure {
 .goals {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5em;
-  margin: 1em 0;
+  gap: var(--space-3);
+  margin: var(--space-3) 0;
+}
+
+/* Three bare divs read as three columns of text, not as one group of three.
+   A top rule groups them the way a plan sheet separates parcels. */
+.goals > div {
+  border-top: var(--rule) solid var(--fg);
+  padding-top: var(--space-2);
 }
 
 .goals h3 {
-  margin-bottom: 0.4em;
+  margin-bottom: var(--space-1);
 }
 
 .logo-row {
@@ -347,9 +577,12 @@ figure {
   text-decoration: none;
   font-family: canada-type-gibson, 'IBM Plex Sans', sans-serif;
   font-weight: 700;
+  display: block;
+  min-height: 44px;
 }
 
-.qr-grid a:hover {
+.qr-grid a:hover,
+.qr-grid a:focus-visible {
   text-decoration: underline;
 }
 
@@ -357,27 +590,64 @@ figure {
   width: 100%;
   height: auto;
   display: block;
-  margin-bottom: 0.5em;
+  margin-bottom: var(--space-1);
+}
+
+.qr-note {
+  margin: 0 0 var(--space-2);
+  font-size: 0.95em;
+  color: var(--ink-muted);
 }
 
 /* ---------- Footer ---------- */
 .footer {
-  border-top: 2px solid var(--fg);
-  margin-top: 3em;
+  border-top: var(--rule) solid var(--fg);
+  margin-top: var(--space-6);
 }
 
 .footer-inner {
   max-width: 750px;
   margin: 0 auto;
-  padding: 1.5em 1em;
+  padding: var(--space-4) var(--space-3);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: var(--space-3);
+  text-align: center;
 }
 
 .footer img {
   height: 4em;
   width: auto;
+}
+
+.footer-nav ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-1) var(--space-3);
+  margin: 0;
+  padding: 0;
+}
+
+.footer-nav a {
+  font-family: canada-type-gibson, 'IBM Plex Sans', sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.footer-nav a:hover,
+.footer-nav a:focus-visible {
+  text-decoration: underline;
+}
+
+.footer-contact {
+  margin: 0;
+  color: var(--ink-muted);
 }
 
 @media (max-width: 600px) {
@@ -401,9 +671,37 @@ figure {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  /* The nav used to stack into a column, eating 125px (15%) of an iPhone
+     viewport on every page. Keep the logo and the links to one row each, and
+     make sure the links themselves never wrap to a third row. */
   .nav-inner {
-    flex-direction: column;
-    gap: 0.4em;
-    padding-bottom: 0.5em;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0;
+    padding: 0.2em var(--space-2);
+  }
+
+  .nav-logo img {
+    height: 1.5em;
+  }
+
+  .nav ul {
+    width: 100%;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 0;
+    font-size: 0.82em;
+  }
+
+  .nav a {
+    min-height: 40px;
+  }
+
+  .nav a.nav-cta {
+    padding-inline: 0.7em;
+  }
+
+  figure img {
+    max-height: 320px;
   }
 }

@@ -97,11 +97,12 @@ const ovalDark = await getImage({ src: ovalDarkSrc, width: 1200, format: 'webp',
   </head>
 
   <body>
-    <nav class="nav">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <nav class="nav" aria-label="Main">
       <div class="nav-inner">
         <a href="/" class="nav-logo" aria-label={`${site.site_name} home`}>
-          <Image class="logo-day" src={navLogoInverted} alt="Title of the website: Urbanism Club" width={240} densities={[1, 2]} format="webp" loading="eager" />
-          <Image class="logo-night" src={navLogo} alt="Title of the website: Urbanism Club" width={240} densities={[1, 2]} format="webp" loading="eager" />
+          <Image class="logo-day" src={navLogoInverted} alt="" width={240} densities={[1, 2]} format="webp" loading="eager" />
+          <Image class="logo-night" src={navLogo} alt="" width={240} densities={[1, 2]} format="webp" loading="eager" />
         </a>
         <ul>
           {nav.map((item) => (
@@ -125,8 +126,20 @@ const ovalDark = await getImage({ src: ovalDarkSrc, width: 1200, format: 'webp',
     <footer class="footer">
       <div class="footer-inner">
         <a href="/" aria-label={`${site.site_name} home`}>
-          <Image src={skyline} alt={site.site_name} width={180} densities={[1, 2]} format="webp" />
+          <Image src={skyline} alt="" width={180} densities={[1, 2]} format="webp" />
         </a>
+        <nav class="footer-nav" aria-label="Footer">
+          <ul>
+            {[...nav, cta].map((item) => (
+              <li><a href={item.href}>{item.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+        {site.contact_email && (
+          <p class="footer-contact">
+            Questions? <a href={`mailto:${site.contact_email}`}>{site.contact_email}</a>
+          </p>
+        )}
       </div>
     </footer>
   </body>

@@ -10,6 +10,8 @@ import campusWalk from '../assets/campus-walk.jpg';
 import clubMeeting from '../assets/club-meeting.jpg';
 
 const page = (await getEntry('pages', 'about'))!.data as Record<string, any>;
+const site = (await getEntry('settings', 'site'))!.data;
+const connect = (await getEntry('pages', 'connect'))!.data as Record<string, any>;
 // One card per person: someone holding several roles is listed once with all of them.
 const leadership = (await getCollection('leadership'))
   .sort((a, b) => a.data.order - b.data.order)
@@ -31,8 +33,17 @@ const sizes = '(max-width: 782px) 100vw, 750px';
 
 <Base title={page.seo_title} description={page.seo_description}>
   <header class="hero">
+    <h1 class="visually-hidden">{page.h1 ?? site.site_name}</h1>
     <div class="title_image">
       <p><Image src={logo} alt={page.logo_alt} widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="eager" fetchpriority="high" /></p>
+    </div>
+    {page.lede && <p class="lede">{page.lede}</p>}
+    <div class="cta">
+      <div class="cta-actions">
+        <a class="btn btn--primary" href="/join">{page.cta_label ?? 'Join the club'}</a>
+        <a class="btn btn--secondary" href="/events">See upcoming events</a>
+      </div>
+      {page.cta_note && <p class="cta-note">{page.cta_note}</p>}
     </div>
     <div class="tagline">
       {page.taglines.map((t: string) => <p set:html={mdInline(t)} />)}
@@ -49,16 +60,22 @@ const sizes = '(max-width: 782px) 100vw, 750px';
     </div>
   </section>
 
-  <main class="site">
+  <main class="site" id="main">
     <h2>{page.about_heading}</h2>
     <Fragment set:html={md(page.about_text)} />
 
-    <figure><Image src={groupPark} alt="" widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="lazy" /></figure>
+    <figure>
+      <Image src={groupPark} alt={page.figure_park_alt ?? ''} widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="lazy" />
+      {page.figure_park_caption && <figcaption>{page.figure_park_caption}</figcaption>}
+    </figure>
 
     <h2>{page.what_is_heading}</h2>
     <Fragment set:html={md(page.what_is_text)} />
 
-    <figure><Image src={campusWalk} alt="" widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="lazy" /></figure>
+    <figure>
+      <Image src={campusWalk} alt={page.figure_walk_alt ?? ''} widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="lazy" />
+      {page.figure_walk_caption && <figcaption>{page.figure_walk_caption}</figcaption>}
+    </figure>
 
     <h2>{page.goals_heading}</h2>
     <div class="goals">
@@ -70,7 +87,10 @@ const sizes = '(max-width: 782px) 100vw, 750px';
       ))}
     </div>
 
-    <figure><Image src={clubMeeting} alt="" widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="lazy" /></figure>
+    <figure>
+      <Image src={clubMeeting} alt={page.figure_meeting_alt ?? ''} widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="lazy" />
+      {page.figure_meeting_caption && <figcaption>{page.figure_meeting_caption}</figcaption>}
+    </figure>
 
     <h2>{page.affiliates_heading}</h2>
     <Fragment set:html={md(page.affiliates_text)} />
@@ -103,10 +123,21 @@ const sizes = '(max-width: 782px) 100vw, 750px';
         return (
           <div class="leader">
             {person.link ? <a href={person.link}>{photo}</a> : photo}
-            <p>{roles}, {person.link ? <a href={person.link}>{person.name}</a> : person.name}</p>
+            <p>{person.link ? <a href={person.link}>{person.name}</a> : person.name}, {roles}</p>
           </div>
         );
       })}
     </div>
+
+    <!-- The homepage used to end here, with no way to act on 5,000px of reading. -->
+    <section class="cta cta--closing">
+      <h2>{page.closing_heading ?? 'Come to a meeting'}</h2>
+      {page.closing_text && <p>{page.closing_text}</p>}
+      <p>{connect.meetings_address}</p>
+      <div class="cta-actions">
+        <a class="btn btn--primary" href="/join">{page.cta_label ?? 'Join the club'}</a>
+        <a class="btn btn--secondary" href="/connect">Find a meeting</a>
+      </div>
+    </section>
   </main>
 </Base>

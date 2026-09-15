@@ -7,14 +7,21 @@ const page = (await getEntry('pages', 'events'))!.data as Record<string, any>;
 ---
 
 <Base title={page.seo_title} description={page.seo_description}>
-  <main class="site">
-    <h2>{page.club_heading}</h2>
+  <main class="site" id="main">
+    <h1 class="page-title">{page.club_heading}</h1>
     <Fragment set:html={md(page.club_text)} />
     <div class="embed">
-      <iframe src={page.club_calendar_src} style="border:solid 1px #007ea3" frameborder="0" scrolling="no" loading="lazy"></iframe>
+      <iframe title="Urbanism Club events calendar" src={page.club_calendar_src} style="border:solid 1px #007ea3" frameborder="0" scrolling="no" loading="lazy"></iframe>
     </div>
 
     <h2>{page.general_heading}</h2>
     <p class="placeholder">{page.more_text}</p>
+
+    <section class="cta">
+      <div class="cta-actions">
+        <a class="btn btn--primary" href="/join">Join the mailing list</a>
+      </div>
+      <p class="cta-note">We announce new events to the mailing list first.</p>
+    </section>
   </main>
 </Base>

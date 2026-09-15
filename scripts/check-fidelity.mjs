@@ -5,7 +5,13 @@ import { readFileSync } from 'node:fs';
 const unescape = (s) =>
   s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
 const load = (p) => unescape(readFileSync(new URL(`../dist/${p}`, import.meta.url), 'utf8'));
-const textOf = (html) => html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+const textOf = (html) =>
+  html
+    .replace(/<script[\s\S]*?<\/script>/g, '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    // Stripping an inline tag before punctuation ("</a>,") leaves a stray space.
+    .replace(/\s+([,.;:!?])/g, '$1');
 
 const pages = {
   'index.html': load('index.html'),
@@ -38,9 +44,9 @@ const text = {
     'Urbanism Club is home to the University of Cincinnati Planning Student Organization, officially registered with the American Planning Organization. Additionally, we are an official local StrongTowns Conversation, alongside friend of the club Civic Cincinnati, and an All Aboard Ohio Affiliate Club.',
     'To get more information on any of these organizations, check out our Resources page!',
     'Leadership Team',
-    'President and Treasurer, Fenley Jones', 'Engagement Coordinator, Matthew Sayers',
-    'Education Coordinator and Strong Towns Chair, Michael Uhlemann', 'Advocacy Coordinator, AJ Domelle',
-    'Advocacy Coordinator, James McDermott', 'APA (PSO) Chair, Henry Bogzevitz',
+    'Fenley Jones, President and Treasurer', 'Matthew Sayers, Engagement Coordinator',
+    'Michael Uhlemann, Education Coordinator and Strong Towns Chair', 'AJ Domelle, Advocacy Coordinator',
+    'James McDermott, Advocacy Coordinator', 'Henry Bogzevitz, APA (PSO) Chair',
   ],
   'connect/index.html': [
     'Get Connected!',
