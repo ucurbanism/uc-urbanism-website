@@ -1,4 +1,4 @@
-# Handoff — UC Urbanism website (updated 2026-09-02)
+# Handoff — UC Urbanism website (updated 2026-10-06)
 
 ## Where things stand
 
@@ -6,7 +6,8 @@
 | --- | --- |
 | Repo | `~/Claude Code Stuff/uc-urbanism-website` → GitHub **ActuallyNotAPerson/uc-urbanism-website** (private) |
 | Live site | https://uc-urbanism.netlify.app — Netlify site `uc-urbanism`, auto-deploys from `main` via GitHub webhook |
-| Live commit | `9b04e03` — everything below is deployed. `main` and `origin/main` were in sync after the 2026-09-02 push; this handoff commit is the only thing on top. |
+| Live commit | `5889917` (2026-09-15, "Fix conversion path and accessibility foundations from design critique") — on `main` and `origin/main`, so deployed. |
+| Version | **v1.0.0** — annotated git tag on `5889917`, created 2026-10-06. `package.json` is also `1.0.0`. Bump both together for future releases; `npm version <patch|minor|major>` does this and creates the tag. The tag is local until pushed (`git push origin v1.0.0`). |
 | Push policy | Pushing deploys to the live site. The user decides when: push only when asked in that session. |
 
 `npm test` after every build checks that the original club text, embeds and links are still present.
