@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.1 — 2026-10-06
+
+- Fix: `/join/thanks/` (the old mailing-list form's success page) now redirects to `/join/`. In 1.5.0 it was a
+  `/join/*` catch-all pointing at `/join`, which Netlify never applied because the pattern also matches its own
+  target; the page fell through to the 404.
+
 ## 1.5.0 — 2026-10-06
 
 Changes from the board's hand-marked printout of the live site (scan dated 2026-09-06).

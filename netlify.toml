@@ -32,7 +32,14 @@
   to = "/connect#events"
   status = 301
 
+# Explicit paths, not a /join/* splat: on Netlify a splat also matches its own base path,
+# so "/join/*" -> "/join" pointed at itself and never fired (v1.5.0 shipped with that bug).
 [[redirects]]
-  from = "/join/*"
-  to = "/join"
+  from = "/join/thanks"
+  to = "/join/"
+  status = 301
+
+[[redirects]]
+  from = "/join/thanks/"
+  to = "/join/"
   status = 301

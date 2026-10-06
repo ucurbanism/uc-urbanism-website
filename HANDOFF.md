@@ -6,8 +6,8 @@
 | --- | --- |
 | Repo | `~/Claude Code Stuff/uc-urbanism-website` → GitHub **ActuallyNotAPerson/uc-urbanism-website** (private) |
 | Live site | https://uc-urbanism.netlify.app — Netlify site `uc-urbanism`, auto-deploys from `main` via GitHub webhook |
-| Live commit | `5889917` (2026-09-15, "Fix conversion path and accessibility foundations from design critique") — on `main` and `origin/main`, so deployed. |
-| Version | **v1.5.0** in `package.json` (branch `claude/review-pdf-handwritten-changes-21947e`, not yet merged, tagged or deployed). **v1.0.0** = annotated tag on `5889917`. Tag `v1.5.0` after merging to `main`; tags are local until pushed. What changed per version: `CHANGELOG.md`. |
+| Live commit | **v1.5.1** on `main` (2026-10-06). v1.5.0 went live via PR #2 (merge commit `31e04b5`); v1.5.1 fixes the `/join/thanks/` redirect. |
+| Version | Annotated tags, all pushed: **v1.5.1** (current), **v1.5.0** on `31e04b5`, **v1.0.0** on `5889917`. `package.json` matches the latest tag. What changed per version: `CHANGELOG.md`. |
 | Push policy | Pushing deploys to the live site. The user decides when: push only when asked in that session. |
 
 `npm test` after every build checks that the original club text, embeds and links are still present.
@@ -40,7 +40,7 @@ Netlify Forms was dropped in v1.5: form detection had never been enabled (`ignor
 was ever stored.
 SEO basics, OG image, sitemap, robots.txt, favicon set. Details in README.md.
 
-## v1.5 — board markup round (2026-10-06, not yet deployed)
+## v1.5 — board markup round (2026-10-06, live)
 
 Source: `~/Downloads/Changes 2-1.pdf`, a hand-marked printout of the live site (HS/LS/SS = heading/line/section
 spacing; Note 1 = images full width; Note 2 = merge Events + Join into Connect — Join was merged, then split back out to its own page at the user's
@@ -67,8 +67,9 @@ request on 2026-10-06; Events stays merged). Full list in `CHANGELOG.md`. Notes:
       Replace the files in `src/assets/`; the layout already crops them to landscape at full width.
 - [ ] The mailing-list Google Form link (see one-time actions below).
 - [ ] A "more representative" hero graphic → CMS About → Hero image (or `hero_image:` in `pages/about.yml`).
-- [ ] After deploy: `curl -I https://uc-urbanism.netlify.app/events` should 301 to `/connect#events`, and
-      `/join/thanks/` to `/join`.
+- [x] Live checks after the v1.5.0 deploy: `/events` 301s to `/connect#events`, unknown paths show the branded 404,
+      nav and calendars correct. `/join/thanks/` 404'd (splat-rule bug); fixed in v1.5.1 with explicit rules.
+      **Netlify splat gotcha:** `from = "/x/*"` also matches `/x`, so never point a `/x/*` rule at `/x`.
 
 ## Changes made 2026-09-02 (all live)
 
