@@ -1,14 +1,11 @@
+# The Join page (/join): mailing-list signup.
 seo_title: Join
 seo_description: "Sign up for the Urbanism Club mailing list and get connected with the club."
-thanks_seo_title: You're on the list
-heading: Join
+heading: Join the mailing list
 intro_text: "Get an email when we announce a meeting, a tour, or a volunteer day. That's roughly one or two emails a month, sent by the club's engagement coordinator."
-email_label: Email
-submit_label: Sign up
+# Link to the club's Google Form (the form's Send → link). Responses collect in the form's Google Sheet.
+# While blank, the section shows the GroupMe button instead.
+signup_url: ""
+signup_label: Join the mailing list
 privacy_note: "We only email about club meetings and events, and we never share your address. Unsubscribe any time."
-qr_heading: Find us elsewhere
-qr_note: "On a phone? Tap a label to open the link directly. The QR codes are for scanning from someone else's screen."
-thanks_heading: You're on the list
-thanks_text: "Thanks, you're on the list!"
-thanks_next_heading: What happens next
-thanks_next_text: "You'll get an email before the next meeting. Everyone is welcome at any meeting, whatever your major, and there's nothing to prepare."
+fallback_text: "The email list is on its way. Until then, meeting and event announcements go out in the club GroupMe."

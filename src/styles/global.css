@@ -112,6 +112,11 @@ html.night h3 {
   color: #ffffff;
 }
 
+/* One paragraph rhythm site-wide instead of the browser's 1em top + bottom. */
+p {
+  margin: 0 0 var(--space-2);
+}
+
 h1 { font-size: clamp(2.4em, 6vw, 4.75em); }
 h2 { font-size: clamp(1.6em, 3.2vw, 2.1em); margin-top: var(--space-6); }
 h3 { font-size: 1.35em; }
@@ -125,6 +130,10 @@ h3 { font-size: 1.35em; }
 a {
   color: var(--fg);
   text-decoration: underline;
+}
+
+.anchor-target {
+  scroll-margin-top: 5rem;
 }
 
 img {
@@ -156,7 +165,7 @@ img {
 }
 
 .nav-logo img {
-  height: 2.2em;
+  height: 1.6em;
   width: auto;
   display: block;
 }
@@ -311,94 +320,20 @@ html.night .nav-logo .logo-night { display: block; }
   color: inherit;
 }
 
-/* ---------- Join / signup form ---------- */
-.signup {
-  margin: 1em 0 2em;
-}
-
-.signup label {
-  display: block;
-  font-family: canada-type-gibson, 'IBM Plex Sans', sans-serif;
-  font-weight: 700;
-  margin-bottom: 0.4em;
-}
-
-.signup-row {
-  display: flex;
-  gap: 0.6em;
-  flex-wrap: wrap;
-}
-
-.signup input[type="email"] {
-  flex: 1 1 16em;
-  font: inherit;
-  padding: 0.6em 0.8em;
-  border: 2px solid var(--fg);
-  border-radius: 6px;
-  background: var(--bg);
-  color: var(--fg);
-}
-
-.signup button {
-  font: inherit;
-  font-family: canada-type-gibson, 'IBM Plex Sans', sans-serif;
-  font-weight: 700;
-  min-height: 44px;
-  padding: 0.6em 1.4em;
-  border: var(--rule) solid var(--fg);
-  border-radius: var(--radius);
-  background: var(--fg);
-  color: var(--bg);
-  cursor: pointer;
-}
-
-.signup button:hover,
-.signup button:focus-visible {
-  background: transparent;
-  color: var(--fg);
-}
-
-.signup button[aria-disabled="true"] {
-  opacity: 0.65;
-  cursor: progress;
-}
-
-/* Announced to screen readers; only takes up space once it has something to say. */
-.form-status {
-  margin: var(--space-2) 0 0;
-  font-weight: 700;
-}
-
-.form-status:empty {
-  margin: 0;
-}
-
-.form-status[data-state="error"] {
-  color: #b3261e;
-}
-
-html.night .form-status[data-state="error"] {
-  color: #ffd9d6;
-}
-
-.signup-note {
-  margin: var(--space-2) 0 0;
-  font-size: 0.95em;
-  color: var(--ink-muted);
-}
-
 /* ---------- Layout ---------- */
 .site {
   max-width: 750px;
   margin: 0 auto;
-  padding: 0 1em 4em;
+  padding: 0 1em var(--space-6);
 }
 
 .hero {
   position: relative;
   max-width: 750px;
   margin: 0 auto;
-  padding: 2.5em 1em 2em;
+  /* Equal top and bottom: .hero-bg is centred on the box, so uneven padding
+     pushed the map background off-centre. */
+  padding: var(--space-5) 1em;
 }
 
 .hero-bg {
@@ -418,12 +353,12 @@ html.night .form-status[data-state="error"] {
 }
 
 .tagline p {
-  margin: 0.35em 0;
+  margin: var(--space-1) 0;
 }
 
 /* ---------- Content blocks ---------- */
 .lines p {
-  margin: 0.2em 0;
+  margin: 0 0 var(--space-1);
 }
 
 /* Source text that was hand-broken into one <p> per line: flow it as a paragraph
@@ -433,15 +368,8 @@ html.night .form-status[data-state="error"] {
   margin: 0;
 }
 
-/* "More to come"-style placeholders */
-.placeholder {
-  text-align: center;
-  font-style: italic;
-  margin: 1.5em 0;
-}
-
 .image p {
-  margin: 1em 0;
+  margin: var(--space-4) 0;
 }
 
 /* Figures filled 480–600px of a 718px column and sat flush left, so four
@@ -467,7 +395,7 @@ figcaption {
 .embed {
   position: relative;
   width: 100%;
-  margin: 1em auto;
+  margin: var(--space-4) 0;
   padding-bottom: 66.666%;
   height: 0;
   overflow: hidden;
@@ -477,12 +405,33 @@ figcaption {
   position: absolute;
   top: 0;
   left: 0;
-  width: 99%;
-  height: 99%;
+  width: 100%;
+  height: 100%;
   border: 0;
 }
 
-/* Embeds that size themselves (Instagram): no aspect-ratio box, natural height */
+/* Two calendar views sit together as one block. */
+.embed + .embed {
+  margin-top: calc(var(--space-4) * -1 + var(--space-2));
+}
+
+.embed-caption {
+  margin: 0 0 var(--space-2);
+  color: var(--ink-muted);
+}
+
+.embed-caption + .embed {
+  margin-top: 0;
+}
+
+/* The agenda list needs far less height than the month grid. */
+.embed--agenda {
+  padding-bottom: 40%;
+}
+
+/* Embeds that size themselves (Instagram): no aspect-ratio box, natural height.
+   Instagram's profile header stacks "followers · posts" on separate lines at
+   every frame width; that layout is inside its cross-origin iframe, not ours. */
 .embed--natural {
   padding-bottom: 0;
   height: auto;
@@ -490,18 +439,27 @@ figcaption {
 
 .embed--natural iframe {
   position: static;
+  display: block;
   width: 100%;
   height: auto;
   min-height: 688px;
+  background: #ffffff;
+  border: 1px solid #dbdbdb;
+  border-radius: 3px;
 }
 
 /* ---------- Leadership ---------- */
 .leaders {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 1.5em 1.25em;
-  margin: 1em 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* centres a short last row */
+  gap: var(--space-4) var(--space-3);
+  margin: var(--space-4) 0;
   text-align: center;
+}
+
+.leader {
+  flex: 0 1 155px;
 }
 
 .leader img,
@@ -537,7 +495,7 @@ figcaption {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-3);
-  margin: var(--space-3) 0;
+  margin: var(--space-4) 0;
 }
 
 /* Three bare divs read as three columns of text, not as one group of three.
@@ -551,25 +509,46 @@ figcaption {
   margin-bottom: var(--space-1);
 }
 
+/* Each logo sits centred in a square tile. Colour by day; white at night. */
 .logo-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+  margin: var(--space-4) 0;
+}
+
+.logo-tile {
+  aspect-ratio: 1;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 2em;
-  margin: 1.5em 0;
+  padding: var(--space-2);
+}
+
+.logo-tile a {
+  display: contents;
 }
 
 .logo-row img {
-  height: 5.5em;
-  width: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.logo-tile .logo-night { display: none; }
+html.night .logo-tile .logo-day { display: none; }
+html.night .logo-tile .logo-night { display: block; }
+
+/* Logos without a dedicated night version: render the mark solid white. */
+html.night .logo-row .logo-mono {
+  filter: brightness(0) invert(1);
 }
 
 .qr-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.5em;
-  margin: 1.5em 0;
+  gap: var(--space-3);
+  margin: var(--space-4) 0 var(--space-2);
   text-align: center;
 }
 
@@ -601,8 +580,7 @@ figcaption {
 
 /* ---------- Footer ---------- */
 .footer {
-  border-top: var(--rule) solid var(--fg);
-  margin-top: var(--space-6);
+  margin-top: var(--space-4);
 }
 
 .footer-inner {
@@ -614,11 +592,6 @@ figcaption {
   align-items: center;
   gap: var(--space-3);
   text-align: center;
-}
-
-.footer img {
-  height: 4em;
-  width: auto;
 }
 
 .footer-nav ul {
@@ -666,9 +639,17 @@ figcaption {
     height: auto;
   }
 
+  .embed--agenda {
+    height: 320px;
+  }
+
   .qr-grid,
-  .leaders {
+  .logo-row {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .leader {
+    flex-basis: calc(50% - var(--space-3) / 2);
   }
 
   /* The nav used to stack into a column, eating 125px (15%) of an iPhone
@@ -682,7 +663,7 @@ figcaption {
   }
 
   .nav-logo img {
-    height: 1.5em;
+    height: 1.2em;
   }
 
   .nav ul {

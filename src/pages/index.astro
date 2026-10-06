@@ -35,13 +35,13 @@ const sizes = '(max-width: 782px) 100vw, 750px';
   <header class="hero">
     <h1 class="visually-hidden">{page.h1 ?? site.site_name}</h1>
     <div class="title_image">
-      <p><Image src={logo} alt={page.logo_alt} widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="eager" fetchpriority="high" /></p>
+      <p><Image src={page.hero_image ?? logo} alt={page.logo_alt} widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="eager" fetchpriority="high" /></p>
     </div>
     {page.lede && <p class="lede">{page.lede}</p>}
     <div class="cta">
       <div class="cta-actions">
         <a class="btn btn--primary" href="/join">{page.cta_label ?? 'Join the club'}</a>
-        <a class="btn btn--secondary" href="/events">See upcoming events</a>
+        <a class="btn btn--secondary" href="/connect#events">See upcoming events</a>
       </div>
       {page.cta_note && <p class="cta-note">{page.cta_note}</p>}
     </div>
@@ -96,19 +96,20 @@ const sizes = '(max-width: 782px) 100vw, 750px';
     <Fragment set:html={md(page.affiliates_text)} />
     <div class="logo-row">
       {affiliates.map(({ data }) => {
-        const img = (
-          <Image
-            src={data.logo}
-            alt={data.name}
-            height={176}
-            loading="lazy"
-            {...(data.logo.format === 'svg' ? {} : { format: 'webp', densities: [1, 2] })}
-          />
+        const raster = (src: any) => (src.format === 'svg' ? {} : { format: 'webp', densities: [1, 2] });
+        // Logos are colour by day and white at night: either the editor-supplied night
+        // version, or (without one) the day logo filtered to solid white in CSS.
+        const img = data.logo_night ? (
+          <>
+            <Image class="logo-day" src={data.logo} alt={data.name} width={320} loading="lazy" {...raster(data.logo)} />
+            <Image class="logo-night" src={data.logo_night} alt={data.name} width={320} loading="lazy" {...raster(data.logo_night)} />
+          </>
+        ) : (
+          <Image class="logo-mono" src={data.logo} alt={data.name} width={320} loading="lazy" {...raster(data.logo)} />
         );
-        return data.link ? <a href={data.link}>{img}</a> : img;
+        return <div class="logo-tile">{data.link ? <a href={data.link}>{img}</a> : img}</div>;
       })}
     </div>
-    <p>{page.affiliates_note}</p>
 
     <h2>{page.leadership_heading}</h2>
     <div class="leaders">
@@ -136,7 +137,7 @@ const sizes = '(max-width: 782px) 100vw, 750px';
       <p>{connect.meetings_address}</p>
       <div class="cta-actions">
         <a class="btn btn--primary" href="/join">{page.cta_label ?? 'Join the club'}</a>
-        <a class="btn btn--secondary" href="/connect">Find a meeting</a>
+        <a class="btn btn--secondary" href="/connect#meetings">Find a meeting</a>
       </div>
     </section>
   </main>

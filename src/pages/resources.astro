@@ -9,9 +9,9 @@ const page = (await getEntry('pages', 'resources'))!.data as Record<string, any>
   <main class="site" id="main">
     <h1 class="page-title">{page.projects_heading}</h1>
     {page.projects_text && <p class="lede">{page.projects_text}</p>}
-    <p><a href={page.projects_form_url}>{page.projects_form_label}</a></p>
     <div class="embed">
       <iframe title="Urbanism Club proposals, projects and plans" src={page.projects_sheet_src} style="border:solid 1px #007ea3" frameborder="0" scrolling="yes" loading="lazy"></iframe>
     </div>
+    <p><a href={page.projects_form_url}>{page.projects_form_label}</a></p>
   </main>
 </Base>

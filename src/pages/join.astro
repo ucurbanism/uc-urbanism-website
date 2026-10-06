@@ -2,77 +2,33 @@
 import { getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 
+// Mailing list: signup is a club-owned Google Form; wording is edited under "Join page" in the CMS.
 const page = (await getEntry('pages', 'join'))!.data as Record<string, any>;
 const site = (await getEntry('settings', 'site'))!.data;
+const groupMe = site.qr_links.find((q: { label: string }) => q.label === 'GroupMe');
 ---
 
 <Base title={page.seo_title} description={page.seo_description}>
   <main class="site" id="main">
     <h1 class="page-title">{page.heading}</h1>
-
-    {page.intro_text && <p class="lede">{page.intro_text}</p>}
-
-    <!-- Netlify Forms: detected at deploy time (enable "form detection" in the Netlify UI). -->
-    <form name="mailing-list" method="POST" action="/join/thanks/" data-netlify="true" netlify-honeypot="bot-field" class="signup">
-      <input type="hidden" name="form-name" value="mailing-list" />
-      <p hidden><input name="bot-field" tabindex="-1" autocomplete="off" /></p>
-      <label for="email">{page.email_label}</label>
-      <div class="signup-row">
-        <input id="email" type="email" name="email" required autocomplete="email" />
-        <button type="submit" data-submit-label={page.submit_label}>{page.submit_label}</button>
-      </div>
-      <p class="form-status" role="status" aria-live="polite"></p>
-      {page.privacy_note && <p class="signup-note">{page.privacy_note}</p>}
-    </form>
-
-    <h2>{page.qr_heading ?? 'Find us elsewhere'}</h2>
-    {page.qr_note && <p class="qr-note">{page.qr_note}</p>}
-    <div class="qr-grid">
-      {site.qr_links.map((q) => (
-        <a href={q.url}>
-          <img src={q.image} alt="" width="200" height="200" />
-          {q.label}
-        </a>
-      ))}
-    </div>
+    {page.signup_url ? (
+      <>
+        {page.intro_text && <p class="lede">{page.intro_text}</p>}
+        <div class="cta-actions">
+          <a class="btn btn--primary" href={page.signup_url}>{page.signup_label ?? 'Sign up'}</a>
+        </div>
+        {page.privacy_note && <p class="cta-note">{page.privacy_note}</p>}
+      </>
+    ) : (
+      // No Google Form linked yet: the mailing-list pill is a placeholder (goes to the 404)
+      // until signup_url is set, and the GroupMe carries announcements in the meantime.
+      <>
+        {page.fallback_text && <p class="lede">{page.fallback_text}</p>}
+        <div class="cta-actions">
+          <a class="btn btn--primary" href="/404">{page.signup_label ?? 'Join the mailing list'}</a>
+          {groupMe && <a class="btn btn--secondary" href={groupMe.url}>Join the GroupMe</a>}
+        </div>
+      </>
+    )}
   </main>
 </Base>
-
-<script>
-  // Netlify handles the POST. Without this, a failed submission replaces the site
-  // with Netlify's own error page and the typed email is lost.
-  const form = document.querySelector<HTMLFormElement>('form.signup');
-  const status = form?.querySelector<HTMLParagraphElement>('.form-status');
-  const button = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
-
-  form?.addEventListener('submit', async (event) => {
-    if (!form.checkValidity()) return;
-    event.preventDefault();
-
-    const label = button?.dataset.submitLabel ?? 'Sign up';
-    button?.setAttribute('aria-disabled', 'true');
-    if (button) button.textContent = 'Signing you up…';
-    if (status) {
-      status.dataset.state = 'pending';
-      status.textContent = '';
-    }
-
-    try {
-      const response = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(new FormData(form) as any).toString(),
-      });
-      if (!response.ok) throw new Error(String(response.status));
-      window.location.assign('/join/thanks/');
-    } catch {
-      button?.removeAttribute('aria-disabled');
-      if (button) button.textContent = label;
-      if (status) {
-        status.dataset.state = 'error';
-        status.textContent =
-          "That didn't go through. Check your connection and try again. Your email is still in the box.";
-      }
-    }
-  });
-</script>

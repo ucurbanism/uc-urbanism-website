@@ -7,15 +7,15 @@ qr_links:
   - label: Instagram
     url: "https://www.instagram.com/uc_urbanism?igsh=MWdhc3JiaDhuMTk3MA%3D%3D&utm_source=qr"
     image: /media/qr-instagram.svg
-  - label: LinkedIn
-    url: "https://www.linkedin.com/company/cincinnati-urbanism-club/"
-    image: /media/qr-linkedin.svg
   - label: GroupMe
     url: "https://groupme.com/join_group/98790398/sG4VLf2B"
     image: /media/qr-groupme.svg
   - label: GetInvolvedUC
     url: "https://campuslink.uc.edu/organization/planning-student-organization-undergrad"
     image: /media/qr-getinvolveduc.svg
+  - label: LinkedIn
+    url: "https://www.linkedin.com/company/cincinnati-urbanism-club/"
+    image: /media/qr-linkedin.svg
 text_links:
   - label: Instagram
     url: "https://www.instagram.com/uc_urbanism/"

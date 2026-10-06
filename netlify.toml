@@ -19,3 +19,20 @@
     X-Content-Type-Options = "nosniff"
     X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+# v1.5 folded the Events page into Connect and retired the Join form's thank-you page.
+# Keep old links and QR codes working.
+[[redirects]]
+  from = "/events"
+  to = "/connect#events"
+  status = 301
+
+[[redirects]]
+  from = "/events/*"
+  to = "/connect#events"
+  status = 301
+
+[[redirects]]
+  from = "/join/*"
+  to = "/join"
+  status = 301

@@ -7,7 +7,7 @@
 | Repo | `~/Claude Code Stuff/uc-urbanism-website` → GitHub **ActuallyNotAPerson/uc-urbanism-website** (private) |
 | Live site | https://uc-urbanism.netlify.app — Netlify site `uc-urbanism`, auto-deploys from `main` via GitHub webhook |
 | Live commit | `5889917` (2026-09-15, "Fix conversion path and accessibility foundations from design critique") — on `main` and `origin/main`, so deployed. |
-| Version | **v1.0.0** — annotated git tag on `5889917`, created 2026-10-06. `package.json` is also `1.0.0`. Bump both together for future releases; `npm version <patch|minor|major>` does this and creates the tag. The tag is local until pushed (`git push origin v1.0.0`). |
+| Version | **v1.5.0** in `package.json` (branch `claude/review-pdf-handwritten-changes-21947e`, not yet merged, tagged or deployed). **v1.0.0** = annotated tag on `5889917`. Tag `v1.5.0` after merging to `main`; tags are local until pushed. What changed per version: `CHANGELOG.md`. |
 | Push policy | Pushing deploys to the live site. The user decides when: push only when asked in that session. |
 
 `npm test` after every build checks that the original club text, embeds and links are still present.
@@ -32,9 +32,43 @@ npm run build && npm test
 
 Astro 5 static site merging the club's old Canva site (3-page structure) and Geocities site (content and look:
 club blue `#007ea3`, IBM Plex Sans + Gibson via Typekit, street-network oval background, 8pm–8am night theme).
-Pages: `/` About, `/connect`, `/events`, `/resources`, `/join`. Decap CMS at `/admin`; all editable content is
-YAML under `src/content/` (settings, pages, leadership, affiliates). Netlify Forms handles the `/join` signup.
+Pages (since v1.5): `/` About, `/connect` (events calendars, links, meetings), `/resources`, `/join` (mailing list).
+`/events` 301s to `/connect#events` and `/join/*` (the old thank-you page) to `/join`, via `netlify.toml`. Decap CMS at `/admin`;
+all editable content is YAML under `src/content/` (settings, pages, leadership, affiliates). The mailing list is a
+button to a club-owned Google Form (`signup_url` in `pages/join.yml`); the site has no form handling of its own.
+Netlify Forms was dropped in v1.5: form detection had never been enabled (`ignore_html_forms: true`), so no signup
+was ever stored.
 SEO basics, OG image, sitemap, robots.txt, favicon set. Details in README.md.
+
+## v1.5 — board markup round (2026-10-06, not yet deployed)
+
+Source: `~/Downloads/Changes 2-1.pdf`, a hand-marked printout of the live site (HS/LS/SS = heading/line/section
+spacing; Note 1 = images full width; Note 2 = merge Events + Join into Connect — Join was merged, then split back out to its own page at the user's
+request on 2026-10-06; Events stays merged). Full list in `CHANGELOG.md`. Notes:
+
+- **Calendar**: one combined Google Calendar URL (`calendar_src` in `pages/connect.yml`, club `0c7201b7…` + external
+  events `0e8049d1…`); the agenda view is the same URL + `&mode=AGENDA`, added in `connect.astro`.
+- **Nav wordmark** `src/assets/urbanism-club-logo-wordmark{,-inverted}.png` was cropped from the full logo with sharp
+  (rows below y=1073, trimmed, 16px padding, 1600px wide). The full logos remain as the home-page hero.
+- **Affiliate logos** were re-saved with transparent backgrounds (sharp, near-white keyed out; APA's letters knocked out
+  of its blue square). Night mode renders logos white with a CSS filter (`.logo-mono`); PSO has a dedicated
+  `logo_night` (`pso-night.png`, two-tone white) because a solid-white PSO was an unreadable blob.
+- **Instagram**: the "followers · posts" stack is Instagram's layout inside its iframe at every width — not fixable from
+  our CSS; the embed now just fills the column.
+- Changing a content-collection schema (`src/content.config.ts`) needs a dev-server restart; otherwise new image
+  fields arrive as plain strings ("Local images must be imported").
+- **Every CMS media folder must exist in git** (`public/uploads/`, `src/content/pages/images/` now carry a `.gitkeep`).
+  If one is missing, the local CMS fails to open every entry in that collection with "Unknown error" (ENOENT in
+  the `npm run cms` log). `public/uploads/` had been missing since the CMS was added. Also: open entries by clicking
+  through from the collection list; deep-linking straight to an entry URL can fail before the CMS has loaded.
+
+### Waiting on the board
+- [ ] Colour originals of `group-park.jpg`, `campus-walk.jpg`, `club-meeting.jpg` (currently grayscale pixels).
+      Replace the files in `src/assets/`; the layout already crops them to landscape at full width.
+- [ ] The mailing-list Google Form link (see one-time actions below).
+- [ ] A "more representative" hero graphic → CMS About → Hero image (or `hero_image:` in `pages/about.yml`).
+- [ ] After deploy: `curl -I https://uc-urbanism.netlify.app/events` should 301 to `/connect#events`, and
+      `/join/thanks/` to `/join`.
 
 ## Changes made 2026-09-02 (all live)
 
@@ -68,7 +102,8 @@ config, mobile fixes, CMS, Join funnel, SEO. Those were pushed live on 2026-09-0
       install it in Netlify → *Site configuration → Access & security → OAuth*; add board members as repo
       collaborators with Write access. Until then the Login button at `/admin` fails. (Git Gateway and Netlify
       Identity are deprecated, hence GitHub login.)
-- [ ] **Netlify Forms**: enable form detection and add an email notification, or `/join` signups are silently dropped.
+- [ ] **Mailing-list Google Form**: create it from a shared club account and paste its link into CMS → Pages →
+      Join page → Google Form link (steps in README). Until then the page shows the GroupMe button.
 - [ ] Google Search Console verification (paste the token in CMS → Site settings).
 - [ ] A photo for Henry Bogzevitz (upload via CMS → Leadership, or drop a file in `src/content/leadership/photos/`).
 
@@ -83,7 +118,7 @@ config, mobile fixes, CMS, Join funnel, SEO. Those were pushed live on 2026-09-0
 
 - Gate `/admin` from public view: a Netlify Edge Function with basic auth on `/admin/*` (free), or Cloudflare Access
   once the club has a custom domain (per-person allow list). Netlify's built-in path protection needs the Pro plan.
-- Hosting on GitHub Pages instead of Netlify is possible but loses Netlify Forms, the Decap OAuth provider, custom
+- Hosting on GitHub Pages instead of Netlify is possible but loses the Decap OAuth provider, custom
   headers and redirects; recommendation was to stay on Netlify and instead create a club-owned GitHub org + add a
   second Netlify owner so the site survives board turnover.
 - Custom domain; club-owned calendar; redirects from the old Canva/Geocities sites; events/projects archives.

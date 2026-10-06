@@ -2,6 +2,9 @@ seo_title: About Us
 seo_description: "Urbanism Club is a student-led, community organization that aims to connect students and other members of the Uptown community who are interested in urbanism."
 h1: Urbanism Club
 logo_alt: "Urbanism Club"
+# Optional replacement for the logo graphic at the top of the home page.
+# Put the file in src/content/pages/images/ and set e.g. hero_image: images/hero.jpg
+# hero_image:
 lede: "A student-led club at the University of Cincinnati for anyone who cares how our city works: talks with local experts, neighborhood projects, and volunteer days in Uptown and across Cincinnati."
 cta_label: Join the club
 cta_note: "Free to join, open to every major. Meetings are in Alms 6110."
@@ -41,5 +44,4 @@ goals:
     text: "Support local initiatives and organizations by volunteering, campaigning, and sharing resources."
 affiliates_heading: Affiliate Organizations
 affiliates_text: "Urbanism Club is home to the University of Cincinnati Planning Student Organization, officially registered with the American Planning Organization. Additionally, we are an official local StrongTowns Conversation, alongside friend of the club Civic Cincinnati, and an All Aboard Ohio Affiliate Club. "
-affiliates_note: "To get more information on any of these organizations, check out our Resources page!"
 leadership_heading: Leadership Team
