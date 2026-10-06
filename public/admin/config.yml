@@ -35,7 +35,7 @@ collections:
           - { name: google_site_verification, label: Google Search Console verification token, widget: string, required: false, hint: "Paste the content value of the google-site-verification meta tag." }
           - { name: contact_email, label: Contact email, widget: string, required: false, hint: "Shown in the footer as \"Questions?\". Leave blank to hide it." }
           - name: qr_links
-            label: QR code links (Connect & Join pages)
+            label: QR code links (Connect page)
             widget: list
             fields:
               - { name: label, label: Label, widget: string }
@@ -59,7 +59,8 @@ collections:
           - { name: seo_title, label: Browser/tab title, widget: string }
           - { name: seo_description, label: Search/share description, widget: text }
           - { name: h1, label: Page heading (screen readers / SEO), widget: string, required: false, hint: "Not shown visually — the logo image is the visible title." }
-          - { name: logo_alt, label: Logo alt text, widget: string }
+          - { name: logo_alt, label: Hero image alt text, widget: string }
+          - { name: hero_image, label: Hero image, widget: image, required: false, media_folder: images, public_folder: images, hint: "Replaces the Urbanism Club logo graphic at the top of the home page. Leave blank to keep the logo." }
           - { name: lede, label: Opening sentence (what the club is), widget: text, hint: "The first thing a visitor reads. Say what the club does, plainly." }
           - { name: cta_label, label: Main button label, widget: string, required: false }
           - { name: cta_note, label: Note under the main button, widget: string, required: false }
@@ -85,7 +86,6 @@ collections:
               - { name: text, label: Text, widget: text }
           - { name: affiliates_heading, label: Affiliates heading, widget: string }
           - { name: affiliates_text, label: Affiliates text, widget: markdown }
-          - { name: affiliates_note, label: Affiliates note, widget: string }
           - { name: leadership_heading, label: Leadership heading, widget: string }
           - { name: closing_heading, label: Closing call-to-action heading, widget: string, required: false }
           - { name: closing_text, label: Closing call-to-action text, widget: text, required: false }
@@ -97,23 +97,14 @@ collections:
           - { name: seo_description, label: Search/share description, widget: text }
           - { name: get_connected_heading, label: Heading, widget: string }
           - { name: get_connected_text, label: Text, widget: markdown }
+          - { name: calendar_text, label: Calendar caption, widget: string }
+          - { name: calendar_src, label: Google Calendar embed URL, widget: string, hint: "Month view. The agenda list above it uses the same URL automatically. To add or remove a calendar, add or remove a src= part." }
           - { name: qr_note, label: QR code note, widget: string, required: false }
           - { name: instagram_embed_src, label: Instagram embed URL, widget: string }
           - { name: meetings_heading, label: Meetings heading, widget: string }
           - { name: meetings_lines, label: Meetings text, widget: text }
           - { name: meetings_address, label: Meetings address, widget: string }
           - { name: meetings_photo_alt, label: Meetings photo alt text, widget: string }
-      - name: events
-        label: Events
-        file: src/content/pages/events.yml
-        fields:
-          - { name: seo_title, label: Browser/tab title, widget: string }
-          - { name: seo_description, label: Search/share description, widget: text }
-          - { name: club_heading, label: Club events heading, widget: string }
-          - { name: club_text, label: Club events text, widget: markdown }
-          - { name: club_calendar_src, label: Club events calendar embed URL, widget: string }
-          - { name: general_heading, label: General events heading, widget: string }
-          - { name: more_text, label: General events placeholder text, widget: string }
       - name: resources
         label: Resources
         file: src/content/pages/resources.yml
@@ -126,23 +117,25 @@ collections:
           - { name: projects_form_url, label: Project form URL, widget: string }
           - { name: projects_sheet_src, label: Projects spreadsheet embed URL, widget: string }
       - name: join
-        label: Join
+        label: Join page (mailing list)
         file: src/content/pages/join.yml
         fields:
           - { name: seo_title, label: Browser/tab title, widget: string }
           - { name: seo_description, label: Search/share description, widget: text }
-          - { name: thanks_seo_title, label: "Thank-you page: browser/tab title", widget: string, required: false }
           - { name: heading, label: Heading, widget: string }
-          - { name: intro_text, label: "What the mailing list is (shown above the form)", widget: text, required: false, hint: "What they're signing up for and how often you email." }
-          - { name: email_label, label: Email field label, widget: string }
-          - { name: submit_label, label: Button label, widget: string }
-          - { name: privacy_note, label: Privacy note under the form, widget: text, required: false }
-          - { name: qr_heading, label: QR section heading, widget: string, required: false }
-          - { name: qr_note, label: QR code note, widget: string, required: false }
-          - { name: thanks_heading, label: "Thank-you page: heading", widget: string, required: false }
-          - { name: thanks_text, label: Thank-you message, widget: string }
-          - { name: thanks_next_heading, label: "Thank-you page: next-steps heading", widget: string, required: false }
-          - { name: thanks_next_text, label: "Thank-you page: next-steps text", widget: text, required: false }
+          - { name: intro_text, label: "What the mailing list is", widget: text, required: false, hint: "What they're signing up for and how often you email." }
+          - { name: signup_url, label: Google Form link, widget: string, required: false, hint: "Paste the form's Send → link (https://forms.gle/…). Leave blank to show the GroupMe button instead." }
+          - { name: signup_label, label: Button label, widget: string }
+          - { name: privacy_note, label: Note under the button, widget: text, required: false }
+          - { name: fallback_text, label: "Text shown while no Google Form is linked", widget: text, required: false, hint: "Shown until the Google Form link is filled in. Meanwhile the mailing-list button goes to the 404 page and a GroupMe button is shown." }
+      - name: not-found
+        label: 404 page (page not found)
+        file: src/content/pages/not-found.yml
+        fields:
+          - { name: seo_title, label: Browser/tab title, widget: string }
+          - { name: seo_description, label: Search/share description, widget: text }
+          - { name: heading, label: Heading, widget: string }
+          - { name: text, label: Text, widget: text, required: false, hint: "Shown for any address that doesn't exist, and for the mailing-list button until the Google Form is linked." }
 
   - name: leadership
     label: Leadership
@@ -181,5 +174,6 @@ collections:
     fields:
       - { name: order, label: Order, widget: number, value_type: int, min: 1 }
       - { name: name, label: Name, widget: string }
-      - { name: logo, label: Logo, widget: image }
+      - { name: logo, label: Logo, widget: image, hint: "Use a PNG with a transparent background (or an SVG). At night it is shown solid white unless a night version is set." }
+      - { name: logo_night, label: Night-mode logo, widget: image, required: false, hint: "Optional. Only needed when a solid-white version of the logo loses detail." }
       - { name: link, label: Link, widget: string, required: false }

@@ -2,9 +2,9 @@
 import { Image, getImage } from 'astro:assets';
 import { getEntry } from 'astro:content';
 import '../styles/global.css';
-import navLogo from '../assets/urbanism-club-logo.png';
-import navLogoInverted from '../assets/urbanism-club-logo-inverted.png';
-import skyline from '../assets/urbanism-club-skyline.jpg';
+// Wordmark only (no skyline): cropped from the full logo PNGs.
+import navLogo from '../assets/urbanism-club-logo-wordmark.png';
+import navLogoInverted from '../assets/urbanism-club-logo-wordmark-inverted.png';
 import ovalLightSrc from '../assets/cincinnati-street-network-oval-light.png';
 import ovalDarkSrc from '../assets/cincinnati-street-network-oval-dark.png';
 
@@ -22,7 +22,6 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const nav = [
   { href: '/', label: 'About Us' },
   { href: '/connect', label: 'Connect' },
-  { href: '/events', label: 'Events' },
   { href: '/resources', label: 'Resources' },
 ];
 const cta = { href: '/join', label: 'Join' };
@@ -125,9 +124,6 @@ const ovalDark = await getImage({ src: ovalDarkSrc, width: 1200, format: 'webp',
 
     <footer class="footer">
       <div class="footer-inner">
-        <a href="/" aria-label={`${site.site_name} home`}>
-          <Image src={skyline} alt="" width={180} densities={[1, 2]} format="webp" />
-        </a>
         <nav class="footer-nav" aria-label="Footer">
           <ul>
             {[...nav, cta].map((item) => (

@@ -1,6 +1,6 @@
 // Verifies the built site still carries the original club text, embeds and links verbatim.
 // Run after `npm run build`:  npm test
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 
 const unescape = (s) =>
   s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
@@ -16,10 +16,13 @@ const textOf = (html) =>
 const pages = {
   'index.html': load('index.html'),
   'connect/index.html': load('connect/index.html'),
-  'events/index.html': load('events/index.html'),
   'resources/index.html': load('resources/index.html'),
   'join/index.html': load('join/index.html'),
+  '404.html': load('404.html'),
 };
+
+// v1.5 merged Events into Connect and dropped the form's thank-you page; Netlify redirects the old URLs.
+const removed = ['events/index.html', 'join/thanks/index.html'];
 
 const text = {
   'index.html': [
@@ -42,7 +45,6 @@ const text = {
     'Support local initiatives and organizations by volunteering, campaigning, and sharing resources.',
     'Affiliate Organizations',
     'Urbanism Club is home to the University of Cincinnati Planning Student Organization, officially registered with the American Planning Organization. Additionally, we are an official local StrongTowns Conversation, alongside friend of the club Civic Cincinnati, and an All Aboard Ohio Affiliate Club.',
-    'To get more information on any of these organizations, check out our Resources page!',
     'Leadership Team',
     'Fenley Jones, President and Treasurer', 'Matthew Sayers, Engagement Coordinator',
     'Michael Uhlemann, Education Coordinator and Strong Towns Chair', 'AJ Domelle, Advocacy Coordinator',
@@ -51,17 +53,15 @@ const text = {
   'connect/index.html': [
     'Get Connected!',
     'We stay connected with members and the general public through social media, messaging apps, and UC sanctioned websites. Scan the QR codes or click the links below to get connected with us!',
+    'Check out our Calendar with Urbanism Club sponsored events, as well as other local Urbanist events!',
     'Instagram', 'LinkedIn', 'GroupMe', 'GetInvolvedUC', 'Meetings',
     'Most meetings are located in the DAAP first year planning studio, Alms 6110, within the College',
     'of Design, Architecture, Art, and Planning (DAAP).',
     '348 (Alms Builiding) 342 (DAAP Building) Clifton Court, Cincinnati, Ohio 45219',
   ],
-  'events/index.html': [
-    'Club Events', 'General Events',
-    'Check out our Calendar with Urbanism Club sponsored events, as well as other local Urbanist events!',
-  ],
   'resources/index.html': ['Proposals, Projects, and Plans', 'Add your project!'],
-  'join/index.html': ['Instagram', 'LinkedIn', 'GroupMe', 'GetInvolvedUC'],
+  'join/index.html': ['Join the mailing list'],
+  '404.html': ["This page isn't here yet"],
 };
 
 const raw = {
@@ -75,15 +75,15 @@ const raw = {
     'https://www.linkedin.com/company/cincinnati-urbanism-club/',
     'https://campuslink.uc.edu/organization/planning-student-organization-undergrad',
     'igsh=MWdhc3JiaDhuMTk3MA',
-  ],
-  'events/index.html': [
-    'calendar/embed?height=600&wkst=2&ctz=America%2FKentucky%2FLouisville',
+    // Combined club + external-events Google Calendar, in agenda and month views
+    'calendar/embed?src=0c7201b7a265d7809dcac374d572cce797f89a0913afd9aa8158019dabd465cd%40group.calendar.google.com',
+    'src=0e8049d1f2999f161c00b7806575afbc40fc1aa8c555fc41b6440c77eea03f4d%40group.calendar.google.com',
+    'mode=AGENDA',
   ],
   'resources/index.html': [
     'https://forms.gle/SAtJWEXpx8rc3VcD7',
     'https://docs.google.com/spreadsheets/u/0/d/1Tm869v2oX6P1vC1LjsRj1BZLH3OpbDNuABfOtjlYxDg/htmlview#gid=0',
   ],
-  'join/index.html': ['data-netlify="true"', 'name="form-name" value="mailing-list"', 'name="bot-field"'],
 };
 
 let failures = 0;
@@ -92,6 +92,9 @@ for (const [file, html] of Object.entries(pages)) {
   for (const s of text[file] ?? []) if (!t.includes(s)) { console.error(`MISSING TEXT  ${file}: ${s}`); failures++; }
   for (const s of raw[file] ?? []) if (!html.includes(s)) { console.error(`MISSING EMBED/LINK  ${file}: ${s}`); failures++; }
   if (/geocities\.ws\/uc_urbanism\/pictures|my\.canva\.site\/_assets/.test(html)) { console.error(`HOTLINK  ${file}`); failures++; }
+}
+for (const p of removed) {
+  if (existsSync(new URL(`../dist/${p}`, import.meta.url))) { console.error(`STALE PAGE  ${p} (should redirect to /connect)`); failures++; }
 }
 if (failures) { console.error(`\n${failures} fidelity failure(s)`); process.exit(1); }
 console.log('Content fidelity OK: all original text, embeds and links present.');

@@ -17,10 +17,14 @@ const settings = defineCollection({
 });
 
 // One YAML file per page. Fields differ per page, so the schema only pins the SEO
-// fields every page must have and passes the rest through to the template.
+// fields every page must have (plus image fields, which need the image() helper)
+// and passes the rest through to the template.
 const pages = defineCollection({
   loader: glob({ pattern: '*.yml', base: './src/content/pages' }),
-  schema: z.object({ seo_title: z.string(), seo_description: z.string() }).passthrough(),
+  schema: ({ image }) =>
+    z
+      .object({ seo_title: z.string(), seo_description: z.string(), hero_image: image().optional() })
+      .passthrough(),
 });
 
 const leadership = defineCollection({
@@ -42,6 +46,8 @@ const affiliates = defineCollection({
       order: z.number(),
       name: z.string(),
       logo: image(),
+      // Optional night-mode version. Without one, the logo is rendered solid white at night.
+      logo_night: image().optional(),
       link: z.string().url().optional(),
     }),
 });

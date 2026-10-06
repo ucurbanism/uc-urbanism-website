@@ -1,0 +1,20 @@
+---
+import { getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+// Netlify serves dist/404.html for any path that doesn't exist.
+const page = (await getEntry('pages', 'not-found'))!.data as Record<string, any>;
+const site = (await getEntry('settings', 'site'))!.data;
+const groupMe = site.qr_links.find((q: { label: string }) => q.label === 'GroupMe');
+---
+
+<Base title={page.seo_title} description={page.seo_description} noindex>
+  <main class="site" id="main">
+    <h1 class="page-title">{page.heading}</h1>
+    {page.text && <p class="lede">{page.text}</p>}
+    <div class="cta-actions">
+      <a class="btn btn--primary" href="/">Back to the home page</a>
+      {groupMe && <a class="btn btn--secondary" href={groupMe.url}>Join the GroupMe</a>}
+    </div>
+  </main>
+</Base>
