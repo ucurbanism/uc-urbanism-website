@@ -47,7 +47,7 @@ html.night {
 /* Honour the OS "reduce motion" setting instead of always animating. Smooth only
    once the page has loaded (Base.astro adds .smooth-scroll): with it on from the
    start, Chrome drops the jump to a #section when another page links there, and
-   /connect#join opened at the top of the page. */
+   /connect/#join opened at the top of the page. */
 @media (prefers-reduced-motion: no-preference) {
   html.smooth-scroll {
     scroll-behavior: smooth;

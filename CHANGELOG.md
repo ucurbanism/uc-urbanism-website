@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.6.2 — 2026-10-20
+
+- Internal links now use the addresses Netlify actually serves, with the trailing slash (`/connect/`, `/resources/`,
+  `/connect/#join`, …). Each `/connect` link used to take a 301 redirect to `/connect/` first, and on Connect itself the
+  Join pill reloaded the whole page instead of scrolling down to the Join section. It scrolls again.
+- The `/join` and `/events` redirects point straight at `/connect/#join` and `/connect/#events` (one redirect, not two).
+- `npm test` now fails if a page links to another page without the trailing slash.
+
 ## 1.6.1 — 2026-10-20
 
 - Fix: links from another page to a section of Connect now land on that section. The nav's Join pill and the home

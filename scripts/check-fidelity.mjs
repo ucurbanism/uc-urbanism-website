@@ -68,7 +68,7 @@ const raw = {
     'https://www.uc.edu/campus-life/csi.html', 'https://planning.org', 'https://strongtowns.org',
     'https://www.fenleyjones.com',
     // The Join pill and the home-page CTAs open the mailing-list section on Connect.
-    'href="/connect#join"',
+    'href="/connect/#join"',
   ],
   'connect/index.html': [
     'https://www.instagram.com/uc_urbanism/embed/?cr=1&v=14&wp=1396&rd=https%3A%2F%2Fuc-urbanism.netlify.app&rp=%2Fconnect',
@@ -94,6 +94,12 @@ for (const [file, html] of Object.entries(pages)) {
   for (const s of text[file] ?? []) if (!t.includes(s)) { console.error(`MISSING TEXT  ${file}: ${s}`); failures++; }
   for (const s of raw[file] ?? []) if (!html.includes(s)) { console.error(`MISSING EMBED/LINK  ${file}: ${s}`); failures++; }
   if (/geocities\.ws\/uc_urbanism\/pictures|my\.canva\.site\/_assets/.test(html)) { console.error(`HOTLINK  ${file}`); failures++; }
+}
+// Netlify serves each page at /<name>/; a link to /<name> costs a 301 first (and reloads Connect for its own #join).
+for (const [file, html] of Object.entries(pages)) {
+  for (const [, name] of html.matchAll(/href="\/([^"/#?.]+)(?:#[^"]*)?"/g)) {
+    if (existsSync(new URL(`../dist/${name}/index.html`, import.meta.url))) { console.error(`NO TRAILING SLASH  ${file}: /${name} (link to /${name}/)`); failures++; }
+  }
 }
 for (const p of removed) {
   if (existsSync(new URL(`../dist/${p}`, import.meta.url))) { console.error(`STALE PAGE  ${p} (should redirect to /connect)`); failures++; }

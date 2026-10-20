@@ -22,14 +22,15 @@
 
 # v1.5 folded the Events page into Connect; v1.6 did the same with Join (the mailing-list
 # section now sits below the QR codes on Connect). Keep old links and QR codes working.
+# Targets use /connect/ (with the slash) so there's no second 301 from /connect.
 [[redirects]]
   from = "/events"
-  to = "/connect#events"
+  to = "/connect/#events"
   status = 301
 
 [[redirects]]
   from = "/events/*"
-  to = "/connect#events"
+  to = "/connect/#events"
   status = 301
 
 # "/join/*" also covers /join/ and the retired /join/thanks/ form page. On Netlify a splat
@@ -37,10 +38,10 @@
 # the rule never fired); here the target is a different page, so that's fine.
 [[redirects]]
   from = "/join"
-  to = "/connect#join"
+  to = "/connect/#join"
   status = 301
 
 [[redirects]]
   from = "/join/*"
-  to = "/connect#join"
+  to = "/connect/#join"
   status = 301

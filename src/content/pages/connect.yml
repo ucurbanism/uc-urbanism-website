@@ -3,7 +3,7 @@ seo_description: "Upcoming Urbanism Club events, our social channels, the mailin
 get_connected_heading: Get Connected!
 get_connected_text: "We stay connected with members and the general public through social media, messaging apps, and UC sanctioned websites. Scan the QR codes or click the links below to get connected with us!"
 qr_note: "On a phone? Tap a label to open the link directly. The QR codes are for scanning from someone else's screen."
-# Join section (/connect#join), right below the QR codes: mailing-list signup. The nav's Join pill links here.
+# Join section (/connect/#join), right below the QR codes: mailing-list signup. The nav's Join pill links here.
 join_heading: Join the mailing list
 join_intro_text: "Get an email when we announce a meeting, a tour, or a volunteer day. That's roughly one or two emails a month, sent by the club's engagement coordinator."
 # Link to the club's Google Form (the form's Send → link). Responses collect in the form's Google Sheet.
