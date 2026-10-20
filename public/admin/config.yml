@@ -43,6 +43,7 @@ collections:
               - { name: image, label: QR image path, widget: string, hint: "e.g. /media/qr-instagram.svg" }
           - name: text_links
             label: Text links (Connect page)
+            hint: "Listed under the QR codes. A link with the same label as a QR code is left out, since the QR code's label already links there."
             widget: list
             fields:
               - { name: label, label: Label, widget: string }
@@ -97,9 +98,16 @@ collections:
           - { name: seo_description, label: Search/share description, widget: text }
           - { name: get_connected_heading, label: Heading, widget: string }
           - { name: get_connected_text, label: Text, widget: markdown }
+          - { name: qr_note, label: QR code note, widget: string, required: false }
+          - { name: join_heading, label: "Join section: heading", widget: string, hint: "The mailing-list section right below the QR codes. The nav's Join pill links here." }
+          - { name: join_intro_text, label: "Join section: what the mailing list is", widget: text, required: false, hint: "What they're signing up for and how often you email." }
+          - { name: signup_url, label: "Join section: Google Form link", widget: string, required: false, hint: "Paste the form's Send → link (https://forms.gle/…). Leave blank to show the GroupMe button instead." }
+          - { name: signup_label, label: "Join section: button label", widget: string }
+          - { name: privacy_note, label: "Join section: note under the button", widget: text, required: false }
+          - { name: join_fallback_text, label: "Join section: text shown while no Google Form is linked", widget: text, required: false, hint: "Shown until the Google Form link is filled in. Meanwhile the mailing-list button goes to the 404 page and a GroupMe button is shown." }
+          - { name: events_heading, label: Events heading, widget: string }
           - { name: calendar_text, label: Calendar caption, widget: string }
           - { name: calendar_src, label: Google Calendar embed URL, widget: string, hint: "Month view. The agenda list above it uses the same URL automatically. To add or remove a calendar, add or remove a src= part." }
-          - { name: qr_note, label: QR code note, widget: string, required: false }
           - { name: instagram_embed_src, label: Instagram embed URL, widget: string }
           - { name: meetings_heading, label: Meetings heading, widget: string }
           - { name: meetings_lines, label: Meetings text, widget: text }
@@ -116,18 +124,6 @@ collections:
           - { name: projects_form_label, label: Project form link text, widget: string }
           - { name: projects_form_url, label: Project form URL, widget: string }
           - { name: projects_sheet_src, label: Projects spreadsheet embed URL, widget: string }
-      - name: join
-        label: Join page (mailing list)
-        file: src/content/pages/join.yml
-        fields:
-          - { name: seo_title, label: Browser/tab title, widget: string }
-          - { name: seo_description, label: Search/share description, widget: text }
-          - { name: heading, label: Heading, widget: string }
-          - { name: intro_text, label: "What the mailing list is", widget: text, required: false, hint: "What they're signing up for and how often you email." }
-          - { name: signup_url, label: Google Form link, widget: string, required: false, hint: "Paste the form's Send → link (https://forms.gle/…). Leave blank to show the GroupMe button instead." }
-          - { name: signup_label, label: Button label, widget: string }
-          - { name: privacy_note, label: Note under the button, widget: text, required: false }
-          - { name: fallback_text, label: "Text shown while no Google Form is linked", widget: text, required: false, hint: "Shown until the Google Form link is filled in. Meanwhile the mailing-list button goes to the 404 page and a GroupMe button is shown." }
       - name: not-found
         label: 404 page (page not found)
         file: src/content/pages/not-found.yml

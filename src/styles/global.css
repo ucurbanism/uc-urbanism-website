@@ -16,6 +16,17 @@
   --space-5: 3rem;
   --space-6: 4.5rem;
 
+  /* Type scale, in rem so a heading or note is the same size wherever it sits. */
+  --text-sm: 0.95rem;   /* notes, captions, taglines */
+  --text-lg: 1.2rem;    /* the lede under a page title */
+  --text-h3: 1.35rem;
+  --text-h2: clamp(1.6rem, 3.2vw, 2.1rem);
+  --text-h1: clamp(2.1rem, 4.4vw, 2.9rem);
+
+  /* Line spacing: one value for running text, one for headings. */
+  --leading: 1.6;
+  --leading-tight: 1.15;
+
   --radius: 6px;
   --radius-pill: 999px;
   --rule: 2px;
@@ -46,7 +57,7 @@ body {
   color: var(--ink);
   margin: 0;
   padding: 0;
-  line-height: 1.6;
+  line-height: var(--leading);
   overflow-x: hidden;
 }
 
@@ -98,8 +109,9 @@ h1, h2, h3, h4, h5, h6 {
   font-family: canada-type-gibson, 'IBM Plex Sans', sans-serif;
   font-weight: 700;
   font-style: normal;
-  line-height: 1.1;
-  margin: 0 0 0.5em;
+  line-height: var(--leading-tight);
+  /* One gap under every heading. It was 0.5em, so 11–23px depending on the size. */
+  margin: 0 0 var(--space-2);
   color: var(--fg);
 }
 
@@ -117,13 +129,14 @@ p {
   margin: 0 0 var(--space-2);
 }
 
-h1 { font-size: clamp(2.4em, 6vw, 4.75em); }
-h2 { font-size: clamp(1.6em, 3.2vw, 2.1em); margin-top: var(--space-6); }
-h3 { font-size: 1.35em; }
+/* Space before a heading: --space-4 under the nav for the page title, --space-6
+   before every section heading. */
+h1 { font-size: var(--text-h1); }
+h2 { font-size: var(--text-h2); margin-top: var(--space-6); }
+h3 { font-size: var(--text-h3); }
 
 /* Page title: the one heading per page that outranks its sections. */
 .page-title {
-  font-size: clamp(2.1em, 4.4vw, 2.9em);
   margin-top: var(--space-4);
 }
 
@@ -283,6 +296,7 @@ html.night .nav-logo .logo-night { display: block; }
 
 .cta-note {
   margin: var(--space-2) 0 0;
+  font-size: var(--text-sm);
   color: var(--ink-muted);
 }
 
@@ -305,14 +319,13 @@ html.night .nav-logo .logo-night { display: block; }
 
 /* Lead sentence: the value proposition, above the registration taglines. */
 .lede {
-  font-size: 1.2em;
-  line-height: 1.5;
+  font-size: var(--text-lg);
   margin: 0 0 var(--space-2);
 }
 
 /* The three RSO/APA/Strong Towns lines are trust signals, not the headline. */
 .tagline {
-  font-size: 0.95em;
+  font-size: var(--text-sm);
   color: var(--ink-muted);
 }
 
@@ -352,15 +365,7 @@ html.night .nav-logo .logo-night { display: block; }
   aspect-ratio: 4223 / 3039;
 }
 
-.tagline p {
-  margin: var(--space-1) 0;
-}
-
 /* ---------- Content blocks ---------- */
-.lines p {
-  margin: 0 0 var(--space-1);
-}
-
 /* Source text that was hand-broken into one <p> per line: flow it as a paragraph
    (the HTML whitespace between the <p>s becomes the word space) */
 .lines--flow p {
@@ -388,7 +393,7 @@ figure img {
 
 figcaption {
   margin-top: var(--space-1);
-  font-size: 0.95em;
+  font-size: var(--text-sm);
   color: var(--ink-muted);
 }
 
@@ -417,7 +422,6 @@ figcaption {
 
 .embed-caption {
   margin: 0 0 var(--space-2);
-  color: var(--ink-muted);
 }
 
 .embed-caption + .embed {
@@ -471,7 +475,7 @@ figcaption {
   object-fit: cover;
   border: 2px solid var(--fg);
   border-radius: 50%;
-  margin: 0 auto 0.6em;
+  margin: 0 auto var(--space-1);
 }
 
 .leader-placeholder {
@@ -487,7 +491,6 @@ figcaption {
 
 .leader p {
   margin: 0;
-  line-height: 1.35;
 }
 
 /* ---------- Goals / affiliates / QR grids ---------- */
@@ -503,10 +506,6 @@ figcaption {
 .goals > div {
   border-top: var(--rule) solid var(--fg);
   padding-top: var(--space-2);
-}
-
-.goals h3 {
-  margin-bottom: var(--space-1);
 }
 
 /* Each logo sits centred in a square tile. Colour by day; white at night. */
@@ -548,7 +547,7 @@ html.night .logo-row .logo-mono {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-3);
-  margin: var(--space-4) 0 var(--space-2);
+  margin: var(--space-4) 0;
   text-align: center;
 }
 
@@ -574,8 +573,15 @@ html.night .logo-row .logo-mono {
 
 .qr-note {
   margin: 0 0 var(--space-2);
-  font-size: 0.95em;
+  font-size: var(--text-sm);
   color: var(--ink-muted);
+}
+
+/* Whatever follows a heading starts at the heading's own margin, so a grid, embed or
+   figure sits as close to its heading as a paragraph does (their --space-4 top margin
+   used to put them 32px under a heading where text sat 12px under). */
+:is(h1, h2, h3) + :is(.goals, .logo-row, .leaders, .qr-grid, .embed, figure) {
+  margin-top: 0;
 }
 
 /* ---------- Footer ---------- */

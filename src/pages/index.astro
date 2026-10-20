@@ -40,7 +40,7 @@ const sizes = '(max-width: 782px) 100vw, 750px';
     {page.lede && <p class="lede">{page.lede}</p>}
     <div class="cta">
       <div class="cta-actions">
-        <a class="btn btn--primary" href="/join">{page.cta_label ?? 'Join the club'}</a>
+        <a class="btn btn--primary" href="/connect#join">{page.cta_label ?? 'Join the club'}</a>
         <a class="btn btn--secondary" href="/connect#events">See upcoming events</a>
       </div>
       {page.cta_note && <p class="cta-note">{page.cta_note}</p>}
@@ -136,7 +136,7 @@ const sizes = '(max-width: 782px) 100vw, 750px';
       {page.closing_text && <p>{page.closing_text}</p>}
       <p>{connect.meetings_address}</p>
       <div class="cta-actions">
-        <a class="btn btn--primary" href="/join">{page.cta_label ?? 'Join the club'}</a>
+        <a class="btn btn--primary" href="/connect#join">{page.cta_label ?? 'Join the club'}</a>
         <a class="btn btn--secondary" href="/connect#meetings">Find a meeting</a>
       </div>
     </section>

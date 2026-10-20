@@ -1,15 +1,25 @@
 seo_title: Connect
 seo_description: "Upcoming Urbanism Club events, our social channels, the mailing list, and where we meet at the University of Cincinnati."
 get_connected_heading: Get Connected!
+get_connected_text: "We stay connected with members and the general public through social media, messaging apps, and UC sanctioned websites. Scan the QR codes or click the links below to get connected with us!"
+qr_note: "On a phone? Tap a label to open the link directly. The QR codes are for scanning from someone else's screen."
+# Join section (/connect#join), right below the QR codes: mailing-list signup. The nav's Join pill links here.
+join_heading: Join the mailing list
+join_intro_text: "Get an email when we announce a meeting, a tour, or a volunteer day. That's roughly one or two emails a month, sent by the club's engagement coordinator."
+# Link to the club's Google Form (the form's Send → link). Responses collect in the form's Google Sheet.
+# While blank, the section shows the GroupMe button instead.
+signup_url: ""
+signup_label: Join the mailing list
+privacy_note: "We only email about club meetings and events, and we never share your address. Unsubscribe any time."
+join_fallback_text: "The email list is on its way. Until then, meeting and event announcements go out in the club GroupMe."
+events_heading: Events
 calendar_text: "Check out our Calendar with Urbanism Club sponsored events, as well as other local Urbanist events!"
 # Month view. The agenda list above it is the same URL with &mode=AGENDA appended.
 calendar_src: "https://calendar.google.com/calendar/embed?src=0c7201b7a265d7809dcac374d572cce797f89a0913afd9aa8158019dabd465cd%40group.calendar.google.com&src=0e8049d1f2999f161c00b7806575afbc40fc1aa8c555fc41b6440c77eea03f4d%40group.calendar.google.com&ctz=America%2FDetroit&wkst=2&showTitle=0&showTz=0&showTabs=0&showPrint=0&color=%23007ea3&color=%23348ca6"
-get_connected_text: "We stay connected with members and the general public through social media, messaging apps, and UC sanctioned websites. Scan the QR codes or click the links below to get connected with us!"
-qr_note: "On a phone? Tap a label to open the link directly. The QR codes are for scanning from someone else's screen."
 instagram_embed_src: "https://www.instagram.com/uc_urbanism/embed/?cr=1&v=14&wp=1396&rd=https%3A%2F%2Fuc-urbanism.netlify.app&rp=%2Fconnect"
 meetings_heading: Meetings
 meetings_lines: |
-  Most meetings are located in the DAAP first year planning studio, Alms 6110, within the College 
+  Most meetings are located in the DAAP first year planning studio, Alms 6110, within the College
   of Design, Architecture, Art, and Planning (DAAP).
 meetings_address: "348 (Alms Builiding) 342 (DAAP Building) Clifton Court, Cincinnati, Ohio 45219"
 meetings_photo_alt: Alms Building From the Outside
