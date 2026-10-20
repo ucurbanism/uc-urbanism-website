@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.6.1 — 2026-10-20
+
+- Fix: links from another page to a section of Connect now land on that section. The nav's Join pill and the home
+  page's "Join the club" buttons (`/connect#join`) and "See upcoming events" (`/connect#events`) opened Connect at the
+  top, because smooth scrolling was on while the page loaded and Chrome then skips the jump. Smooth scrolling now
+  switches on once the page has loaded, so links within a page still glide (and still respect "reduce motion").
+
 ## 1.6.0 — 2026-10-20
 
 ### Structure

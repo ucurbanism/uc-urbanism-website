@@ -1,4 +1,4 @@
-# Handoff — UC Urbanism website (updated 2026-10-06, end of the v1.5 session)
+# Handoff — UC Urbanism website (updated 2026-10-20, v1.6 session)
 
 ## Where things stand
 
@@ -6,8 +6,8 @@
 | --- | --- |
 | Repo | `~/Claude Code Stuff/uc-urbanism-website` → GitHub **ActuallyNotAPerson/uc-urbanism-website** (private) |
 | Live site | https://uc-urbanism.netlify.app — Netlify site `uc-urbanism`, auto-deploys from `main` via GitHub webhook |
-| Live version | **v1.5.1** (`77be689`, deployed and checked 2026-10-06). v1.5.0 went live via PR #2 (merge commit `31e04b5`); v1.5.1 fixed the `/join/thanks/` redirect. |
-| Tags | Annotated, all pushed: `v1.5.1`, `v1.5.0` (`31e04b5`), `v1.0.0` (`5889917`). `package.json` matches the latest tag. Per-version changes: `CHANGELOG.md`. |
+| Live version | **v1.6.0** (`00d3e98`, merge of PR #3, deployed and checked 2026-10-20). v1.6.1 (anchor-landing fix, below) is in its own PR; tag it `v1.6.1` once merged. |
+| Tags | Annotated, all pushed: `v1.6.0` (`00d3e98`), `v1.5.1`, `v1.5.0` (`31e04b5`), `v1.0.0` (`5889917`). `package.json` matches the latest tag. Per-version changes: `CHANGELOG.md`. |
 | Push policy | Pushing `main` deploys to the live site. The user decides when: push only when asked in that session. |
 | Left running | Nothing. The local dev server and CMS proxy were stopped at the end of the session. |
 
@@ -58,6 +58,21 @@ been enabled (`ignore_html_forms: true`, zero forms registered), so no signup wa
 club-owned Google Form: paste its link into CMS → Pages → Connect → Join section: Google Form link (`signup_url` in
 `pages/connect.yml`) and the "Join the mailing list" pill opens it. **Until then the pill deliberately goes to the 404
 page** (user's request, as a placeholder) and the page points people to the GroupMe.
+
+## v1.6 — Join merged into Connect, spacing normalized (live)
+
+Connect is now intro → QR codes → Join the mailing list (`#join`) → Events → Instagram → Meetings, and the nav's Join
+pill goes to `/connect#join`. Full list in `CHANGELOG.md`. Implementation notes:
+
+- **Join content** lives in `pages/connect.yml` (`join_*`, `signup_*`, `privacy_note`); there is no `join.yml` any more.
+- **Text links** under the QR codes are filtered in `connect.astro`: one whose label matches a QR label isn't shown.
+- **Spacing/type tokens** in `global.css`: `--text-sm/-lg/-h1/-h2/-h3` (rem) and `--leading`/`--leading-tight`. Every
+  heading has `margin-bottom: --space-2`, and a rule near the end of the content-block styles zeroes the top margin of
+  grids/embeds/figures that directly follow a heading, so nothing sits further from its heading than text does.
+- **Smooth scrolling is switched on after `load`** (`.smooth-scroll` class added by an inline script in
+  `Base.astro`). With `scroll-behavior: smooth` on from the start, Chrome dropped the jump to a `#section` when another
+  page linked there, so the Join pill opened Connect at the top (v1.6.0 shipped with that; fixed in v1.6.1). Test a
+  cross-page anchor link by *clicking* it: typing a `#` address into the bar worked even with the bug.
 
 ## v1.5 — board markup round (live)
 
@@ -140,4 +155,6 @@ and then split back out to its own page at the user's request. Full list in `CHA
   switched to @uc_urbanism, word-spacing fix for line-broken text (templates insert an explicit space between lines).
 - **2026-09-15** — design-critique fixes (lede, CTAs, figcaptions, closing CTA, spacing scale, accessibility) →
   tagged v1.0.0.
-- **2026-10-06** — v1.5.0 / v1.5.1 (this session; see above and `CHANGELOG.md`).
+- **2026-10-06** — v1.5.0 / v1.5.1 (see above and `CHANGELOG.md`).
+- **2026-10-20** — v1.6.0: Join merged into Connect below the QR codes, doubled QR text links removed, spacing and
+  type normalized; v1.6.1 fixes cross-page `#section` links (see above).

@@ -76,6 +76,16 @@ const ovalDark = await getImage({ src: ovalDarkSrc, width: 1200, format: 'webp',
       })();
     </script>
 
+    <!-- Smooth scrolling for links within a page, switched on after the page has loaded
+         so arriving at a #section from another page still jumps there (see global.css) -->
+    <script is:inline>
+      addEventListener('load', function () {
+        setTimeout(function () {
+          document.documentElement.classList.add('smooth-scroll');
+        });
+      });
+    </script>
+
     <!-- Google Fonts: Body Text Only -->
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet" />
 
