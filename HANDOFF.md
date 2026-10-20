@@ -12,7 +12,8 @@
 | Left running | Nothing. The local dev server and CMS proxy were stopped at the end of the session. |
 
 `npm run build && npm test` is the check before every push. `scripts/check-fidelity.mjs` verifies that the club's
-text, embeds and links are on the right pages, and that retired pages (`/events`, `/join/thanks`) are not built again.
+text, embeds and links are on the right pages, and that retired pages (`/events`, `/join`, `/join/thanks`) are not built
+again.
 It guards the *current* content (it has been updated for every deliberate removal), not the original Geocities/Canva
 copy verbatim.
 
@@ -44,19 +45,18 @@ OG image, sitemap, robots.txt, favicon set. Details in README.md.
 | Page | What's on it |
 | --- | --- |
 | `/` About Us | Hero (logo, or the CMS `hero_image` once set), lede + CTAs, taglines, group photo on the map background, About / What is Urbanism / Goals, affiliate logo tiles, leadership grid, closing CTA |
-| `/connect` | Combined Google Calendar (agenda list, then month grid) → intro → QR codes → text links → Instagram → Meetings |
+| `/connect` | Intro → QR codes → Join the mailing list (`#join`: mailing-list pill + GroupMe pill, see below) → Events (combined Google Calendar: agenda list, then month grid) → Instagram → Meetings |
 | `/resources` | Proposals, Projects, and Plans spreadsheet, then the "Add your project!" Google Form link |
-| `/join` | "Join the mailing list": a mailing-list pill + GroupMe pill (see below) |
 | `404` | Branded "This page isn't here yet" page with home + GroupMe buttons (CMS-editable, noindex) |
 
-Redirects (`netlify.toml`): `/events` and `/events/*` → `/connect#events`; `/join/thanks` and `/join/thanks/` →
-`/join/`. **Netlify splat gotcha:** `from = "/x/*"` also matches `/x`, so never point a `/x/*` rule at `/x` (that was
+Redirects (`netlify.toml`): `/events` and `/events/*` → `/connect#events`; `/join` and `/join/*` (incl. the retired
+`/join/thanks/`) → `/connect#join` (v1.6 merged Join into Connect). **Netlify splat gotcha:** `from = "/x/*"` also matches `/x`, so never point a `/x/*` rule at `/x` (that was
 the v1.5.0 bug: the rule silently never fired).
 
 **Mailing list.** The site collects no emails itself. Netlify Forms was removed in v1.5: form detection had never
 been enabled (`ignore_html_forms: true`, zero forms registered), so no signup was ever stored. The plan is a
-club-owned Google Form: paste its link into CMS → Pages → Join page → Google Form link (`signup_url` in
-`pages/join.yml`) and the "Join the mailing list" pill opens it. **Until then the pill deliberately goes to the 404
+club-owned Google Form: paste its link into CMS → Pages → Connect → Join section: Google Form link (`signup_url` in
+`pages/connect.yml`) and the "Join the mailing list" pill opens it. **Until then the pill deliberately goes to the 404
 page** (user's request, as a placeholder) and the page points people to the GroupMe.
 
 ## v1.5 — board markup round (live)
@@ -85,7 +85,7 @@ and then split back out to its own page at the user's request. Full list in `CHA
 ## Waiting on the board
 
 - [ ] **Mailing-list Google Form**: create it from a shared club account (one required "Email" question with email
-      validation; link responses to a Sheet), then paste the `forms.gle` link into CMS → Pages → Join page. If made
+      validation; link responses to a Sheet), then paste the `forms.gle` link into CMS → Pages → Connect (Join section). If made
       under a uc.edu account, turn off "Restrict to users in University of Cincinnati". Steps in README.
 - [ ] **Colour originals** of `group-park.jpg`, `campus-walk.jpg`, `club-meeting.jpg` (currently grayscale pixels).
       Replace the files in `src/assets/`; the layout already crops them to landscape at full width.
@@ -108,8 +108,7 @@ and then split back out to its own page at the user's request. Full list in `CHA
 - Leadership list is the older Geocities roster; the Canva site had a 2025-26 board.
 - Instagram profile embeds depend on Instagram continuing to serve `/embed/` for profiles; if it stops rendering,
   replace with a link or a single-post embed.
-- The Join page is deliberately minimal (heading, one sentence, two pills). The pre-v1.5 page also showed the QR
-  codes; easy to add back if it should feel fuller.
+- The Join section on Connect is deliberately minimal (heading, one sentence, two pills), right below the QR codes.
 
 ## Ideas discussed but not done
 

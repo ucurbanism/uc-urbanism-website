@@ -1,5 +1,30 @@
 # Changelog
 
+## 1.6.0 — 2026-10-20
+
+### Structure
+- **Join is now part of Connect.** The mailing-list section ("Join the mailing list", with the GroupMe button until
+  the Google Form is linked) sits right below the QR codes. The nav's Join pill and the home page's "Join the club"
+  buttons go to `/connect#join`; old `/join`, `/join/` and `/join/thanks/` links 301-redirect there.
+- **Connect, top to bottom:** intro → QR codes → Join the mailing list → Events (new heading; agenda list, then month
+  grid) → Instagram → Meetings.
+- The text links under the QR codes repeated the QR labels (Instagram, GroupMe, LinkedIn), so they're no longer
+  listed. A text link whose label no QR code has still shows.
+
+### Look
+- **Spacing and type normalized** site-wide:
+  - after every heading: one gap (`--space-2`), whatever the heading size or whatever follows it (grids, embeds and
+    figures used to sit 32px under a heading, text 12–23px);
+  - before every section heading: `--space-6`; before the page title: `--space-4`;
+  - line spacing: 1.6 for all running text (the lede and leadership captions had their own), 1.15 for headings;
+  - one paragraph gap everywhere (taglines and link lists had a tighter one);
+  - font sizes from one rem-based scale (`--text-sm/-lg/-h1/-h2/-h3`): every note, caption and tagline is the same
+    small size, and each page's opening paragraph is the same lede size (Connect's wasn't).
+
+### For editors (CMS)
+- The "Join page (mailing list)" entry is gone; its fields are under **Pages → Connect → Join section**
+  (Google Form link, button label, texts). Connect also has an **Events heading**.
+
 ## 1.5.1 — 2026-10-06
 
 - Fix: `/join/thanks/` (the old mailing-list form's success page) now redirects to `/join/`. In 1.5.0 it was a

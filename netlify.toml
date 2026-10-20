@@ -20,8 +20,8 @@
     X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# v1.5 folded the Events page into Connect and retired the Join form's thank-you page.
-# Keep old links and QR codes working.
+# v1.5 folded the Events page into Connect; v1.6 did the same with Join (the mailing-list
+# section now sits below the QR codes on Connect). Keep old links and QR codes working.
 [[redirects]]
   from = "/events"
   to = "/connect#events"
@@ -32,14 +32,15 @@
   to = "/connect#events"
   status = 301
 
-# Explicit paths, not a /join/* splat: on Netlify a splat also matches its own base path,
-# so "/join/*" -> "/join" pointed at itself and never fired (v1.5.0 shipped with that bug).
+# "/join/*" also covers /join/ and the retired /join/thanks/ form page. On Netlify a splat
+# matches its own base path too, so never point a "/x/*" rule back at "/x" (v1.5.0 did, and
+# the rule never fired); here the target is a different page, so that's fine.
 [[redirects]]
-  from = "/join/thanks"
-  to = "/join/"
+  from = "/join"
+  to = "/connect#join"
   status = 301
 
 [[redirects]]
-  from = "/join/thanks/"
-  to = "/join/"
+  from = "/join/*"
+  to = "/connect#join"
   status = 301

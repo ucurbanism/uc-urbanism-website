@@ -17,12 +17,12 @@ const pages = {
   'index.html': load('index.html'),
   'connect/index.html': load('connect/index.html'),
   'resources/index.html': load('resources/index.html'),
-  'join/index.html': load('join/index.html'),
   '404.html': load('404.html'),
 };
 
-// v1.5 merged Events into Connect and dropped the form's thank-you page; Netlify redirects the old URLs.
-const removed = ['events/index.html', 'join/thanks/index.html'];
+// v1.5 merged Events into Connect and dropped the form's thank-you page; v1.6 merged Join into Connect.
+// Netlify redirects the old URLs.
+const removed = ['events/index.html', 'join/index.html', 'join/thanks/index.html'];
 
 const text = {
   'index.html': [
@@ -54,13 +54,12 @@ const text = {
     'Get Connected!',
     'We stay connected with members and the general public through social media, messaging apps, and UC sanctioned websites. Scan the QR codes or click the links below to get connected with us!',
     'Check out our Calendar with Urbanism Club sponsored events, as well as other local Urbanist events!',
-    'Instagram', 'LinkedIn', 'GroupMe', 'GetInvolvedUC', 'Meetings',
+    'Instagram', 'LinkedIn', 'GroupMe', 'GetInvolvedUC', 'Join the mailing list', 'Events', 'Meetings',
     'Most meetings are located in the DAAP first year planning studio, Alms 6110, within the College',
     'of Design, Architecture, Art, and Planning (DAAP).',
     '348 (Alms Builiding) 342 (DAAP Building) Clifton Court, Cincinnati, Ohio 45219',
   ],
   'resources/index.html': ['Proposals, Projects, and Plans', 'Add your project!'],
-  'join/index.html': ['Join the mailing list'],
   '404.html': ["This page isn't here yet"],
 };
 
@@ -68,6 +67,8 @@ const raw = {
   'index.html': [
     'https://www.uc.edu/campus-life/csi.html', 'https://planning.org', 'https://strongtowns.org',
     'https://www.fenleyjones.com',
+    // The Join pill and the home-page CTAs open the mailing-list section on Connect.
+    'href="/connect#join"',
   ],
   'connect/index.html': [
     'https://www.instagram.com/uc_urbanism/embed/?cr=1&v=14&wp=1396&rd=https%3A%2F%2Fuc-urbanism.netlify.app&rp=%2Fconnect',
@@ -79,6 +80,7 @@ const raw = {
     'calendar/embed?src=0c7201b7a265d7809dcac374d572cce797f89a0913afd9aa8158019dabd465cd%40group.calendar.google.com',
     'src=0e8049d1f2999f161c00b7806575afbc40fc1aa8c555fc41b6440c77eea03f4d%40group.calendar.google.com',
     'mode=AGENDA',
+    'id="join"', 'id="events"', 'id="meetings"',
   ],
   'resources/index.html': [
     'https://forms.gle/SAtJWEXpx8rc3VcD7',

@@ -13,13 +13,13 @@ Built with [Astro](https://astro.build); content is edited with [Decap CMS](http
 ## Pages
 
 - `/` — About Us
-- `/connect` — events calendar (agenda + month), Get Connected (QR codes, links, Instagram), Meetings
+- `/connect` — Get Connected (QR codes), Join the mailing list (`#join`, where the nav's Join pill goes), events
+  calendar (agenda + month), Instagram, Meetings
 - `/resources` — Proposals, Projects, and Plans
-- `/join` — mailing-list signup (button to a Google Form)
 - `404` — branded "page not found" page, served by Netlify for any missing address (not in the sitemap)
 
-`/events` was folded into `/connect` in v1.5, and the old form's `/join/thanks/` page was retired; Netlify redirects
-both (see `netlify.toml`).
+`/events` was folded into `/connect` in v1.5 and `/join` in v1.6; Netlify redirects both, and the retired
+`/join/thanks/`, to the matching section of `/connect` (see `netlify.toml`).
 See [CHANGELOG.md](CHANGELOG.md) for what changed in each version.
 
 ## Editing the site (no coding needed)
@@ -59,7 +59,7 @@ this repository**. To enable the login (done once, by a repo/site admin):
 
 ## Mailing list (Google Form)
 
-The site doesn't collect emails itself. The "Join the mailing list" page (`/join`) is a button
+The site doesn't collect emails itself. The "Join the mailing list" section on Connect (`/connect#join`) is a button
 that opens a **club-owned Google Form**, and responses collect in that form's Google Sheet. Setup, once:
 
 1. Create a Google Form from a shared club account (not a personal one, so it survives board turnover) with one
@@ -67,9 +67,9 @@ that opens a **club-owned Google Form**, and responses collect in that form's Go
    Optionally add a name and a major question.
 2. *Responses → Link to Sheets* so signups land in a spreadsheet the board can share.
 3. *Send → link icon → Shorten URL*, copy the `https://forms.gle/…` link.
-4. Paste it into **CMS → Pages → Join page (mailing list) → Google Form link**.
+4. Paste it into **CMS → Pages → Connect → Join section: Google Form link**.
 
-While that field is blank, the page says the email list is coming and shows the GroupMe button instead.
+While that field is blank, the section says the email list is coming and shows the GroupMe button instead.
 If the form is created under a uc.edu account, decide on purpose whether *Restrict to users in University of
 Cincinnati* stays on: it blocks anyone without a UC login (alumni, community members).
 

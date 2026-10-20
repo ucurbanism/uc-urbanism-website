@@ -24,7 +24,8 @@ const nav = [
   { href: '/connect', label: 'Connect' },
   { href: '/resources', label: 'Resources' },
 ];
-const cta = { href: '/join', label: 'Join' };
+// The Join pill opens the mailing-list section on Connect, right below the QR codes.
+const cta = { href: '/connect#join', label: 'Join' };
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImageUrl = new URL(ogImage, Astro.site).href;
