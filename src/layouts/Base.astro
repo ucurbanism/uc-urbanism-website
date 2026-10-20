@@ -18,14 +18,16 @@ interface Props {
 const { title, description, ogImage = '/og-image.png', noindex = false } = Astro.props;
 const site = (await getEntry('settings', 'site'))!.data;
 
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+// Internal links end in a slash, the URLs Netlify serves: /connect costs a 301 to /connect/ first,
+// which also turned the Join pill on Connect into a full reload instead of a scroll.
+const path = Astro.url.pathname.replace(/\/?$/, '/');
 const nav = [
   { href: '/', label: 'About Us' },
-  { href: '/connect', label: 'Connect' },
-  { href: '/resources', label: 'Resources' },
+  { href: '/connect/', label: 'Connect' },
+  { href: '/resources/', label: 'Resources' },
 ];
 // The Join pill opens the mailing-list section on Connect, right below the QR codes.
-const cta = { href: '/connect#join', label: 'Join' };
+const cta = { href: '/connect/#join', label: 'Join' };
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImageUrl = new URL(ogImage, Astro.site).href;

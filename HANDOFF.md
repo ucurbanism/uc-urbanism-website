@@ -6,8 +6,8 @@
 | --- | --- |
 | Repo | `~/Claude Code Stuff/uc-urbanism-website` → GitHub **ActuallyNotAPerson/uc-urbanism-website** (private) |
 | Live site | https://uc-urbanism.netlify.app — Netlify site `uc-urbanism`, auto-deploys from `main` via GitHub webhook |
-| Live version | **v1.6.0** (`00d3e98`, merge of PR #3, deployed and checked 2026-10-20). v1.6.1 (anchor-landing fix, below) is in its own PR; tag it `v1.6.1` once merged. |
-| Tags | Annotated, all pushed: `v1.6.0` (`00d3e98`), `v1.5.1`, `v1.5.0` (`31e04b5`), `v1.0.0` (`5889917`). `package.json` matches the latest tag. Per-version changes: `CHANGELOG.md`. |
+| Live version | **v1.6.1** (`04974f3`, merge of PR #4, deployed and checked 2026-10-20; v1.6.0 was PR #3, `00d3e98`). v1.6.2 (trailing-slash links, below) is in its own PR; tag it `v1.6.2` once merged. |
+| Tags | Annotated, all pushed: `v1.6.1` (`04974f3`), `v1.6.0` (`00d3e98`), `v1.5.1`, `v1.5.0` (`31e04b5`), `v1.0.0` (`5889917`). `package.json` matches the latest tag. Per-version changes: `CHANGELOG.md`. |
 | Push policy | Pushing `main` deploys to the live site. The user decides when: push only when asked in that session. |
 | Left running | Nothing. The local dev server and CMS proxy were stopped at the end of the session. |
 
@@ -49,8 +49,8 @@ OG image, sitemap, robots.txt, favicon set. Details in README.md.
 | `/resources` | Proposals, Projects, and Plans spreadsheet, then the "Add your project!" Google Form link |
 | `404` | Branded "This page isn't here yet" page with home + GroupMe buttons (CMS-editable, noindex) |
 
-Redirects (`netlify.toml`): `/events` and `/events/*` → `/connect#events`; `/join` and `/join/*` (incl. the retired
-`/join/thanks/`) → `/connect#join` (v1.6 merged Join into Connect). **Netlify splat gotcha:** `from = "/x/*"` also matches `/x`, so never point a `/x/*` rule at `/x` (that was
+Redirects (`netlify.toml`): `/events` and `/events/*` → `/connect/#events`; `/join` and `/join/*` (incl. the retired
+`/join/thanks/`) → `/connect/#join` (v1.6 merged Join into Connect). **Netlify splat gotcha:** `from = "/x/*"` also matches `/x`, so never point a `/x/*` rule at `/x` (that was
 the v1.5.0 bug: the rule silently never fired).
 
 **Mailing list.** The site collects no emails itself. Netlify Forms was removed in v1.5: form detection had never
@@ -62,7 +62,7 @@ page** (user's request, as a placeholder) and the page points people to the Grou
 ## v1.6 — Join merged into Connect, spacing normalized (live)
 
 Connect is now intro → QR codes → Join the mailing list (`#join`) → Events → Instagram → Meetings, and the nav's Join
-pill goes to `/connect#join`. Full list in `CHANGELOG.md`. Implementation notes:
+pill goes to `/connect/#join`. Full list in `CHANGELOG.md`. Implementation notes:
 
 - **Join content** lives in `pages/connect.yml` (`join_*`, `signup_*`, `privacy_note`); there is no `join.yml` any more.
 - **Text links** under the QR codes are filtered in `connect.astro`: one whose label matches a QR label isn't shown.
@@ -73,6 +73,10 @@ pill goes to `/connect#join`. Full list in `CHANGELOG.md`. Implementation notes:
   `Base.astro`). With `scroll-behavior: smooth` on from the start, Chrome dropped the jump to a `#section` when another
   page linked there, so the Join pill opened Connect at the top (v1.6.0 shipped with that; fixed in v1.6.1). Test a
   cross-page anchor link by *clicking* it: typing a `#` address into the bar worked even with the bug.
+- **Internal links end in a slash** (`/connect/`, `/resources/`, `/connect/#join`): Netlify serves pages at `/<name>/`
+  and 301s `/<name>` there, which cost a redirect on every click and made the Join pill on Connect reload the page
+  instead of scrolling (v1.6.2). `npm test` fails on a link to a page without the slash. `/404` is a file, so it
+  stays slashless.
 
 ## v1.5 — board markup round (live)
 
@@ -157,4 +161,4 @@ and then split back out to its own page at the user's request. Full list in `CHA
   tagged v1.0.0.
 - **2026-10-06** — v1.5.0 / v1.5.1 (see above and `CHANGELOG.md`).
 - **2026-10-20** — v1.6.0: Join merged into Connect below the QR codes, doubled QR text links removed, spacing and
-  type normalized; v1.6.1 fixes cross-page `#section` links (see above).
+  type normalized; v1.6.1 fixes cross-page `#section` links; v1.6.2 makes internal links end in a slash (see above).

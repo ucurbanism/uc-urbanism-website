@@ -59,7 +59,7 @@ this repository**. To enable the login (done once, by a repo/site admin):
 
 ## Mailing list (Google Form)
 
-The site doesn't collect emails itself. The "Join the mailing list" section on Connect (`/connect#join`) is a button
+The site doesn't collect emails itself. The "Join the mailing list" section on Connect (`/connect/#join`) is a button
 that opens a **club-owned Google Form**, and responses collect in that form's Google Sheet. Setup, once:
 
 1. Create a Google Form from a shared club account (not a personal one, so it survives board turnover) with one
