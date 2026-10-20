@@ -6,10 +6,10 @@
 | --- | --- |
 | Repo | `~/Claude Code Stuff/uc-urbanism-website` → GitHub **ActuallyNotAPerson/uc-urbanism-website** (private) |
 | Live site | https://uc-urbanism.netlify.app — Netlify site `uc-urbanism`, auto-deploys from `main` via GitHub webhook |
-| Live version | **v1.6.1** (`04974f3`, merge of PR #4, deployed and checked 2026-10-20; v1.6.0 was PR #3, `00d3e98`). v1.6.2 (trailing-slash links, below) is in its own PR; tag it `v1.6.2` once merged. |
-| Tags | Annotated, all pushed: `v1.6.1` (`04974f3`), `v1.6.0` (`00d3e98`), `v1.5.1`, `v1.5.0` (`31e04b5`), `v1.0.0` (`5889917`). `package.json` matches the latest tag. Per-version changes: `CHANGELOG.md`. |
+| Live version | **v1.6.2** (`04b2157`, merge of PR #5, deployed and checked 2026-10-20: one-hop `/join` and `/events` redirects, Join pill glides on Connect without a reload). Same day: v1.6.1 = PR #4 (`04974f3`), v1.6.0 = PR #3 (`00d3e98`). |
+| Tags | Annotated, all pushed: `v1.6.2` (`04b2157`), `v1.6.1` (`04974f3`), `v1.6.0` (`00d3e98`), `v1.5.1`, `v1.5.0` (`31e04b5`), `v1.0.0` (`5889917`). `package.json` matches the latest tag. Per-version changes: `CHANGELOG.md`. |
 | Push policy | Pushing `main` deploys to the live site. The user decides when: push only when asked in that session. |
-| Left running | Nothing. The local dev server and CMS proxy were stopped at the end of the session. |
+| Left running | The v1.6 worktree's dev server on port 4341 (see Run it); stop it from the Claude preview panel. No CMS proxy. |
 
 `npm run build && npm test` is the check before every push. `scripts/check-fidelity.mjs` verifies that the club's
 text, embeds and links are on the right pages, and that retired pages (`/events`, `/join`, `/join/thanks`) are not built
@@ -30,6 +30,9 @@ npm run build && npm test
   name `uc-urbanism` (runs `npm --prefix uc-urbanism-website run dev` on port 4321). The repo has no `.claude/`.
   The v1.5 work was done in a worktree (`.claude/worktrees/review-pdf-handwritten-changes-21947e`) with its own
   untracked launch config `uc-urbanism-v1.5` on port 4331; that branch is merged and can be deleted.
+  The v1.6 work was done in `.claude/worktrees/22x6-pixel-art-9777fd` (untracked launch config
+  `uc-urbanism-connect-join`, port 4341); its branches (`claude/connect-join-page-redesign-4d8807`,
+  `claude/fix-anchor-landing`, `claude/trailing-slash-links`) are merged and can be deleted.
 - Local CMS: the Astro dev server 404s on `/admin/`, so use `/admin/index.html`. Open entries by clicking through from
   a collection list; deep-linking straight to an entry URL can fail before the CMS has loaded.
 - Changing a content-collection schema (`src/content.config.ts`) needs a dev-server restart; otherwise new image
