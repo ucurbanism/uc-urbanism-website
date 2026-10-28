@@ -4,7 +4,7 @@
 
 | | State |
 | --- | --- |
-| Repo | `~/Claude Code Stuff/uc-urbanism-website` → GitHub **ActuallyNotAPerson/uc-urbanism-website** (private) |
+| Repo | `~/Claude Code Stuff/uc-urbanism-website` → GitHub **mjs06-git/uc-urbanism-website** (private). Formerly `ActuallyNotAPerson/uc-urbanism-website`: the account was renamed by 2026-10-28. GitHub redirects the old name only until someone claims it, so use the new one everywhere (git remote, Netlify and the CMS config already do). |
 | Live site | https://uc-urbanism.netlify.app — Netlify site `uc-urbanism`, auto-deploys from `main` via GitHub webhook |
 | Live version | **v1.6.2** (`04b2157`, merge of PR #5, deployed and checked 2026-10-20: one-hop `/join` and `/events` redirects, Join pill glides on Connect without a reload). Same day: v1.6.1 = PR #4 (`04974f3`), v1.6.0 = PR #3 (`00d3e98`). |
 | Tags | Annotated, all pushed: `v1.6.2` (`04b2157`), `v1.6.1` (`04974f3`), `v1.6.0` (`00d3e98`), `v1.5.1`, `v1.5.0` (`31e04b5`), `v1.0.0` (`5889917`). `package.json` matches the latest tag. Per-version changes: `CHANGELOG.md`. |
@@ -120,7 +120,7 @@ and then split back out to its own page at the user's request. Full list in `CHA
 - [ ] **CMS login on production.** Nobody can log in at `/admin` on the live site yet. Create a GitHub OAuth App
       (callback `https://api.netlify.com/auth/done`) and install it in Netlify → *Site configuration → Access &
       security → OAuth*. Checked 2026-10-06: Netlify's auth endpoint for the site returned 404 (consistent with no
-      provider), and the repo's only collaborator is `ActuallyNotAPerson`. Add board members as collaborators with
+      provider), and the repo's only collaborator is its owner, `mjs06-git` (formerly `ActuallyNotAPerson`; still true 2026-10-28). Add board members as collaborators with
       Write access; each needs their own GitHub account. There is no username/password; login is GitHub only.
 - [ ] Google Search Console verification (paste the token in CMS → Site settings).
 
@@ -148,7 +148,7 @@ and then split back out to its own page at the user's request. Full list in `CHA
 - Netlify CLI is installed and logged in as the site owner; the main checkout is linked to site
   `<site id>`. `netlify api listSiteDeploys --data '{"site_id":"…"}'` shows deploy state;
   `netlify api listSiteForms` confirmed no forms are registered.
-- `gh` is authenticated as ActuallyNotAPerson. The repo has no CI checks; Netlify is the only build.
+- `gh` is authenticated as mjs06-git (formerly ActuallyNotAPerson). The repo has no CI checks; Netlify is the only build.
 - `sharp` (an Astro dependency in `node_modules`) does all one-off image work (logo inversion, wordmark crop,
   transparent affiliate logos, PNG→JPEG); no extra image tooling is installed.
 - Original headshot PNGs are in `~/Downloads/*_website_pic.png`; the repo copies are the source of truth now.
