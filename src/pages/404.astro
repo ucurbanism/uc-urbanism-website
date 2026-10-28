@@ -2,7 +2,7 @@
 import { getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 
-// Netlify serves dist/404.html for any path that doesn't exist.
+// Netlify, Cloudflare Pages, Vercel and GitHub Pages serve dist/404.html for any path that doesn't exist.
 const page = (await getEntry('pages', 'not-found'))!.data as Record<string, any>;
 const site = (await getEntry('settings', 'site'))!.data;
 const groupMe = site.qr_links.find((q: { label: string }) => q.label === 'GroupMe');

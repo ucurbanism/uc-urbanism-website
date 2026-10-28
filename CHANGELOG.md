@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.7.0 — 2026-10-28
+
+The build no longer depends on Netlify: `dist/` runs on any static host, and Netlify, Cloudflare Pages, Vercel and
+GitHub Pages each have ready-made settings. Nothing visible on the site changes.
+
+- **One site address.** Canonical links, share cards, the sitemap and `robots.txt` all come from `SITE_URL` (set in the
+  host's build settings), defaulting to `https://uc-urbanism.netlify.app`. `robots.txt` is now generated, not a file.
+- **Old links forward on every host.** `/events`, `/join` and `/join/thanks/` are built as pages that forward
+  instantly to the right section of Connect. `public/_redirects` (Netlify, Cloudflare) and `vercel.json` add real 301s
+  where the host applies them first: one hop on Cloudflare and Vercel. On Netlify, `/events` now takes Netlify's own
+  slash redirect and the forward page instead of a single 301, and still lands on the section.
+- **Headers** moved from `netlify.toml` to `public/_headers` (read by Netlify and Cloudflare) and `vercel.json`.
+  `netlify.toml` is gone: Netlify's dashboard already holds the build settings, and Node 22 comes from `.node-version`.
+- **GitHub Pages**: a deploy workflow you run by hand (`.github/workflows/github-pages.yml`), plus `.nojekyll`.
+- **CMS**: links back to whatever address serves it, and `config.yml` has a ready `base_url` line for a login service
+  that works on any host. The README covers that setup alongside Netlify's built-in login.
+- `npm test` now checks that the old addresses forward to the right sections, that `_headers` and `_redirects` reach
+  `dist/`, and that `robots.txt` and the canonical links use the same site address.
+- README: new Hosting section (per-host setup, how redirects behave on each, a moving-hosts checklist).
+
 ## 1.6.2 — 2026-10-20
 
 - Internal links now use the addresses Netlify actually serves, with the trailing slash (`/connect/`, `/resources/`,

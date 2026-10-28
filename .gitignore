@@ -3,5 +3,6 @@ dist/
 .astro/
 .DS_Store
 
-# Local Netlify folder
+# Local Netlify and Cloudflare (wrangler pages dev) folders
 .netlify
+.wrangler

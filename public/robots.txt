@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /admin/
-
-Sitemap: https://uc-urbanism.netlify.app/sitemap-index.xml

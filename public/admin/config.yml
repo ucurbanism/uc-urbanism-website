@@ -4,6 +4,9 @@ backend:
   name: github
   repo: mjs06-git/uc-urbanism-website
   branch: main
+  # GitHub login. Left unset, the CMS signs in through Netlify's GitHub login, which only works while the site is
+  # on Netlify. On any host, point this at a login worker instead (README → CMS login), e.g.:
+  # base_url: https://uc-urbanism-cms-auth.<account>.workers.dev
   commit_messages:
     create: "Content: create {{collection}} \"{{slug}}\""
     update: "Content: update {{collection}} \"{{slug}}\""
@@ -14,8 +17,7 @@ backend:
 # Lets the local proxy (npm run cms) take over when running on localhost.
 local_backend: true
 
-site_url: https://uc-urbanism.netlify.app
-display_url: https://uc-urbanism.netlify.app
+# site_url and display_url are set in admin/index.html to whatever address serves the CMS.
 media_folder: public/uploads
 public_folder: /uploads
 editor:
