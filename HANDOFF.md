@@ -1,4 +1,4 @@
-# Handoff — UC Urbanism website (updated 2026-10-28, v1.7 host-agnostic branch)
+# Handoff — UC Urbanism website (updated 2026-10-20, v1.6 session)
 
 ## Where things stand
 
@@ -8,14 +8,12 @@
 | Live site | https://uc-urbanism.netlify.app — Netlify site `uc-urbanism`, auto-deploys from `main` via GitHub webhook |
 | Live version | **v1.6.2** (`04b2157`, merge of PR #5, deployed and checked 2026-10-20: one-hop `/join` and `/events` redirects, Join pill glides on Connect without a reload). Same day: v1.6.1 = PR #4 (`04974f3`), v1.6.0 = PR #3 (`00d3e98`). |
 | Tags | Annotated, all pushed: `v1.6.2` (`04b2157`), `v1.6.1` (`04974f3`), `v1.6.0` (`00d3e98`), `v1.5.1`, `v1.5.0` (`31e04b5`), `v1.0.0` (`5889917`). `package.json` matches the latest tag. Per-version changes: `CHANGELOG.md`. |
-| In progress | **v1.7.0, host-agnostic build**, on branch `claude/host-agnostic-build` (pushed, no PR, not merged, not tagged). `main` and the live site are still v1.6.2. See the v1.7 section below. |
-| Push policy | Pushing `main` deploys to the live site. The user decides when: push only when asked in that session. Other branches don't deploy (Netlify builds `main` only). |
-| Left running | Nothing. The v1.7 session stopped its preview, Cloudflare-emulator, dev and CMS servers. Two Netlify *draft* deploys from that session remain (`host-agnostic-check--uc-urbanism.netlify.app`, `host-agnostic-check2--…`); they are not production and can be deleted in Netlify → Deploys. |
+| Push policy | Pushing `main` deploys to the live site. The user decides when: push only when asked in that session. |
+| Left running | Nothing. The v1.6 worktree's dev server (port 4341) was stopped at the end of the session; no CMS proxy was running. |
 
 `npm run build && npm test` is the check before every push. `scripts/check-fidelity.mjs` verifies that the club's
-text, embeds and links are on the right pages, that the retired pages (`/events`, `/join`, `/join/thanks`) are built
-only as forward pages to the right Connect section, that `_headers`/`_redirects` reach `dist/`, and that `robots.txt`
-and the canonical links agree on the site address.
+text, embeds and links are on the right pages, and that retired pages (`/events`, `/join`, `/join/thanks`) are not built
+again.
 It guards the *current* content (it has been updated for every deliberate removal), not the original Geocities/Canva
 copy verbatim.
 
@@ -35,10 +33,6 @@ npm run build && npm test
   The v1.6 work was done in `.claude/worktrees/22x6-pixel-art-9777fd` (untracked launch config
   `uc-urbanism-connect-join`, port 4341); its branches (`claude/connect-join-page-redesign-4d8807`,
   `claude/fix-anchor-landing`, `claude/trailing-slash-links`) are merged and can be deleted.
-  The v1.7 work was done in `.claude/worktrees/website-hosting-alternatives-4b1fa7` on `claude/host-agnostic-build`,
-  with an untracked launch config holding `uc-urbanism-host-preview` (`npm run preview`, port 4351),
-  `uc-urbanism-host-cloudflare` (`npx wrangler@4 pages dev dist`, port 8788), `uc-urbanism-host-dev` (port 4352) and
-  `uc-urbanism-host-cms` (`npm run cms`, port 8081).
 - Local CMS: the Astro dev server 404s on `/admin/`, so use `/admin/index.html`. Open entries by clicking through from
   a collection list; deep-linking straight to an entry URL can fail before the CMS has loaded.
 - Changing a content-collection schema (`src/content.config.ts`) needs a dev-server restart; otherwise new image
@@ -58,43 +52,15 @@ OG image, sitemap, robots.txt, favicon set. Details in README.md.
 | `/resources` | Proposals, Projects, and Plans spreadsheet, then the "Add your project!" Google Form link |
 | `404` | Branded "This page isn't here yet" page with home + GroupMe buttons (CMS-editable, noindex) |
 
-Redirects: `/events` → `/connect/#events`; `/join` and the retired `/join/thanks/` → `/connect/#join` (v1.6 merged
-Join into Connect). Through v1.6 they lived in `netlify.toml`; v1.7 builds them as forward pages (`redirects` in
-`astro.config.mjs`) plus real 301s in `public/_redirects` and `vercel.json` (details in the v1.7 section). **Netlify
-splat gotcha:** `/x/*` also matches `/x`, so never point a `/x/*` rule at `/x` (that was the v1.5.0 bug: the rule
-silently never fired).
+Redirects (`netlify.toml`): `/events` and `/events/*` → `/connect/#events`; `/join` and `/join/*` (incl. the retired
+`/join/thanks/`) → `/connect/#join` (v1.6 merged Join into Connect). **Netlify splat gotcha:** `from = "/x/*"` also matches `/x`, so never point a `/x/*` rule at `/x` (that was
+the v1.5.0 bug: the rule silently never fired).
 
 **Mailing list.** The site collects no emails itself. Netlify Forms was removed in v1.5: form detection had never
 been enabled (`ignore_html_forms: true`, zero forms registered), so no signup was ever stored. The plan is a
 club-owned Google Form: paste its link into CMS → Pages → Connect → Join section: Google Form link (`signup_url` in
 `pages/connect.yml`) and the "Join the mailing list" pill opens it. **Until then the pill deliberately goes to the 404
 page** (user's request, as a placeholder) and the page points people to the GroupMe.
-
-## v1.7 — host-agnostic build (branch `claude/host-agnostic-build`, not merged)
-
-`dist/` no longer needs Netlify. Hosting setup per host is in the README (Hosting). Implementation notes:
-
-- **Site address**: `site` in `astro.config.mjs` is `process.env.SITE_URL`, defaulting to
-  `https://uc-urbanism.netlify.app`, the only place that default is written. `robots.txt` is generated by
-  `src/pages/robots.txt.ts`. The Instagram embed's `rd=` still names netlify.app (Instagram's referrer field, harmless).
-- **Redirects, three layers**: (1) Astro `redirects` build `dist/events/index.html` etc. as instant-refresh pages
-  (`noindex`, canonical), so they work on any host. The sitemap filter leaves them out. (2) `public/_redirects` with
-  plain `301`: Cloudflare applies it before files, so one hop. **Don't use `301!`**: Cloudflare (wrangler 4.155)
-  rejects every rule with it ("Valid status codes are 200, 301, …"), and the forward pages take over. (3) `vercel.json`.
-- **Netlify behaviour changed**: Netlify skips a non-forced rule when a file exists there, so `/events` → 301 `/events/`
-  → forward page → `/connect/#events` (was one 301). `/events/x` (no file) still gets the single 301. Checked on a draft
-  deploy. Forcing it would need `301!` (breaks Cloudflare) or forced rules in a `netlify.toml`. A test of the latter
-  with `netlify deploy --no-build` was inconclusive, because a CLI upload may not read `netlify.toml` at all.
-- **Headers**: `public/_headers` (Netlify + Cloudflare, same syntax) and `vercel.json`; verified on both checked hosts.
-  `netlify.toml` was deleted: the Netlify dashboard already has `npm run build` → `dist`, and Node comes from
-  `.node-version` (22). `package.json` `engines` is `>=22` (Vercel reads it; local Node is 26).
-- **CMS**: `admin/index.html` uses `CMS_MANUAL_INIT` and `CMS.init({config: {site_url, display_url}})` set to
-  `location.origin` (merged into `config.yml`). `config.yml` has a commented `base_url` for a login Worker
-  (sveltia-cms-auth); unset means Netlify's provider, as before. Checked locally: collections load, header links to
-  the local origin.
-- **GitHub Pages**: `.github/workflows/github-pages.yml` runs only by hand (`workflow_dispatch`), so it never fails
-  while Pages is off. Actions pinned to the majors current on 2026-10-28 (checkout v7, setup-node v7,
-  upload-pages-artifact v5, deploy-pages v5). Not run yet; Vercel not deployed yet either.
 
 ## v1.6 — Join merged into Connect, spacing normalized (live)
 
@@ -151,10 +117,9 @@ and then split back out to its own page at the user's request. Full list in `CHA
 
 ## One-time actions only the site owner can do (see README for steps)
 
-- [ ] **CMS login on production.** Nobody can log in at `/admin` on the live site yet. Two routes (README → CMS login):
-      a sveltia-cms-auth Cloudflare Worker that works on any host (recommended since v1.7; set `base_url` in
-      `config.yml`), or a GitHub OAuth App (callback `https://api.netlify.com/auth/done`) installed in Netlify →
-      *Site configuration → Access & security → OAuth* (Netlify only). Checked 2026-10-06: Netlify's auth endpoint for the site returned 404 (consistent with no
+- [ ] **CMS login on production.** Nobody can log in at `/admin` on the live site yet. Create a GitHub OAuth App
+      (callback `https://api.netlify.com/auth/done`) and install it in Netlify → *Site configuration → Access &
+      security → OAuth*. Checked 2026-10-06: Netlify's auth endpoint for the site returned 404 (consistent with no
       provider), and the repo's only collaborator is its owner, `mjs06-git` (formerly `ActuallyNotAPerson`; still true 2026-10-28). Add board members as collaborators with
       Write access; each needs their own GitHub account. There is no username/password; login is GitHub only.
 - [ ] Google Search Console verification (paste the token in CMS → Site settings).
@@ -174,21 +139,16 @@ and then split back out to its own page at the user's request. Full list in `CHA
 - Gate `/admin` from public view: a Netlify Edge Function with basic auth on `/admin/*` (free), or Cloudflare Access
   once the club has a custom domain. Netlify's built-in path protection needs the Pro plan. (Saving already
   requires GitHub write access; only the page itself is public.)
-- Moving off Netlify: v1.7 makes it possible without code changes. Cloudflare Pages is the closest fit (reads the
-  same `_headers`/`_redirects`, free, one-hop redirects). GitHub Pages can't send headers and needs a custom domain and,
-  for this private repo, a paid plan. README → Hosting → Moving hosts has the checklist.
+- Staying on Netlify was the recommendation over GitHub Pages (which loses the Decap OAuth provider, headers and
+  redirects).
 - Custom domain; redirects from the old Canva/Geocities sites; events/projects archives.
 
 ## Tooling notes
 
 - Netlify CLI is installed and logged in as the site owner; the main checkout is linked to site
   `<site id>`. `netlify api listSiteDeploys --data '{"site_id":"…"}'` shows deploy state;
-  `netlify api listSiteForms` confirmed no forms are registered. A non-production check of a local build:
-  `netlify deploy --no-build --dir dist --site <id> --alias <name>` (no `--prod`) gives `https://<name>--uc-urbanism.netlify.app`.
-- Cloudflare's behaviour can be checked locally with `npx --yes wrangler@4 pages dev dist` (no account needed; its log
-  lists invalid `_redirects` rules).
-- `gh` is authenticated as mjs06-git (formerly ActuallyNotAPerson). The repo has no CI checks; Netlify is the only build
-  (the GitHub Pages workflow runs only by hand).
+  `netlify api listSiteForms` confirmed no forms are registered.
+- `gh` is authenticated as mjs06-git (formerly ActuallyNotAPerson). The repo has no CI checks; Netlify is the only build.
 - `sharp` (an Astro dependency in `node_modules`) does all one-off image work (logo inversion, wordmark crop,
   transparent affiliate logos, PNG→JPEG); no extra image tooling is installed.
 - Original headshot PNGs are in `~/Downloads/*_website_pic.png`; the repo copies are the source of truth now.
@@ -205,5 +165,3 @@ and then split back out to its own page at the user's request. Full list in `CHA
 - **2026-10-06** — v1.5.0 / v1.5.1 (see above and `CHANGELOG.md`).
 - **2026-10-20** — v1.6.0: Join merged into Connect below the QR codes, doubled QR text links removed, spacing and
   type normalized; v1.6.1 fixes cross-page `#section` links; v1.6.2 makes internal links end in a slash (see above).
-- **2026-10-28** — v1.7.0 on `claude/host-agnostic-build` (not merged): host-agnostic build with settings for
-  Netlify, Cloudflare Pages, Vercel and GitHub Pages (see above).

@@ -21,14 +21,8 @@ const pages = {
 };
 
 // v1.5 merged Events into Connect and dropped the form's thank-you page; v1.6 merged Join into Connect.
-// The old URLs are built only as instant-forward pages (redirects in astro.config.mjs).
-const removed = {
-  'events/index.html': '/connect/#events',
-  'join/index.html': '/connect/#join',
-  'join/thanks/index.html': '/connect/#join',
-};
-// Host settings that must reach dist/ (Netlify and Cloudflare read them from there).
-const hostFiles = ['_headers', '_redirects'];
+// Netlify redirects the old URLs.
+const removed = ['events/index.html', 'join/index.html', 'join/thanks/index.html'];
 
 const text = {
   'index.html': [
@@ -101,26 +95,14 @@ for (const [file, html] of Object.entries(pages)) {
   for (const s of raw[file] ?? []) if (!html.includes(s)) { console.error(`MISSING EMBED/LINK  ${file}: ${s}`); failures++; }
   if (/geocities\.ws\/uc_urbanism\/pictures|my\.canva\.site\/_assets/.test(html)) { console.error(`HOTLINK  ${file}`); failures++; }
 }
-// Static hosts serve each page at /<name>/; a link to /<name> costs a 301 first (and reloads Connect for its own #join).
+// Netlify serves each page at /<name>/; a link to /<name> costs a 301 first (and reloads Connect for its own #join).
 for (const [file, html] of Object.entries(pages)) {
   for (const [, name] of html.matchAll(/href="\/([^"/#?.]+)(?:#[^"]*)?"/g)) {
     if (existsSync(new URL(`../dist/${name}/index.html`, import.meta.url))) { console.error(`NO TRAILING SLASH  ${file}: /${name} (link to /${name}/)`); failures++; }
   }
 }
-for (const [p, target] of Object.entries(removed)) {
-  const html = existsSync(new URL(`../dist/${p}`, import.meta.url)) ? load(p) : '';
-  if (!html.includes(`http-equiv="refresh" content="0;url=${target}"`) || html.includes('class="nav"')) {
-    console.error(`NOT A REDIRECT  ${p} (should forward to ${target})`); failures++;
-  }
-}
-for (const f of hostFiles) {
-  if (!existsSync(new URL(`../dist/${f}`, import.meta.url))) { console.error(`MISSING HOST FILE  ${f}`); failures++; }
-}
-// robots.txt and the canonical links are both built from the site address; they must agree.
-const sitemapLine = load('robots.txt').match(/^Sitemap: (\S+)$/m)?.[1];
-const canonical = pages['index.html'].match(/<link rel="canonical" href="([^"]+)"/)?.[1];
-if (!sitemapLine || !canonical || sitemapLine !== new URL('sitemap-index.xml', canonical).href) {
-  console.error(`SITE ADDRESS MISMATCH  robots.txt Sitemap ${sitemapLine} vs canonical ${canonical}`); failures++;
+for (const p of removed) {
+  if (existsSync(new URL(`../dist/${p}`, import.meta.url))) { console.error(`STALE PAGE  ${p} (should redirect to /connect)`); failures++; }
 }
 if (failures) { console.error(`\n${failures} fidelity failure(s)`); process.exit(1); }
 console.log('Content fidelity OK: all original text, embeds and links present.');

@@ -18,8 +18,8 @@ interface Props {
 const { title, description, ogImage = '/og-image.png', noindex = false } = Astro.props;
 const site = (await getEntry('settings', 'site'))!.data;
 
-// Internal links end in a slash, the URLs static hosts serve (each page is dist/<name>/index.html): /connect costs
-// a 301 to /connect/ first, which also turned the Join pill on Connect into a full reload instead of a scroll.
+// Internal links end in a slash, the URLs Netlify serves: /connect costs a 301 to /connect/ first,
+// which also turned the Join pill on Connect into a full reload instead of a scroll.
 const path = Astro.url.pathname.replace(/\/?$/, '/');
 const nav = [
   { href: '/', label: 'About Us' },
