@@ -9,7 +9,7 @@
 | Live version | **v1.6.2** (`04b2157`, merge of PR #5, deployed and checked 2026-10-20: one-hop `/join` and `/events` redirects, Join pill glides on Connect without a reload). Same day: v1.6.1 = PR #4 (`04974f3`), v1.6.0 = PR #3 (`00d3e98`). |
 | Tags | Annotated, all pushed: `v1.6.2` (`04b2157`), `v1.6.1` (`04974f3`), `v1.6.0` (`00d3e98`), `v1.5.1`, `v1.5.0` (`31e04b5`), `v1.0.0` (`5889917`). `package.json` matches the latest tag. Per-version changes: `CHANGELOG.md`. |
 | Push policy | Pushing `main` deploys to the live site. The user decides when: push only when asked in that session. |
-| Left running | The v1.6 worktree's dev server on port 4341 (see Run it); stop it from the Claude preview panel. No CMS proxy. |
+| Left running | Nothing. The v1.6 worktree's dev server (port 4341) was stopped at the end of the session; no CMS proxy was running. |
 
 `npm run build && npm test` is the check before every push. `scripts/check-fidelity.mjs` verifies that the club's
 text, embeds and links are on the right pages, and that retired pages (`/events`, `/join`, `/join/thanks`) are not built
