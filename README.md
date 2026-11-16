@@ -224,8 +224,8 @@ token**.
   `.env` file or an OAuth secret.
 - The IDs you will find in `src/content/` (Google Analytics, calendar addresses, the GroupMe invite) are already
   visible to every visitor of the site.
-- Found a problem? Open an [issue](../../issues), leaving out anything
-  sensitive, or message the club through the [Connect page](https://uc-urbanism.netlify.app/connect/).
+- Found a security problem? Report it privately: see [SECURITY.md](SECURITY.md). For anything else, open an
+  [issue](../../issues) or message the club through the [Connect page](https://uc-urbanism.netlify.app/connect/).
 - Want a photo of yourself taken down? Same channels; it will be removed.
 
 ## License

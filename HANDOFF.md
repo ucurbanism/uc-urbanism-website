@@ -4,7 +4,7 @@
 
 | | State |
 | --- | --- |
-| Repo | GitHub **mjs06-git/uc-urbanism-website** (public; code under MIT, club content reserved: see `LICENSE` and `LICENSE-CONTENT.md`). Who needs which access: README, "Taking over the site". |
+| Repo | GitHub **ucurbanism/uc-urbanism-website**, owned by the club's account (public; code under MIT, club content reserved: see `LICENSE` and `LICENSE-CONTENT.md`). Who needs which access: README, "Taking over the site"; who may merge what: `MAINTAINERS.md`. Transferred from `mjs06-git` and made public on 2026-11-16; GitHub redirects the old address. Rulesets stop `main` being deleted or force-pushed and `v*` tags being moved or deleted. |
 | Live site | https://uc-urbanism.netlify.app — Netlify site `uc-urbanism`, auto-deploys from `main` via GitHub webhook |
 | Live version | **v1.6.2** (merge of PR #5, deployed and checked 2026-10-20: one-hop `/join` and `/events` redirects, Join pill glides on Connect without a reload). Same day: v1.6.1 = PR #4, v1.6.0 = PR #3. |
 | Tags | Annotated, all pushed: `v1.6.2`, `v1.6.1`, `v1.6.0`, `v1.5.1`, `v1.5.0`, `v1.0.0`. `package.json` matches the latest tag. Per-version changes: `CHANGELOG.md`. |
@@ -116,8 +116,8 @@ and then split back out to its own page at the user's request. Full list in `CHA
 - [ ] **CMS login on production.** Nobody can log in at `/admin` on the live site yet. Create a GitHub OAuth App
       (callback `https://api.netlify.com/auth/done`) and install it in Netlify → *Site configuration → Access &
       security → OAuth*. Checked 2026-10-06: Netlify's auth endpoint for the site returned 404 (consistent with no
-      provider; still 404 on 2026-11-16). The repo's collaborators are its owner, `mjs06-git` (Admin), and the club
-      account `ucurbanism` (Write). Add any club or board member who wants to contribute as a collaborator with
+      provider; still 404 on 2026-11-16). The repo is owned by the club account `ucurbanism`;
+      `mjs06-git` is a collaborator with Write. The OAuth App should be created under `ucurbanism`. Add any club or board member who wants to contribute as a collaborator with
       Write access; each needs their own GitHub account. There is no username/password; login is GitHub only.
 - [ ] Google Search Console verification (paste the token in CMS → Site settings).
 
@@ -131,8 +131,10 @@ and then split back out to its own page at the user's request. Full list in `CHA
 
 ## Ideas discussed but not done
 
-- Move the repo to a club-owned GitHub organization and add a second Netlify owner, so the site and CMS access
-  survive board turnover (today everything hangs off the user's personal accounts).
+- Move the repo from the club's account into a GitHub organization, so several officers can be owners instead of
+  sharing one sign-in, and add a second Netlify owner. (The repo moved from a personal account to the club's
+  account on 2026-11-16; Netlify and the other services in README's "What the owner holds" may still hang off
+  personal accounts.)
 - Gate `/admin` from public view: a Netlify Edge Function with basic auth on `/admin/*` (free), or Cloudflare Access
   once the club has a custom domain. Netlify's built-in path protection needs the Pro plan. (Saving already
   requires GitHub write access; only the page itself is public.)

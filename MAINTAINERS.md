@@ -65,7 +65,14 @@ moved or deleted.
 
 ## What GitHub enforces, and what it doesn't
 
-These rules are kept by agreement, not by the software:
+GitHub enforces two rulesets (*Settings → Rules → Rulesets*), for everyone including the owner:
+
+- **Protect main:** `main` can't be deleted or force-pushed.
+- **Protect release tags:** tags starting with `v` can't be moved or deleted.
+
+To do either on purpose, an owner switches the ruleset off, does it, and switches it back on.
+
+Everything else here is kept by agreement, not by the software:
 
 - Every collaborator has the same Write access and can push to `main`. The CMS needs that to publish, so `main`
   must not have a rule that requires pull requests.
