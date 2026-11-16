@@ -12,7 +12,7 @@
 [![Edited with Decap CMS](https://img.shields.io/badge/edited%20with-Decap%20CMS-007ea3?style=flat-square)](https://decapcms.org)
 [![Code license: MIT](https://img.shields.io/badge/code-MIT-007ea3?style=flat-square)](LICENSE)
 
-**[Visit the site](https://uc-urbanism.netlify.app)** · [Edit content](#editing-the-site-no-coding-needed) · [Run it locally](#run-it-locally) · [Take over the site](#taking-over-the-site) · [Changelog](CHANGELOG.md)
+**[Visit the site](https://uc-urbanism.netlify.app)** · [Edit content](#editing-the-site-no-coding-needed) · [Run it locally](#run-it-locally) · [Contribute](CONTRIBUTING.md) · [Take over the site](#taking-over-the-site) · [Changelog](CHANGELOG.md)
 
 </div>
 
@@ -54,9 +54,10 @@ press **Publish**. The live site updates in about a minute.
 | Affiliate organizations | Logos and links in the Affiliates row | `src/content/affiliates/*.yml` |
 
 **Anyone in the club can do this, board member or not.** All you need is a free GitHub account with **Write**
-access to this repository: ask any board member or the current site owner to add you, and you're in. Not sure
-about a change, or just spotted a typo? Open an
-[issue](https://github.com/mjs06-git/uc-urbanism-website/issues) or mention it at a meeting instead.
+access to this repository: ask a maintainer or an officer, and the club's account adds you. Not sure about a
+change, or just spotted a typo? Open an [issue](../../issues) or mention it at a meeting instead.
+
+Changing code or design goes through a pull request: see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Run it locally
 
@@ -107,7 +108,8 @@ scripts/            the content check behind `npm test`
 ```
 
 [HANDOFF.md](HANDOFF.md) has the full maintainer notes: why things are the way they are, known issues, and what is
-waiting on the board.
+waiting on the board. [MAINTAINERS.md](MAINTAINERS.md) says who the maintainers are, what they pledge, and who may
+merge what.
 
 ## Taking over the site
 
@@ -119,11 +121,15 @@ owners, so nothing is lost when someone graduates.
 | Role | Who | GitHub (this repo) | Netlify | Everything else |
 | --- | --- | --- | --- | --- |
 | **Contributor** | Any club member or board member who asks | **Write** | none | none |
-| **Maintainer** | Whoever changes code or design | **Write** (or Maintain) | optional: team member, to read deploy logs | none |
-| **Owner** | President plus one other officer | **Admin** | **Owner** of the team that holds the site | Owner of everything in the table below |
+| **Maintainer** | The people listed in [MAINTAINERS.md](MAINTAINERS.md), who review and merge code | **Write** | optional: team member, to read deploy logs | none |
+| **Owner** | President plus one other officer, through the club's GitHub account | Sign-in to the **owner account** | **Owner** of the team that holds the site | Owner of everything in the table below |
 
 Contributor access is for anyone in the club who asks; there is no vetting beyond being a member. For the other
 two rows, give people the lowest one that covers what they do. Contributors never need Netlify.
+
+A repository under a personal or club account has one owner; everyone else is a collaborator with Write, so the
+difference between contributor and maintainer is the agreement in [MAINTAINERS.md](MAINTAINERS.md), not a GitHub
+setting. Only the owner account can add or remove people.
 
 ### What the owner holds
 
@@ -140,8 +146,9 @@ two rows, give people the lowest one that covers what they do. Contributors neve
 
 ### Handover checklist
 
-- [ ] Add the incoming owner as **Admin** on the repository and as **Owner** on the Netlify team. Do this before
-      the outgoing owner leaves.
+- [ ] Hand the incoming owner the sign-in to the club's GitHub account (update its recovery email and two-factor
+      device), and add them as **Owner** on the Netlify team. Do this before the outgoing owner leaves.
+- [ ] Update the maintainers table in [MAINTAINERS.md](MAINTAINERS.md).
 - [ ] Give the incoming owner access to each item in the table above. Shared club accounts are best.
 - [ ] Add any club or board member who wants to contribute as a **Write** collaborator; remove people who have
       left the club.
@@ -195,7 +202,7 @@ token**.
   `.env` file or an OAuth secret.
 - The IDs you will find in `src/content/` (Google Analytics, calendar addresses, the GroupMe invite) are already
   visible to every visitor of the site.
-- Found a problem? Open an [issue](https://github.com/mjs06-git/uc-urbanism-website/issues), leaving out anything
+- Found a problem? Open an [issue](../../issues), leaving out anything
   sensitive, or message the club through the [Connect page](https://uc-urbanism.netlify.app/connect/).
 - Want a photo of yourself taken down? Same channels; it will be removed.
 

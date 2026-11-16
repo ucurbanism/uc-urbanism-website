@@ -1,0 +1,17 @@
+# Asks these people for a review when a pull request is opened. Nothing is blocked: see MAINTAINERS.md.
+# Owners here must be collaborators with Write access.
+*                         @mjs06-git
+
+# Build, hosting, sign-in and governance also need an owner.
+/package.json             @mjs06-git @ucurbanism
+/package-lock.json        @mjs06-git @ucurbanism
+/astro.config.mjs         @mjs06-git @ucurbanism
+/netlify.toml             @mjs06-git @ucurbanism
+/public/admin/            @mjs06-git @ucurbanism
+/.github/                 @mjs06-git @ucurbanism
+/LICENSE*                 @ucurbanism
+/MAINTAINERS.md           @ucurbanism
+/CODE_OF_CONDUCT.md       @ucurbanism
+
+# Content is published from the CMS without review.
+/src/content/
