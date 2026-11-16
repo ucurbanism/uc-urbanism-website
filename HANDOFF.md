@@ -10,7 +10,7 @@
 | Tags | Annotated, all pushed: `v1.6.2`, `v1.6.1`, `v1.6.0`, `v1.5.1`, `v1.5.0`, `v1.0.0`. `package.json` matches the latest tag. Per-version changes: `CHANGELOG.md`. |
 | Push policy | Pushing `main` deploys to the live site. The user decides when: push only when asked in that session. |
 | History | The repository was recreated on 2026-11-16 with a rewritten history (a personal email address was removed), so commit IDs changed and pull requests restarted at #1. "PR #1" to "PR #8" in these notes and in `CHANGELOG.md` are the pull requests of the original repository, which is not public. The tags are the stable reference. |
-| Not live | v1.7.0 (host-agnostic build: Netlify, Cloudflare Pages, Vercel, GitHub Pages; PR #8) was merged and then reverted. The work is on branch `claude/v1.7.0-host-agnostic`. |
+| Not live | v1.7.0 (host-agnostic build: Netlify, Cloudflare Pages, Vercel, GitHub Pages; PR #8) was merged and then reverted. The work is not in this repository: the branch `claude/v1.7.0-host-agnostic` was removed from GitHub on 2026-11-16 and is kept by the repository owner. |
 
 `npm run build && npm test` is the check before every push. `scripts/check-fidelity.mjs` verifies that the club's
 text, embeds and links are on the right pages, and that retired pages (`/events`, `/join`, `/join/thanks`) are not built
@@ -116,7 +116,8 @@ and then split back out to its own page at the user's request. Full list in `CHA
 - [ ] **CMS login on production.** Nobody can log in at `/admin` on the live site yet. Create a GitHub OAuth App
       (callback `https://api.netlify.com/auth/done`) and install it in Netlify → *Site configuration → Access &
       security → OAuth*. Checked 2026-10-06: Netlify's auth endpoint for the site returned 404 (consistent with no
-      provider), and the repo's only collaborator is its owner, `mjs06-git` (formerly `ActuallyNotAPerson`; still true 2026-10-28). Add any club or board member who wants to contribute as a collaborator with
+      provider; still 404 on 2026-11-16). The repo's collaborators are its owner, `mjs06-git` (Admin), and the club
+      account `ucurbanism` (Write). Add any club or board member who wants to contribute as a collaborator with
       Write access; each needs their own GitHub account. There is no username/password; login is GitHub only.
 - [ ] Google Search Console verification (paste the token in CMS → Site settings).
 
