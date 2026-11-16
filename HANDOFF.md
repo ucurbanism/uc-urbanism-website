@@ -9,6 +9,7 @@
 | Live version | **v1.6.2** (merge of PR #5, deployed and checked 2026-10-20: one-hop `/join` and `/events` redirects, Join pill glides on Connect without a reload). Same day: v1.6.1 = PR #4, v1.6.0 = PR #3. |
 | Tags | Annotated, all pushed: `v1.6.2`, `v1.6.1`, `v1.6.0`, `v1.5.1`, `v1.5.0`, `v1.0.0`. `package.json` matches the latest tag. Per-version changes: `CHANGELOG.md`. |
 | Push policy | Pushing `main` deploys to the live site. The user decides when: push only when asked in that session. |
+| History | The repository was recreated on 2026-11-16 with a rewritten history (a personal email address was removed), so commit IDs changed and pull requests restarted at #1. "PR #1" to "PR #8" in these notes and in `CHANGELOG.md` are the pull requests of the original repository, which is not public. The tags are the stable reference. |
 | Not live | v1.7.0 (host-agnostic build: Netlify, Cloudflare Pages, Vercel, GitHub Pages; PR #8) was merged and then reverted. The work is on branch `claude/v1.7.0-host-agnostic`. |
 
 `npm run build && npm test` is the check before every push. `scripts/check-fidelity.mjs` verifies that the club's
