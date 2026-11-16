@@ -12,7 +12,7 @@
 [![Edited with Decap CMS](https://img.shields.io/badge/edited%20with-Decap%20CMS-007ea3?style=flat-square)](https://decapcms.org)
 [![Code license: MIT](https://img.shields.io/badge/code-MIT-007ea3?style=flat-square)](LICENSE)
 
-**[Visit the site](https://uc-urbanism.netlify.app)** · [Edit content](#editing-the-site-no-coding-needed) · [Run it locally](#run-it-locally) · [Contribute](CONTRIBUTING.md) · [Take over the site](#taking-over-the-site) · [Changelog](CHANGELOG.md)
+**[Visit the site](https://uc-urbanism.netlify.app)** · [Edit content](#editing-the-site-no-coding-needed) · [Run it locally](#run-it-locally) · [Contribute](CONTRIBUTING.md) · [Take over the site](#taking-over-the-site) · [Change host](#hosting-somewhere-other-than-netlify) · [Changelog](CHANGELOG.md)
 
 </div>
 
@@ -174,6 +174,28 @@ Done once by an owner. Until it is done, nobody can sign in at `/admin` on the l
    Paste the Client ID and Secret there. They are never stored in this repository.
 3. Add each club or board member who wants to contribute as a collaborator with Write access
    (*Settings → Collaborators → Add people*).
+
+## Hosting somewhere other than Netlify
+
+The site itself is plain static files: `npm run build` writes them to `dist/`, and any static host can serve that
+folder. But several things around it are set up for Netlify, and **each of these has to be changed or recreated
+on a different host** (Cloudflare Pages, Vercel, GitHub Pages, a university server):
+
+| What | Where it lives now | What to do on another host |
+| --- | --- | --- |
+| Build settings | [`netlify.toml`](netlify.toml): build command, `dist` as the output folder, Node 22 | Enter the same three settings in the new host. Other hosts ignore `netlify.toml` |
+| Redirects for the old `/events` and `/join` links | `netlify.toml` | Rewrite them in the new host's format. A host with no redirect rules (GitHub Pages) needs small stub pages instead. Printed QR codes point at these links |
+| Caching and security headers | `netlify.toml` | Rewrite them in the new host's format, or accept the host's defaults |
+| **CMS sign-in** | Netlify runs the GitHub sign-in for `/admin` and stores the OAuth App's secret | The biggest job. Run a small OAuth proxy for Decap CMS elsewhere, point `base_url` (and `auth_endpoint`) at it under `backend:` in [`public/admin/config.yml`](public/admin/config.yml), and change the OAuth App's callback URL to match. Until then nobody can sign in at `/admin` |
+| The site's address | `uc-urbanism.netlify.app` is written into a few files | Everything in the last item of the [handover checklist](#handover-checklist), plus the `rd=` part of the Instagram embed address (CMS → Pages → Connect) and the links in this README, `LICENSE-CONTENT.md` and `CODE_OF_CONDUCT.md` |
+| Page addresses and the 404 page | Netlify serves each page at `/name/` and shows `dist/404.html` for anything missing | Check the new host does both. A host that serves the site under a sub-path (`username.github.io/repo/`) also needs `base` set in [`astro.config.mjs`](astro.config.mjs) |
+| Publishing on every push | Netlify's webhook and deploy key on this repository | Connect the repository to the new host, then remove Netlify's webhook and deploy key in *Settings* |
+
+After moving, run `npm test`, then check by hand: `/events` and `/join` land on Connect, a made-up address shows
+the 404 page, and you can sign in at `/admin` and publish an edit.
+
+An earlier attempt to make one build work on four hosts (v1.7.0) was merged and then reverted; [HANDOFF.md](HANDOFF.md)
+has the story.
 
 ## Mailing list
 
