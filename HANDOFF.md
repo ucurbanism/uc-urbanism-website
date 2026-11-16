@@ -116,7 +116,7 @@ and then split back out to its own page at the user's request. Full list in `CHA
 - [ ] **CMS login on production.** Nobody can log in at `/admin` on the live site yet. Create a GitHub OAuth App
       (callback `https://api.netlify.com/auth/done`) and install it in Netlify → *Site configuration → Access &
       security → OAuth*. Checked 2026-10-06: Netlify's auth endpoint for the site returned 404 (consistent with no
-      provider), and the repo's only collaborator is its owner, `mjs06-git` (formerly `ActuallyNotAPerson`; still true 2026-10-28). Add board members as collaborators with
+      provider), and the repo's only collaborator is its owner, `mjs06-git` (formerly `ActuallyNotAPerson`; still true 2026-10-28). Add any club or board member who wants to contribute as a collaborator with
       Write access; each needs their own GitHub account. There is no username/password; login is GitHub only.
 - [ ] Google Search Console verification (paste the token in CMS → Site settings).
 
