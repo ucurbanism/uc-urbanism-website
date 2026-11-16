@@ -1,98 +1,204 @@
-# UC Urbanism Website
+<div align="center">
 
-Website for the Urbanism Club, a University of Cincinnati Registered Student Organization.
-Live at https://uc-urbanism.netlify.app (auto-deploys from the `main` branch).
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="src/assets/urbanism-club-logo-inverted.png">
+  <img src="src/assets/urbanism-club-logo.png" alt="Urbanism Club" width="440">
+</picture>
 
-All text, photos, and embeds were carried over verbatim from the club's two prior websites:
+### The website of the Urbanism Club at the University of Cincinnati
 
-- https://uc-urbanism.my.canva.site/
-- https://geocities.ws/uc_urbanism/
+[![Live site](https://img.shields.io/badge/live-uc--urbanism.netlify.app-007ea3?style=flat-square)](https://uc-urbanism.netlify.app)
+[![Built with Astro](https://img.shields.io/badge/built%20with-Astro%205-007ea3?style=flat-square&logo=astro&logoColor=white)](https://astro.build)
+[![Edited with Decap CMS](https://img.shields.io/badge/edited%20with-Decap%20CMS-007ea3?style=flat-square)](https://decapcms.org)
+[![Code license: MIT](https://img.shields.io/badge/code-MIT-007ea3?style=flat-square)](LICENSE)
 
-Built with [Astro](https://astro.build); content is edited with [Decap CMS](https://decapcms.org).
+**[Visit the site](https://uc-urbanism.netlify.app)** · [Edit content](#editing-the-site-no-coding-needed) · [Run it locally](#run-it-locally) · [Take over the site](#taking-over-the-site) · [Changelog](CHANGELOG.md)
+
+</div>
+
+---
+
+The Urbanism Club is a Registered Student Organization at the University of Cincinnati. This is its website: a small,
+fast, static site that board members edit in the browser, with no coding and no server to look after.
+
+- **Editable by anyone on the board.** Every heading, paragraph, link, photo and embed is a form field in the CMS.
+- **Nothing to maintain.** Static pages, free hosting, no database, no secrets in the repository.
+- **Built to be handed on.** Board turnover is expected; [Taking over the site](#taking-over-the-site) lists
+  exactly who needs which access.
+
+The text, photos and embeds came from the club's two earlier sites
+([Canva](https://uc-urbanism.my.canva.site/), [Geocities](https://geocities.ws/uc_urbanism/)).
 
 ## Pages
 
-- `/` — About Us
-- `/connect` — Get Connected (QR codes), Join the mailing list (`#join`, where the nav's Join pill goes), events
-  calendar (agenda + month), Instagram, Meetings
-- `/resources` — Proposals, Projects, and Plans
-- `404` — branded "page not found" page, served by Netlify for any missing address (not in the sitemap)
+| Address | What's there |
+| --- | --- |
+| [`/`](https://uc-urbanism.netlify.app/) | About Us: who we are, what urbanism is, goals, affiliates, leadership team |
+| [`/connect/`](https://uc-urbanism.netlify.app/connect/) | QR codes, the mailing list (`#join`), events calendar (`#events`), Instagram, where we meet |
+| [`/resources/`](https://uc-urbanism.netlify.app/resources/) | Proposals, Projects, and Plans |
+| `404` | A branded "page not found" page |
 
-`/events` was folded into `/connect` in v1.5 and `/join` in v1.6; Netlify redirects both, and the retired
-`/join/thanks/`, to the matching section of `/connect` (see `netlify.toml`).
-See [CHANGELOG.md](CHANGELOG.md) for what changed in each version.
+Old `/events` and `/join` links redirect to the matching section of Connect (see [`netlify.toml`](netlify.toml)).
 
 ## Editing the site (no coding needed)
 
-Everything visible on the site lives in YAML files under `src/content/` and is editable
-through the CMS at **`/admin`**:
+Go to **[uc-urbanism.netlify.app/admin](https://uc-urbanism.netlify.app/admin/)**, sign in with GitHub, edit, and
+press **Publish**. The live site updates in about a minute.
 
 | CMS section | What it edits | Files |
 | --- | --- | --- |
-| Site settings | Social/join links, QR codes, Analytics ID, Search Console token | `src/content/settings/site.yml` |
-| Pages | Every heading, paragraph, and embed URL, page by page | `src/content/pages/*.yml` |
-| Leadership | The Leadership Team list (one entry per person, ordered) | `src/content/leadership/*.yml` |
+| Site settings | Social and join links, QR codes, Analytics ID, Search Console token | `src/content/settings/site.yml` |
+| Pages | Every heading, paragraph and embed address, page by page | `src/content/pages/*.yml` |
+| Leadership | The Leadership Team (one entry per person, in order) | `src/content/leadership/*.yml` |
 | Affiliate organizations | Logos and links in the Affiliates row | `src/content/affiliates/*.yml` |
 
-Saving in the CMS commits to GitHub, which triggers a Netlify deploy (about a minute).
+You need a GitHub account with **Write** access to this repository; ask the current site owner to add you.
 
-### Editing locally (developers)
+## Run it locally
 
-```
+Needs [Node.js](https://nodejs.org) 22 or newer.
+
+```bash
 npm install
-npm run dev     # site at http://localhost:4321
-npm run cms     # in a second terminal: local CMS backend
-```
-Then open http://localhost:4321/admin — edits go straight to the files in your working copy.
-
-### One-time setup for editing on the live site
-
-The CMS logs editors in with GitHub, so each editor needs a GitHub account with **write access to
-this repository**. To enable the login (done once, by a repo/site admin):
-
-1. GitHub → Settings → Developer settings → OAuth Apps → *New OAuth App*.
-   Homepage: `https://uc-urbanism.netlify.app`. **Authorization callback URL:** `https://api.netlify.com/auth/done`.
-   Copy the Client ID and generate a Client Secret.
-2. Netlify → this site → *Site configuration → Access & security → OAuth → Install provider → GitHub*,
-   paste the Client ID and Secret.
-3. Add each board member as a collaborator on the GitHub repo. They can then sign in at `/admin`.
-
-## Mailing list (Google Form)
-
-The site doesn't collect emails itself. The "Join the mailing list" section on Connect (`/connect/#join`) is a button
-that opens a **club-owned Google Form**, and responses collect in that form's Google Sheet. Setup, once:
-
-1. Create a Google Form from a shared club account (not a personal one, so it survives board turnover) with one
-   required *Short answer* question, "Email", using *Response validation → Text → Email address*.
-   Optionally add a name and a major question.
-2. *Responses → Link to Sheets* so signups land in a spreadsheet the board can share.
-3. *Send → link icon → Shorten URL*, copy the `https://forms.gle/…` link.
-4. Paste it into **CMS → Pages → Connect → Join section: Google Form link**.
-
-While that field is blank, the section says the email list is coming and shows the GroupMe button instead.
-If the form is created under a uc.edu account, decide on purpose whether *Restrict to users in University of
-Cincinnati* stays on: it blocks anyone without a UC login (alumni, community members).
-
-## Search engines
-
-- `robots.txt` and `sitemap-index.xml` are generated automatically.
-- To verify the site in Google Search Console, choose the *HTML tag* method and paste the token
-  (the `content` value) into *Site settings → Google Search Console verification token* in the CMS.
-
-## Checks
-
-```
-npm run build   # production build into dist/
-npm test        # verifies the original club text, embeds and links are still present verbatim
 ```
 
-## Structure
+```bash
+npm run dev
+```
+
+The site is at http://localhost:4321. To use the CMS against your local files, run this in a second terminal and
+open http://localhost:4321/admin/index.html:
+
+```bash
+npm run cms
+```
+
+Before pushing, both of these must pass:
+
+```bash
+npm run build
+```
+
+```bash
+npm test
+```
+
+`npm test` checks that the club's text, embeds and links are still on the right pages and that internal links are
+well-formed.
+
+> [!WARNING]
+> Pushing to `main` deploys to the live site. There is no staging step.
+
+### Where things are
 
 ```
-src/content/        editable content (YAML)
+src/content/        everything editable (YAML, plus photos and logos)
 src/pages/          page templates
-src/layouts/        shared layout (nav, head/SEO, footer, night theme)
+src/layouts/        shared layout: nav, SEO tags, footer, night theme
+src/styles/         the one stylesheet
 src/assets/         photos and backgrounds (optimized at build time)
 public/admin/       Decap CMS
 public/media/       QR code SVGs
+scripts/            the content check behind `npm test`
 ```
+
+[HANDOFF.md](HANDOFF.md) has the full maintainer notes: why things are the way they are, known issues, and what is
+waiting on the board.
+
+## Taking over the site
+
+The site depends on a handful of accounts. Each should belong to **the club, not one person**, or have at least two
+owners, so nothing is lost when someone graduates.
+
+### Who needs what
+
+| Role | Who | GitHub (this repo) | Netlify | Everything else |
+| --- | --- | --- | --- | --- |
+| **Editor** | Board members who update content | **Write** | none | none |
+| **Maintainer** | Whoever changes code or design | **Write** (or Maintain) | optional: team member, to read deploy logs | none |
+| **Owner** | President plus one other officer | **Admin** | **Owner** of the team that holds the site | Owner of everything in the table below |
+
+Give people the lowest row that covers what they do. Editors never need Netlify.
+
+### What the owner holds
+
+| Thing | Where | What happens if it's lost |
+| --- | --- | --- |
+| This repository | GitHub | Nobody can edit or deploy |
+| The Netlify site `uc-urbanism` | [app.netlify.com](https://app.netlify.com) | The site stays up but can't be changed or moved |
+| The GitHub OAuth App for CMS sign-in | GitHub → Settings → Developer settings; its secret is stored in Netlify | Nobody can sign in at `/admin` |
+| Google Analytics property | [analytics.google.com](https://analytics.google.com) | Visitor statistics are lost |
+| The two Google Calendars on Connect | Google Calendar | The events calendar goes stale |
+| The mailing-list Google Form and its Sheet | Google Forms | Signups are lost |
+| The Adobe Fonts kit (the Gibson typeface) | [fonts.adobe.com](https://fonts.adobe.com) | Headings fall back to a system font |
+| Instagram, GroupMe, LinkedIn, GetInvolvedUC | Each service | The links and QR codes point nowhere |
+
+### Handover checklist
+
+- [ ] Add the incoming owner as **Admin** on the repository and as **Owner** on the Netlify team. Do this before
+      the outgoing owner leaves.
+- [ ] Give the incoming owner access to each item in the table above. Shared club accounts are best.
+- [ ] Add new board members as **Write** collaborators; remove people who have left.
+- [ ] If the repository moves to a new account or organization (*Settings → Transfer*), update `repo:` in
+      [`public/admin/config.yml`](public/admin/config.yml), re-link the repository in Netlify, and move or recreate
+      the OAuth App.
+- [ ] If the site's address changes, update `site` in [`astro.config.mjs`](astro.config.mjs), the two URLs in
+      `public/admin/config.yml`, the sitemap line in [`public/robots.txt`](public/robots.txt), and the OAuth App's
+      homepage.
+
+> [!NOTE]
+> Don't add a branch-protection rule that requires pull requests on `main`: the CMS saves by committing straight
+> to `main`, and that rule would lock every editor out.
+
+### First-time setup of CMS sign-in
+
+Done once by an owner. Until it is done, nobody can sign in at `/admin` on the live site.
+
+1. GitHub → *Settings → Developer settings → OAuth Apps → New OAuth App*.
+   Homepage: `https://uc-urbanism.netlify.app`. Authorization callback URL: `https://api.netlify.com/auth/done`.
+   Copy the Client ID and generate a Client Secret.
+2. Netlify → the site → *Site configuration → Access & security → OAuth → Install provider → GitHub*.
+   Paste the Client ID and Secret there. They are never stored in this repository.
+3. Add each editor as a collaborator with Write access.
+
+## Mailing list
+
+The site collects no email addresses itself. The "Join the mailing list" button on Connect opens a **club-owned
+Google Form**, and responses collect in that form's Google Sheet. To set it up:
+
+1. Create a Google Form from a shared club account with one required *Short answer* question, "Email", using
+   *Response validation → Text → Email address*.
+2. *Responses → Link to Sheets*, so signups land in a spreadsheet the board can share.
+3. *Send → link icon → Shorten URL*, and copy the `https://forms.gle/…` link.
+4. Paste it into **CMS → Pages → Connect → Join section: Google Form link**.
+
+While that field is blank, the section says the list is coming and shows the GroupMe button instead. If the form is
+made under a uc.edu account, decide on purpose whether *Restrict to users in University of Cincinnati* stays on: it
+blocks alumni and community members.
+
+## Search engines
+
+`robots.txt` and `sitemap-index.xml` are generated automatically. To verify the site in Google Search Console,
+choose the *HTML tag* method and paste the token into **CMS → Site settings → Google Search Console verification
+token**.
+
+## Security and privacy
+
+- The repository holds no passwords, keys or tokens, and the build needs none. Keep it that way: never commit a
+  `.env` file or an OAuth secret.
+- The IDs you will find in `src/content/` (Google Analytics, calendar addresses, the GroupMe invite) are already
+  visible to every visitor of the site.
+- Found a problem? Open an [issue](https://github.com/mjs06-git/uc-urbanism-website/issues), leaving out anything
+  sensitive, or message the club through the [Connect page](https://uc-urbanism.netlify.app/connect/).
+- Want a photo of yourself taken down? Same channels; it will be removed.
+
+## License
+
+| | |
+| --- | --- |
+| **Code** (templates, styles, scripts, configuration) | [MIT](LICENSE): use it for your own club's site |
+| **Content** (club text, name, logos, photos, affiliate logos) | Not open-licensed: see [LICENSE-CONTENT.md](LICENSE-CONTENT.md) |
+
+<div align="center">
+<sub>Made in Cincinnati by members of the Urbanism Club.</sub>
+</div>

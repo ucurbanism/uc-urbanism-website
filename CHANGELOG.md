@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — repository made ready for public release (2026-11-16)
+
+No change to the site itself.
+
+- Added a license: MIT for the code (`LICENSE`); the club's text, logos and photos stay reserved (`LICENSE-CONTENT.md`).
+- README rewritten, with a "Taking over the site" section: who needs which access, and a handover checklist.
+- `HANDOFF.md` no longer carries personal account details or local paths.
+- Shared Claude Code permissions (`.claude/settings.json`); `.env` files are git-ignored.
+- Build-tool security updates within the current major versions (`npm audit fix`).
+
 ## 1.6.2 — 2026-10-20
 
 - Internal links now use the addresses Netlify actually serves, with the trailing slash (`/connect/`, `/resources/`,
