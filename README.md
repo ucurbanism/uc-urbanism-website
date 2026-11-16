@@ -19,9 +19,10 @@
 ---
 
 The Urbanism Club is a Registered Student Organization at the University of Cincinnati. This is its website: a small,
-fast, static site that board members edit in the browser, with no coding and no server to look after.
+fast, static site that club members edit in the browser, with no coding and no server to look after.
 
-- **Editable by anyone on the board.** Every heading, paragraph, link, photo and embed is a form field in the CMS.
+- **Open to everyone in the club.** Any club member or board member can contribute: you don't need to hold an
+  office, and you don't need to code. Every heading, paragraph, link, photo and embed is a form field in the CMS.
 - **Nothing to maintain.** Static pages, free hosting, no database, no secrets in the repository.
 - **Built to be handed on.** Board turnover is expected; [Taking over the site](#taking-over-the-site) lists
   exactly who needs which access.
@@ -52,7 +53,10 @@ press **Publish**. The live site updates in about a minute.
 | Leadership | The Leadership Team (one entry per person, in order) | `src/content/leadership/*.yml` |
 | Affiliate organizations | Logos and links in the Affiliates row | `src/content/affiliates/*.yml` |
 
-You need a GitHub account with **Write** access to this repository; ask the current site owner to add you.
+**Anyone in the club can do this, board member or not.** All you need is a free GitHub account with **Write**
+access to this repository: ask any board member or the current site owner to add you, and you're in. Not sure
+about a change, or just spotted a typo? Open an
+[issue](https://github.com/mjs06-git/uc-urbanism-website/issues) or mention it at a meeting instead.
 
 ## Run it locally
 
@@ -114,11 +118,12 @@ owners, so nothing is lost when someone graduates.
 
 | Role | Who | GitHub (this repo) | Netlify | Everything else |
 | --- | --- | --- | --- | --- |
-| **Editor** | Board members who update content | **Write** | none | none |
+| **Contributor** | Any club member or board member who asks | **Write** | none | none |
 | **Maintainer** | Whoever changes code or design | **Write** (or Maintain) | optional: team member, to read deploy logs | none |
 | **Owner** | President plus one other officer | **Admin** | **Owner** of the team that holds the site | Owner of everything in the table below |
 
-Give people the lowest row that covers what they do. Editors never need Netlify.
+Contributor access is for anyone in the club who asks; there is no vetting beyond being a member. For the other
+two rows, give people the lowest one that covers what they do. Contributors never need Netlify.
 
 ### What the owner holds
 
@@ -138,7 +143,8 @@ Give people the lowest row that covers what they do. Editors never need Netlify.
 - [ ] Add the incoming owner as **Admin** on the repository and as **Owner** on the Netlify team. Do this before
       the outgoing owner leaves.
 - [ ] Give the incoming owner access to each item in the table above. Shared club accounts are best.
-- [ ] Add new board members as **Write** collaborators; remove people who have left.
+- [ ] Add any club or board member who wants to contribute as a **Write** collaborator; remove people who have
+      left the club.
 - [ ] If the repository moves to a new account or organization (*Settings → Transfer*), update `repo:` in
       [`public/admin/config.yml`](public/admin/config.yml), re-link the repository in Netlify, and move or recreate
       the OAuth App.
@@ -148,7 +154,7 @@ Give people the lowest row that covers what they do. Editors never need Netlify.
 
 > [!NOTE]
 > Don't add a branch-protection rule that requires pull requests on `main`: the CMS saves by committing straight
-> to `main`, and that rule would lock every editor out.
+> to `main`, and that rule would lock every contributor out.
 
 ### First-time setup of CMS sign-in
 
@@ -159,7 +165,8 @@ Done once by an owner. Until it is done, nobody can sign in at `/admin` on the l
    Copy the Client ID and generate a Client Secret.
 2. Netlify → the site → *Site configuration → Access & security → OAuth → Install provider → GitHub*.
    Paste the Client ID and Secret there. They are never stored in this repository.
-3. Add each editor as a collaborator with Write access.
+3. Add each club or board member who wants to contribute as a collaborator with Write access
+   (*Settings → Collaborators → Add people*).
 
 ## Mailing list
 
