@@ -5,3 +5,11 @@ dist/
 
 # Local Netlify folder
 .netlify
+
+# Secrets never belong in this repo (the site needs none to build)
+.env
+.env.*
+
+# Claude Code: settings.json is shared, the rest is per-machine
+.claude/*
+!.claude/settings.json
