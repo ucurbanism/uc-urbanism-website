@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — meeting polls on Connect
+
+- Connect can show the club's meeting-poll site (a names-only fork of Timeful) in a new "Schedule a meeting" section
+  (`/connect/#schedule`), below Events. Set its address in the CMS under Pages → Connect → "Meeting polls: poll site
+  address"; while that's blank the section stays hidden.
+
 ## Unreleased — repository made ready for public release (2026-11-16)
 
 No change to the site itself.
