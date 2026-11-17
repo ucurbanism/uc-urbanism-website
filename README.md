@@ -8,7 +8,7 @@
 ### The website of the Urbanism Club at the University of Cincinnati
 
 [![Live site](https://img.shields.io/badge/live-uc--urbanism.netlify.app-007ea3?style=flat-square)](https://uc-urbanism.netlify.app)
-[![Built with Astro](https://img.shields.io/badge/built%20with-Astro%205-007ea3?style=flat-square&logo=astro&logoColor=white)](https://astro.build)
+[![Built with Astro](https://img.shields.io/badge/built%20with-Astro%207-007ea3?style=flat-square&logo=astro&logoColor=white)](https://astro.build)
 [![Edited with Decap CMS](https://img.shields.io/badge/edited%20with-Decap%20CMS-007ea3?style=flat-square)](https://decapcms.org)
 [![Code license: MIT](https://img.shields.io/badge/code-MIT-007ea3?style=flat-square)](LICENSE)
 
@@ -61,7 +61,7 @@ Changing code or design goes through a pull request: see [CONTRIBUTING.md](CONTR
 
 ## Run it locally
 
-Needs [Node.js](https://nodejs.org) 22 or newer.
+Needs [Node.js](https://nodejs.org) 22.23.4 or newer (the minimum for Astro 7).
 
 ```bash
 npm install
