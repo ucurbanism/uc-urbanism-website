@@ -1,4 +1,4 @@
-# Asks these people for a review when a pull request is opened. Nothing is blocked: see MAINTAINERS.md.
+# Asks these people for a review when a pull request is opened. Only ucurbanism can merge: see MAINTAINERS.md.
 # Owners here must be collaborators with Write access.
 *                         @mjs06-git
 
@@ -13,5 +13,5 @@
 /MAINTAINERS.md           @ucurbanism
 /CODE_OF_CONDUCT.md       @ucurbanism
 
-# Content is published from the CMS without review.
-/src/content/
+# Content arrives as CMS drafts; the owner publishes them.
+/src/content/             @ucurbanism
