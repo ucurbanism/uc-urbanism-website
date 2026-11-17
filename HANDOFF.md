@@ -4,7 +4,7 @@
 
 | | State |
 | --- | --- |
-| Repo | GitHub **ucurbanism/uc-urbanism-website**, owned by the club's account (public; code under MIT, club content reserved: see `LICENSE` and `LICENSE-CONTENT.md`). Who needs which access: README, "Taking over the site"; who may merge what: `MAINTAINERS.md`. Transferred from `mjs06-git` and made public on 2026-11-16; GitHub redirects the old address. Rulesets stop `main` being deleted or force-pushed and `v*` tags being moved or deleted. |
+| Repo | GitHub **ucurbanism/uc-urbanism-website**, owned by the club's account (public; code under MIT, club content reserved: see `LICENSE` and `LICENSE-CONTENT.md`). Who needs which access: README, "Taking over the site"; who may merge what: `MAINTAINERS.md`. Transferred from `mjs06-git` and made public on 2026-11-16; GitHub redirects the old address. Rulesets: only `ucurbanism` (Repository admin) can update `main`, nobody can delete or force-push it, and `v*` tags can't be moved or deleted. The CMS uses the editorial workflow, so every edit is a pull request that `ucurbanism` merges. |
 | Live site | https://uc-urbanism.netlify.app — Netlify site `uc-urbanism`, auto-deploys from `main` via GitHub webhook |
 | Live version | **v1.6.2** (merge of PR #5, deployed and checked 2026-10-20: one-hop `/join` and `/events` redirects, Join pill glides on Connect without a reload). Same day: v1.6.1 = PR #4, v1.6.0 = PR #3. |
 | Tags | Annotated, all pushed: `v1.6.2`, `v1.6.1`, `v1.6.0`, `v1.5.1`, `v1.5.0`, `v1.0.0`. `package.json` matches the latest tag. Per-version changes: `CHANGELOG.md`. |

@@ -6,9 +6,9 @@ Who looks after this repository, what they promise, and who may merge what.
 
 | Role | Who | GitHub access | Can do |
 | --- | --- | --- | --- |
-| **Contributor** | Any club member or board member who asks | Write (collaborator) | Edit content in the CMS; open pull requests |
-| **Maintainer** | The people listed below | Write (collaborator) | Everything a contributor can, plus review and merge pull requests and tag releases |
-| **Owner** | The club's GitHub account, `ucurbanism`. Its sign-in is held by the President and one other officer | Owner | Add and remove collaborators, change repository settings, transfer or delete the repository |
+| **Contributor** | Any club member or board member who asks | Write (collaborator) | Save drafts in the CMS; open pull requests |
+| **Maintainer** | The people listed below | Write (collaborator) | Everything a contributor can, plus review and approve pull requests and tag releases |
+| **Owner** | The club's GitHub account, `ucurbanism`. Its sign-in is held by the President and one other officer | Owner | Merge pull requests and publish CMS drafts (the only account that can), add and remove collaborators, change repository settings, transfer or delete the repository |
 
 People outside the club are welcome too: fork the repository and open a pull request.
 
@@ -30,9 +30,8 @@ As a maintainer of the Urbanism Club's website, I pledge to:
    requests within a week during the semester, and I say so when I can't.
 3. **Review kindly and honestly.** I judge the change, not the person, explain what I ask for, and thank people
    for their work.
-4. **Not merge my own code unreviewed.** Another maintainer or an owner looks first, except in the emergencies
-   listed below.
-5. **Protect the live site.** I run the build and the tests before merging, never force-push `main`, and never
+4. **Get a second pair of eyes.** Another maintainer or an owner reviews my code before I ask for it to be merged.
+5. **Protect the live site.** I run the build and the tests before asking for a merge, never force-push `main`, and never
    commit a password, key or token.
 6. **Protect people.** I take down a photo or a name when its subject asks, and I keep private what is sent to me
    in confidence.
@@ -42,42 +41,45 @@ As a maintainer of the Urbanism Club's website, I pledge to:
 
 ## Who may merge what
 
-| Change | How it lands | Who approves |
+Only the club's account, `ucurbanism`, can merge into `main`, and every change, CMS edits included, gets there
+through a pull request. Maintainers review; the owner merges.
+
+| Change | How it arrives | Approved by, before the owner merges |
 | --- | --- | --- |
-| Content edited in the CMS (anything under `src/content/`) | Saved straight to `main` by the CMS | Nobody: every contributor is trusted to publish |
+| Content edited in the CMS (anything under `src/content/`) | A draft pull request the CMS opens on a `cms/…` branch, marked **Ready** by its author | The owner, when publishing |
 | Content edited by hand, docs, typo fixes | Pull request | One maintainer |
 | Code, design, styles, tests (`src/pages`, `src/layouts`, `src/styles`, `src/lib`, `scripts`) | Pull request | One maintainer who did not write it |
-| Build, hosting, dependencies and sign-in (`package.json`, `package-lock.json`, `astro.config.mjs`, `netlify.toml`, `public/admin/`, `.github/`) | Pull request | One maintainer who did not write it, plus an owner |
-| Licences, this file, `CODE_OF_CONDUCT.md` | Pull request | An owner |
+| Build, hosting, dependencies and sign-in (`package.json`, `package-lock.json`, `astro.config.mjs`, `netlify.toml`, `public/admin/`, `.github/`) | Pull request | One maintainer who did not write it, plus the owner |
+| Licences, this file, `CODE_OF_CONDUCT.md` | Pull request | The owner |
 
 For every pull request:
 
-- `npm run build` and `npm test` pass on the branch. There is no automatic check, so the person who merges runs them.
-- The author does not merge their own pull request, unless it is content or docs and a maintainer has approved it.
-- Merge with a merge commit, and delete the branch afterwards.
-- Merging to `main` publishes to the live site in about a minute. Look at the live page after you merge.
+- `npm run build` and `npm test` pass on the branch. There is no automatic check, so the owner runs them, or
+  checks that the reviewing maintainer did, before merging.
+- Merge with a merge commit; the branch is deleted automatically.
+- Merging to `main` publishes to the live site in about a minute. Look at the live page after merging.
 
-**Emergencies.** If the live site is broken or shows something that must come down, any maintainer may push the
-fix or the revert straight to `main`, then open an issue the same day saying what happened.
+**Emergencies.** If the live site is broken or shows something that must come down, open a pull request with the
+fix or the revert and get it to whoever holds the `ucurbanism` sign-in at once (in person, or the board's group
+chat). Nobody else can change `main`, so the owners need to be reachable.
 
-**Releases.** A maintainer adds the entry to `CHANGELOG.md`, then tags the merge commit `vX.Y.Z`. Tags are never
-moved or deleted.
+**Releases.** A maintainer adds the entry to `CHANGELOG.md`; once it is merged, a maintainer tags the merge commit
+`vX.Y.Z`. Tags are never moved or deleted.
 
 ## What GitHub enforces, and what it doesn't
 
-GitHub enforces two rulesets (*Settings → Rules → Rulesets*), for everyone including the owner:
+GitHub enforces two rulesets (*Settings → Rules → Rulesets*):
 
-- **Protect main:** `main` can't be deleted or force-pushed.
-- **Protect release tags:** tags starting with `v` can't be moved or deleted.
+- **Protect main:** only the **Repository admin** role (the `ucurbanism` account) can update `main`, through a
+  merge or a push. Nobody, the owner included, can delete it or force-push it.
+- **Protect release tags:** tags starting with `v` can be created by any collaborator but never moved or deleted.
 
-To do either on purpose, an owner switches the ruleset off, does it, and switches it back on.
+To force-push `main` or move a tag on purpose, the owner switches the ruleset off, does it, and switches it back on.
 
-Everything else here is kept by agreement, not by the software:
+Kept by agreement, not by the software:
 
-- Every collaborator has the same Write access and can push to `main`. The CMS needs that to publish, so `main`
-  must not have a rule that requires pull requests.
-- [`.github/CODEOWNERS`](.github/CODEOWNERS) asks the right people for a review automatically, but nothing blocks
-  a merge without one.
+- Who must approve what, in the table above. [`.github/CODEOWNERS`](.github/CODEOWNERS) asks the right people for a
+  review automatically, but the owner can merge without one.
 - Only the owner account can add or remove collaborators.
 
 If the club later moves the repository into a GitHub organization, the roles above map onto its Write, Maintain

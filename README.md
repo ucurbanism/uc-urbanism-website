@@ -44,7 +44,8 @@ Old `/events` and `/join` links redirect to the matching section of Connect (see
 ## Editing the site (no coding needed)
 
 Go to **[uc-urbanism.netlify.app/admin](https://uc-urbanism.netlify.app/admin/)**, sign in with GitHub, edit, and
-press **Publish**. The live site updates in about a minute.
+press **Save**. Your change becomes a draft. When it's done, open the **Workflow** tab and move it to **Ready**. The
+club's account (`ucurbanism`) then publishes it, and the live site updates about a minute later.
 
 | CMS section | What it edits | Files |
 | --- | --- | --- |
@@ -71,12 +72,15 @@ npm install
 npm run dev
 ```
 
-The site is at http://localhost:4321. To use the CMS against your local files, run this in a second terminal and
+The site is at http://localhost:4321. To use the CMS against your local copy, run this in a second terminal and
 open http://localhost:4321/admin/index.html:
 
 ```bash
 npm run cms
 ```
+
+Locally, each save is committed to a `cms/…` branch in your copy of the repository. Push that branch and open a
+pull request; don't press **Publish** locally, which only merges into your own copy of `main`.
 
 Before pushing, both of these must pass:
 
@@ -121,8 +125,8 @@ owners, so nothing is lost when someone graduates.
 | Role | Who | GitHub (this repo) | Netlify | Everything else |
 | --- | --- | --- | --- | --- |
 | **Contributor** | Any club member or board member who asks | **Write** | none | none |
-| **Maintainer** | The people listed in [MAINTAINERS.md](MAINTAINERS.md), who review and merge code | **Write** | optional: team member, to read deploy logs | none |
-| **Owner** | President plus one other officer, through the club's GitHub account | Sign-in to the **owner account** | **Owner** of the team that holds the site | Owner of everything in the table below |
+| **Maintainer** | The people listed in [MAINTAINERS.md](MAINTAINERS.md), who review code and content | **Write** | optional: team member, to read deploy logs | none |
+| **Owner** | President plus one other officer, through the club's GitHub account, the only one that can merge | Sign-in to the **owner account** | **Owner** of the team that holds the site | Owner of everything in the table below |
 
 Contributor access is for anyone in the club who asks; there is no vetting beyond being a member. For the other
 two rows, give people the lowest one that covers what they do. Contributors never need Netlify.
@@ -160,8 +164,9 @@ setting. Only the owner account can add or remove people.
       homepage.
 
 > [!NOTE]
-> Don't add a branch-protection rule that requires pull requests on `main`: the CMS saves by committing straight
-> to `main`, and that rule would lock every contributor out.
+> Only the club's account can change `main`. The **Protect main** ruleset (*Settings → Rules → Rulesets*) has
+> **Restrict updates** on, with **Repository admin** as the only bypass, so every change, CMS edits included, reaches
+> the live site through a pull request that `ucurbanism` merges. See [MAINTAINERS.md](MAINTAINERS.md#who-may-merge-what).
 
 ### First-time setup of CMS sign-in
 
