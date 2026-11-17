@@ -20,7 +20,7 @@ calendar_src: "https://calendar.google.com/calendar/embed?src=0c7201b7a265d7809d
 # Paste the poll site's address (https://….netlify.app). While blank, the section is hidden.
 schedule_heading: Schedule a meeting
 schedule_text: "Find a time that works for everyone: make a poll, copy its link to share, and people add their availability with just their name."
-schedule_embed_src: ""
+schedule_embed_src: "https://uc-urbanism-polls.netlify.app/"
 instagram_embed_src: "https://www.instagram.com/uc_urbanism/embed/?cr=1&v=14&wp=1396&rd=https%3A%2F%2Fuc-urbanism.netlify.app&rp=%2Fconnect"
 meetings_heading: Meetings
 meetings_lines: |
