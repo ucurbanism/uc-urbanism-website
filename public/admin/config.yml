@@ -112,6 +112,9 @@ collections:
           - { name: events_heading, label: Events heading, widget: string }
           - { name: calendar_text, label: Calendar caption, widget: string }
           - { name: calendar_src, label: Google Calendar embed URL, widget: string, hint: "Month view. The agenda list above it uses the same URL automatically. To add or remove a calendar, add or remove a src= part." }
+          - { name: schedule_heading, label: "Meeting polls: heading", widget: string }
+          - { name: schedule_text, label: "Meeting polls: caption", widget: text, required: false }
+          - { name: schedule_embed_src, label: "Meeting polls: poll site address", widget: string, required: false, hint: "The club's poll site, e.g. https://….netlify.app. Leave blank to hide the section." }
           - { name: instagram_embed_src, label: Instagram embed URL, widget: string }
           - { name: meetings_heading, label: Meetings heading, widget: string }
           - { name: meetings_lines, label: Meetings text, widget: text }

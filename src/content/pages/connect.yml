@@ -16,6 +16,11 @@ events_heading: Events
 calendar_text: "Check out our Calendar with Urbanism Club sponsored events, as well as other local Urbanist events!"
 # Month view. The agenda list above it is the same URL with &mode=AGENDA appended.
 calendar_src: "https://calendar.google.com/calendar/embed?src=0c7201b7a265d7809dcac374d572cce797f89a0913afd9aa8158019dabd465cd%40group.calendar.google.com&src=0e8049d1f2999f161c00b7806575afbc40fc1aa8c555fc41b6440c77eea03f4d%40group.calendar.google.com&ctz=America%2FDetroit&wkst=2&showTitle=0&showTz=0&showTabs=0&showPrint=0&color=%23007ea3&color=%23348ca6"
+# Meeting polls (/connect/#schedule): the club's poll site (github.com/ucurbanism/timeful), embedded.
+# Paste the poll site's address (https://….netlify.app). While blank, the section is hidden.
+schedule_heading: Schedule a meeting
+schedule_text: "Find a time that works for everyone: make a poll, copy its link to share, and people add their availability with just their name."
+schedule_embed_src: ""
 instagram_embed_src: "https://www.instagram.com/uc_urbanism/embed/?cr=1&v=14&wp=1396&rd=https%3A%2F%2Fuc-urbanism.netlify.app&rp=%2Fconnect"
 meetings_heading: Meetings
 meetings_lines: |

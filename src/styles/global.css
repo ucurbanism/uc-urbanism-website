@@ -436,6 +436,12 @@ figcaption {
   padding-bottom: 40%;
 }
 
+/* Meeting polls: a poll's grid of days and times needs a tall frame at any width. */
+.embed--poll {
+  padding-bottom: 0;
+  height: 860px;
+}
+
 /* Embeds that size themselves (Instagram): no aspect-ratio box, natural height.
    Instagram's profile header stacks "followers · posts" on separate lines at
    every frame width; that layout is inside its cross-origin iframe, not ours. */
@@ -646,6 +652,10 @@ html.night .logo-row .logo-mono {
 
   .embed--natural {
     height: auto;
+  }
+
+  .embed--poll {
+    height: min(860px, 85vh);
   }
 
   .embed--agenda {
