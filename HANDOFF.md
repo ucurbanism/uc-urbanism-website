@@ -36,7 +36,7 @@ npm run build && npm test
 
 ## What the site is
 
-Astro 5 static site merging the club's old Canva site (structure) and Geocities site (content and look: club blue
+Astro 7 static site merging the club's old Canva site (structure) and Geocities site (content and look: club blue
 `#007ea3`, IBM Plex Sans + Gibson via Typekit, street-network oval background, 8pm–8am night theme). Decap CMS at
 `/admin`; all editable content is YAML under `src/content/` (settings, pages, leadership, affiliates). SEO basics,
 OG image, sitemap, robots.txt, favicon set. Details in README.md.
@@ -44,7 +44,7 @@ OG image, sitemap, robots.txt, favicon set. Details in README.md.
 | Page | What's on it |
 | --- | --- |
 | `/` About Us | Hero (logo, or the CMS `hero_image` once set), lede + CTAs, taglines, group photo on the map background, About / What is Urbanism / Goals, affiliate logo tiles, leadership grid, closing CTA |
-| `/connect` | Intro → QR codes → Join the mailing list (`#join`: mailing-list pill + GroupMe pill, see below) → Events (combined Google Calendar: agenda list, then month grid) → Instagram → Meetings |
+| `/connect` | Intro → QR codes → Join the mailing list (`#join`: mailing-list pill + GroupMe pill, see below) → Events (combined Google Calendar: agenda list, then month grid) → Meeting polls (`#schedule`, hidden when blank) → Instagram → Meetings |
 | `/resources` | Proposals, Projects, and Plans spreadsheet, then the "Add your project!" Google Form link |
 | `404` | Branded "This page isn't here yet" page with home + GroupMe buttons (CMS-editable, noindex) |
 

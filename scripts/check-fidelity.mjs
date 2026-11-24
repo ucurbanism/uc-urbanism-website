@@ -54,7 +54,7 @@ const text = {
     'Get Connected!',
     'We stay connected with members and the general public through social media, messaging apps, and UC sanctioned websites. Scan the QR codes or click the links below to get connected with us!',
     'Check out our Calendar with Urbanism Club sponsored events, as well as other local Urbanist events!',
-    'Instagram', 'LinkedIn', 'GroupMe', 'GetInvolvedUC', 'Join the mailing list', 'Events', 'Meetings',
+    'Instagram', 'LinkedIn', 'GroupMe', 'GetInvolvedUC', 'Join the mailing list', 'Events', 'Schedule a meeting', 'Meetings',
     'Most meetings are located in the DAAP first year planning studio, Alms 6110, within the College',
     'of Design, Architecture, Art, and Planning (DAAP).',
     '348 (Alms Builiding) 342 (DAAP Building) Clifton Court, Cincinnati, Ohio 45219',
@@ -80,7 +80,8 @@ const raw = {
     'calendar/embed?src=0c7201b7a265d7809dcac374d572cce797f89a0913afd9aa8158019dabd465cd%40group.calendar.google.com',
     'src=0e8049d1f2999f161c00b7806575afbc40fc1aa8c555fc41b6440c77eea03f4d%40group.calendar.google.com',
     'mode=AGENDA',
-    'id="join"', 'id="events"', 'id="meetings"',
+    'https://uc-urbanism-polls.netlify.app/',
+    'id="join"', 'id="events"', 'id="schedule"', 'id="meetings"',
   ],
   'resources/index.html': [
     'https://forms.gle/SAtJWEXpx8rc3VcD7',
@@ -94,11 +95,42 @@ for (const [file, html] of Object.entries(pages)) {
   for (const s of text[file] ?? []) if (!t.includes(s)) { console.error(`MISSING TEXT  ${file}: ${s}`); failures++; }
   for (const s of raw[file] ?? []) if (!html.includes(s)) { console.error(`MISSING EMBED/LINK  ${file}: ${s}`); failures++; }
   if (/geocities\.ws\/uc_urbanism\/pictures|my\.canva\.site\/_assets/.test(html)) { console.error(`HOTLINK  ${file}`); failures++; }
+  // Every <img> must carry an alt attribute (empty alt is valid for decorative images).
+  for (const [tag] of html.matchAll(/<img\b[^>]*>/g)) {
+    if (!/\balt(?==|[\s>])/.test(tag)) { console.error(`MISSING ALT  ${file}: ${tag.slice(0, 100)}`); failures++; }
+  }
 }
 // Netlify serves each page at /<name>/; a link to /<name> costs a 301 first (and reloads Connect for its own #join).
 for (const [file, html] of Object.entries(pages)) {
   for (const [, name] of html.matchAll(/href="\/([^"/#?.]+)(?:#[^"]*)?"/g)) {
     if (existsSync(new URL(`../dist/${name}/index.html`, import.meta.url))) { console.error(`NO TRAILING SLASH  ${file}: /${name} (link to /${name}/)`); failures++; }
+  }
+  // Every internal href="/..." (excluding protocol-relative //) must resolve to a built file in dist/.
+  for (const [, rawTarget] of html.matchAll(/href="(\/(?!\/)[^"#?]*)"/g)) {
+    const clean = rawTarget.replace(/^\/+/, '');
+    const ok = clean === ''
+      ? existsSync(new URL('../dist/index.html', import.meta.url))
+      : existsSync(new URL(`../dist/${clean}`, import.meta.url)) ||
+        existsSync(new URL(`../dist/${clean.replace(/\/$/, '')}/index.html`, import.meta.url)) ||
+        existsSync(new URL(`../dist/${clean}.html`, import.meta.url));
+    if (!ok) { console.error(`BROKEN INTERNAL LINK  ${file}: ${rawTarget}`); failures++; }
+  }
+}
+// Verify sitemap and robots.txt are emitted and exclude /admin and /404.
+for (const metaFile of ['robots.txt', 'sitemap-index.xml', 'sitemap-0.xml']) {
+  if (!existsSync(new URL(`../dist/${metaFile}`, import.meta.url))) {
+    console.error(`MISSING BUILD FILE  ${metaFile}`);
+    failures++;
+  }
+}
+if (existsSync(new URL('../dist/sitemap-0.xml', import.meta.url))) {
+  const sitemap = load('sitemap-0.xml');
+  for (const loc of ['https://uc-urbanism.netlify.app/', 'https://uc-urbanism.netlify.app/connect/', 'https://uc-urbanism.netlify.app/resources/']) {
+    if (!sitemap.includes(`<loc>${loc}</loc>`)) { console.error(`MISSING SITEMAP ENTRY  ${loc}`); failures++; }
+  }
+  if (sitemap.includes('/admin') || sitemap.includes('/404')) {
+    console.error('UNEXPECTED SITEMAP ENTRY  (/admin or /404)');
+    failures++;
   }
 }
 for (const p of removed) {
