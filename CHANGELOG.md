@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased — performance, night-mode and accessibility polish
+
+- **Night mode fixes:** the home-page hero logo now switches to the white inverted logo at night (it used to stay blue
+  on the blue night background), embedded calendars/polls/sheets get white borders at night, and muted captions/notes
+  meet WCAG AA contrast (`>= 4.5:1`).
+- **Accessibility:** the home-page `<main>` landmark now wraps the hero so "Skip to content" lands at the top of the
+  page; affiliate logo links show keyboard focus rings; linked leadership cards expose a single tab stop; print styles
+  clean up board printouts.
+- **Performance:** flattened the street-network oval backgrounds onto the day/night page colors (~90% smaller, saving
+  >400 KB per home-page visit), eliminated oversized fallback WebP builds, right-sized leadership/affiliate images,
+  inlined the small stylesheet, added font `preconnect` hints and hover prefetching, deferred Instagram's `embed.js`
+  until scrolled near, losslessly recompressed static icons/SVGs, and added caching/security headers in `netlify.toml`.
+
 ## Unreleased — meeting polls on Connect
 
 - Connect can show the club's meeting-poll site (a names-only fork of Timeful) in a new "Schedule a meeting" section

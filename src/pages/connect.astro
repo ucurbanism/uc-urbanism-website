@@ -5,12 +5,14 @@ import Base from '../layouts/Base.astro';
 import { md, lines } from '../lib/text';
 import almsPhoto from '../assets/alms-6110-studio.jpg';
 
-const page = (await getEntry('pages', 'connect'))!.data as Record<string, any>;
+const page = (await getEntry('pages', 'connect'))!.data;
 const site = (await getEntry('settings', 'site'))!.data;
 const groupMe = site.qr_links.find((q) => q.label === 'GroupMe');
 // Each QR code is already labelled with a link, so only list text links that no QR code covers.
 const qrLabels = new Set(site.qr_links.map((q) => q.label.toLowerCase()));
 const extraLinks = site.text_links.filter((l) => !qrLabels.has(l.label.toLowerCase()));
+const calendarSrc = page.calendar_src ?? '';
+const agendaSrc = calendarSrc ? `${calendarSrc}${calendarSrc.includes('?') ? '&' : '?'}mode=AGENDA` : '';
 ---
 
 <Base title={page.seo_title} description={page.seo_description}>
@@ -22,7 +24,7 @@ const extraLinks = site.text_links.filter((l) => !qrLabels.has(l.label.toLowerCa
     <div class="qr-grid">
       {site.qr_links.map((q) => (
         <a href={q.url}>
-          <img src={q.image} alt="" width="200" height="200" />
+          <img src={q.image} alt="" width="200" height="200" decoding="async" />
           {q.label}
         </a>
       ))}
@@ -35,7 +37,7 @@ const extraLinks = site.text_links.filter((l) => !qrLabels.has(l.label.toLowerCa
       </div>
     )}
 
-    <!-- Mailing list: signup is a club-owned Google Form. The nav's Join pill links here. -->
+    {/* Mailing list: signup is a club-owned Google Form. The nav's Join pill links here. */}
     <section id="join" class="anchor-target">
       <h2>{page.join_heading}</h2>
       {page.signup_url ? (
@@ -59,34 +61,58 @@ const extraLinks = site.text_links.filter((l) => !qrLabels.has(l.label.toLowerCa
       )}
     </section>
 
-    <!-- One Google Calendar URL, two views: an agenda list of what's next, then the month grid. -->
+    {/* One Google Calendar URL, two views: an agenda list of what's next, then the month grid. */}
     <section id="events" class="anchor-target">
       <h2>{page.events_heading}</h2>
       {page.calendar_text && <p class="embed-caption">{page.calendar_text}</p>}
       <div class="embed embed--agenda">
-        <iframe title="Upcoming Urbanism Club events (list)" src={`${page.calendar_src}&mode=AGENDA`} style="border:solid 1px #007ea3" frameborder="0" scrolling="no" loading="lazy"></iframe>
+        <iframe title="Upcoming Urbanism Club events (list)" src={agendaSrc} loading="lazy"></iframe>
       </div>
       <div class="embed">
-        <iframe title="Urbanism Club events calendar (month)" src={page.calendar_src} style="border:solid 1px #007ea3" frameborder="0" scrolling="no" loading="lazy"></iframe>
+        <iframe title="Urbanism Club events calendar (month)" src={calendarSrc} loading="lazy"></iframe>
       </div>
     </section>
 
-    <!-- Meeting polls: the club's own poll site (a names-only fork of Timeful). Hidden until its address is set. -->
+    {/* Meeting polls: the club's own poll site (a names-only fork of Timeful). Hidden until its address is set. */}
     {page.schedule_embed_src && (
       <section id="schedule" class="anchor-target">
         <h2>{page.schedule_heading}</h2>
         {page.schedule_text && <p class="embed-caption">{page.schedule_text}</p>}
         <div class="embed embed--poll">
-          <iframe title="Meeting poll" src={page.schedule_embed_src} style="border:solid 1px #007ea3" frameborder="0" loading="lazy" allow="clipboard-write"></iframe>
+          <iframe title="Meeting poll" src={page.schedule_embed_src} loading="lazy" allow="clipboard-write"></iframe>
         </div>
         <p class="cta-note"><a href={page.schedule_embed_src}>Open the poll site in its own tab</a></p>
       </section>
     )}
 
     <div class="embed embed--natural">
-      <iframe title="Urbanism Club on Instagram" class="instagram-media instagram-media-rendered" id="instagram-embed-0" src={page.instagram_embed_src} allowtransparency="true" allowfullscreen="true" frameborder="0" height="688" data-instgrm-payload-id="instagram-media-payload-0" scrolling="no" loading="lazy"></iframe>
+      <iframe title="Urbanism Club on Instagram" class="instagram-media instagram-media-rendered" id="instagram-embed-0" src={page.instagram_embed_src} allowfullscreen height="688" data-instgrm-payload-id="instagram-media-payload-0" loading="lazy"></iframe>
     </div>
-    <script is:inline async src="https://www.instagram.com/embed.js"></script>
+    {/* Defer Instagram's resize script until the lazy embed approaches the viewport. */}
+    <script is:inline>
+      (function () {
+        var el = document.getElementById('instagram-embed-0');
+        if (!el) return;
+        function load() {
+          if (document.querySelector('script[src="https://www.instagram.com/embed.js"]')) return;
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.instagram.com/embed.js';
+          document.body.appendChild(s);
+        }
+        if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function (entries) {
+            if (entries.some(function (e) { return e.isIntersecting; })) {
+              io.disconnect();
+              load();
+            }
+          }, { rootMargin: '600px' });
+          io.observe(el);
+        } else {
+          load();
+        }
+      })();
+    </script>
 
     <h2 id="meetings" class="anchor-target">{page.meetings_heading}</h2>
     <div class="lines lines--flow">
@@ -95,7 +121,7 @@ const extraLinks = site.text_links.filter((l) => !qrLabels.has(l.label.toLowerCa
     <p>{page.meetings_address}</p>
 
     <div class="image">
-      <p><Image src={almsPhoto} alt={page.meetings_photo_alt} widths={[480, 750, 1500]} sizes="(max-width: 782px) 100vw, 750px" format="webp" loading="lazy" /></p>
+      <p><Image src={almsPhoto} alt={page.meetings_photo_alt ?? ''} width={750} widths={[480, 750, 1100, 1500]} sizes="(max-width: 750px) calc(100vw - 2rem), 718px" format="webp" loading="lazy" /></p>
     </div>
   </main>
 </Base>

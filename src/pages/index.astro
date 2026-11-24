@@ -1,144 +1,196 @@
 ---
-import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { Image, getImage } from 'astro:assets';
 import { getCollection, getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import { md, mdInline, lines } from '../lib/text';
 import logo from '../assets/urbanism-club-logo.png';
+import logoInverted from '../assets/urbanism-club-logo-inverted.png';
+import ovalLightSrc from '../assets/cincinnati-street-network-oval-light.png';
+import ovalDarkSrc from '../assets/cincinnati-street-network-oval-dark.png';
 import groupPhoto from '../assets/urbanism-club-group.png';
 import groupPark from '../assets/group-park.jpg';
 import campusWalk from '../assets/campus-walk.jpg';
 import clubMeeting from '../assets/club-meeting.jpg';
 
-const page = (await getEntry('pages', 'about'))!.data as Record<string, any>;
+const page = (await getEntry('pages', 'about'))!.data;
 const site = (await getEntry('settings', 'site'))!.data;
-const connect = (await getEntry('pages', 'connect'))!.data as Record<string, any>;
+const connect = (await getEntry('pages', 'connect'))!.data;
+
+// Flatten the street-network oval onto the exact day/night body background colors:
+// drops WebP's lossless alpha plane (~457 KB -> ~40 KB) while improving visual quality.
+const [ovalLight, ovalDark] = await Promise.all([
+  getImage({ src: ovalLightSrc, width: 1200, format: 'webp', quality: 60, background: '#ffffff' }),
+  getImage({ src: ovalDarkSrc, width: 1200, format: 'webp', quality: 60, background: '#007ea3' }),
+]);
+
 // One card per person: someone holding several roles is listed once with all of them.
-const leadership = (await getCollection('leadership'))
-  .sort((a, b) => a.data.order - b.data.order)
-  .reduce((people, { data }) => {
-    const existing = people.find((p) => p.name === data.name);
-    if (existing) {
-      existing.roles.push(data.role);
-      existing.link ??= data.link;
-      existing.photo ??= data.photo;
-    } else {
-      people.push({ name: data.name, roles: [data.role], link: data.link, photo: data.photo });
-    }
-    return people;
-  }, [] as { name: string; roles: string[]; link?: string; photo?: any }[]);
+interface Leader {
+  name: string;
+  roles: string[];
+  link?: string;
+  photo?: ImageMetadata;
+}
+const leaderMap = new Map<string, Leader>();
+for (const { data } of (await getCollection('leadership')).sort((a, b) => a.data.order - b.data.order)) {
+  const existing = leaderMap.get(data.name);
+  if (existing) {
+    existing.roles.push(data.role);
+    existing.link ??= data.link;
+    existing.photo ??= data.photo;
+  } else {
+    leaderMap.set(data.name, { name: data.name, roles: [data.role], link: data.link, photo: data.photo });
+  }
+}
+const leadership = [...leaderMap.values()];
 const affiliates = (await getCollection('affiliates')).sort((a, b) => a.data.order - b.data.order);
 
-const sizes = '(max-width: 782px) 100vw, 750px';
+// Content column is 750px max-width with 1em (16px) side padding -> 718px inner width.
+const fullWidths = [480, 750, 1100, 1500];
+const fullSizes = '(max-width: 750px) calc(100vw - 2rem), 718px';
+const fullImageProps = (src: ImageMetadata) => ({
+  width: Math.min(750, src.width),
+  widths: fullWidths,
+  sizes: fullSizes,
+  format: 'webp' as const,
+});
+const logoSizes = '(max-width: 600px) calc(50vw - 3.125rem), 145px';
+const leaderSizes = '(max-width: 600px) calc(50vw - 1.625rem), 155px';
+const affiliateImageProps = (src: ImageMetadata) =>
+  src.format === 'svg'
+    ? { width: 320 }
+    : { width: 320, widths: [160, 320, 480], sizes: logoSizes, format: 'webp' as const };
 ---
 
 <Base title={page.seo_title} description={page.seo_description}>
-  <header class="hero">
-    <h1 class="visually-hidden">{page.h1 ?? site.site_name}</h1>
-    <div class="title_image">
-      <p><Image src={page.hero_image ?? logo} alt={page.logo_alt} widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="eager" fetchpriority="high" /></p>
-    </div>
-    {page.lede && <p class="lede">{page.lede}</p>}
-    <div class="cta">
-      <div class="cta-actions">
-        <a class="btn btn--primary" href="/connect/#join">{page.cta_label ?? 'Join the club'}</a>
-        <a class="btn btn--secondary" href="/connect/#events">See upcoming events</a>
+  <main id="main">
+    <header class="hero">
+      <h1 class="visually-hidden">{page.h1 ?? site.site_name}</h1>
+      <div class="title_image">
+        <p>
+          {page.hero_image ? (
+            <Image src={page.hero_image} alt={page.logo_alt ?? site.site_name} {...fullImageProps(page.hero_image)} loading="eager" fetchpriority="high" />
+          ) : (
+            <>
+              <Image class="logo-day" src={logo} alt={page.logo_alt ?? site.site_name} {...fullImageProps(logo)} loading="eager" fetchpriority="high" />
+              <Image class="logo-night" src={logoInverted} alt={page.logo_alt ?? site.site_name} {...fullImageProps(logoInverted)} loading="lazy" />
+            </>
+          )}
+        </p>
       </div>
-      {page.cta_note && <p class="cta-note">{page.cta_note}</p>}
-    </div>
-    <div class="tagline">
-      {page.taglines.map((t: string) => <p set:html={mdInline(t)} />)}
-    </div>
-  </header>
-
-  <section class="hero">
-    <div class="hero-bg" aria-hidden="true"></div>
-    <div class="image">
-      <p><Image src={groupPhoto} alt={page.group_photo_alt} widths={[480, 750, 1500]} sizes={sizes} format="webp" /></p>
-    </div>
-    <div class="lines lines--flow">
-      {lines(page.intro_lines).map((l, i) => <>{i > 0 && ' '}<p>{l}</p></>)}
-    </div>
-  </section>
-
-  <main class="site" id="main">
-    <h2>{page.about_heading}</h2>
-    <Fragment set:html={md(page.about_text)} />
-
-    <figure>
-      <Image src={groupPark} alt={page.figure_park_alt ?? ''} widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="lazy" />
-      {page.figure_park_caption && <figcaption>{page.figure_park_caption}</figcaption>}
-    </figure>
-
-    <h2>{page.what_is_heading}</h2>
-    <Fragment set:html={md(page.what_is_text)} />
-
-    <figure>
-      <Image src={campusWalk} alt={page.figure_walk_alt ?? ''} widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="lazy" />
-      {page.figure_walk_caption && <figcaption>{page.figure_walk_caption}</figcaption>}
-    </figure>
-
-    <h2>{page.goals_heading}</h2>
-    <div class="goals">
-      {page.goals.map((g: { title: string; text: string }) => (
-        <div>
-          <h3>{g.title}</h3>
-          <p>{g.text}</p>
+      {page.lede && <p class="lede">{page.lede}</p>}
+      <div class="cta">
+        <div class="cta-actions">
+          <a class="btn btn--primary" href="/connect/#join">{page.cta_label ?? 'Join the club'}</a>
+          <a class="btn btn--secondary" href="/connect/#events">See upcoming events</a>
         </div>
-      ))}
-    </div>
+        {page.cta_note && <p class="cta-note">{page.cta_note}</p>}
+      </div>
+      <div class="tagline">
+        {(page.taglines ?? []).map((t) => <p set:html={mdInline(t)} />)}
+      </div>
+    </header>
 
-    <figure>
-      <Image src={clubMeeting} alt={page.figure_meeting_alt ?? ''} widths={[480, 750, 1500]} sizes={sizes} format="webp" loading="lazy" />
-      {page.figure_meeting_caption && <figcaption>{page.figure_meeting_caption}</figcaption>}
-    </figure>
-
-    <h2>{page.affiliates_heading}</h2>
-    <Fragment set:html={md(page.affiliates_text)} />
-    <div class="logo-row">
-      {affiliates.map(({ data }) => {
-        const raster = (src: any) => (src.format === 'svg' ? {} : { format: 'webp', densities: [1, 2] });
-        // Logos are colour by day and white at night: either the editor-supplied night
-        // version, or (without one) the day logo filtered to solid white in CSS.
-        const img = data.logo_night ? (
-          <>
-            <Image class="logo-day" src={data.logo} alt={data.name} width={320} loading="lazy" {...raster(data.logo)} />
-            <Image class="logo-night" src={data.logo_night} alt={data.name} width={320} loading="lazy" {...raster(data.logo_night)} />
-          </>
-        ) : (
-          <Image class="logo-mono" src={data.logo} alt={data.name} width={320} loading="lazy" {...raster(data.logo)} />
-        );
-        return <div class="logo-tile">{data.link ? <a href={data.link}>{img}</a> : img}</div>;
-      })}
-    </div>
-
-    <h2>{page.leadership_heading}</h2>
-    <div class="leaders">
-      {leadership.map((person) => {
-        const initials = person.name.split(/\s+/).map((w: string) => w[0]).join('').slice(0, 3);
-        const photo = person.photo ? (
-          <Image src={person.photo} alt={person.name} width={320} height={320} format="webp" densities={[1, 2]} loading="lazy" />
-        ) : (
-          <div class="leader-placeholder" aria-hidden="true">{initials}</div>
-        );
-        const roles = person.roles.length > 1 ? person.roles.slice(0, -1).join(', ') + ' and ' + person.roles.at(-1) : person.roles[0];
-        return (
-          <div class="leader">
-            {person.link ? <a href={person.link}>{photo}</a> : photo}
-            <p>{person.link ? <a href={person.link}>{person.name}</a> : person.name}, {roles}</p>
-          </div>
-        );
-      })}
-    </div>
-
-    <!-- The homepage used to end here, with no way to act on 5,000px of reading. -->
-    <section class="cta cta--closing">
-      <h2>{page.closing_heading ?? 'Come to a meeting'}</h2>
-      {page.closing_text && <p>{page.closing_text}</p>}
-      <p>{connect.meetings_address}</p>
-      <div class="cta-actions">
-        <a class="btn btn--primary" href="/connect/#join">{page.cta_label ?? 'Join the club'}</a>
-        <a class="btn btn--secondary" href="/connect/#meetings">Find a meeting</a>
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true" style={`--oval-light: url(${ovalLight.src}); --oval-dark: url(${ovalDark.src});`}></div>
+      <div class="image">
+        <p><Image src={groupPhoto} alt={page.group_photo_alt ?? ''} {...fullImageProps(groupPhoto)} loading="lazy" /></p>
+      </div>
+      <div class="lines lines--flow">
+        {lines(page.intro_lines).map((l, i) => <>{i > 0 && ' '}<p>{l}</p></>)}
       </div>
     </section>
+
+    <div class="site">
+      <h2>{page.about_heading}</h2>
+      <Fragment set:html={md(page.about_text)} />
+
+      <figure>
+        <Image src={groupPark} alt={page.figure_park_alt ?? ''} {...fullImageProps(groupPark)} loading="lazy" />
+        {page.figure_park_caption && <figcaption>{page.figure_park_caption}</figcaption>}
+      </figure>
+
+      <h2>{page.what_is_heading}</h2>
+      <Fragment set:html={md(page.what_is_text)} />
+
+      <figure>
+        <Image src={campusWalk} alt={page.figure_walk_alt ?? ''} {...fullImageProps(campusWalk)} loading="lazy" />
+        {page.figure_walk_caption && <figcaption>{page.figure_walk_caption}</figcaption>}
+      </figure>
+
+      <h2>{page.goals_heading}</h2>
+      <div class="goals">
+        {(page.goals ?? []).map((g) => (
+          <div>
+            <h3>{g.title}</h3>
+            <p>{g.text}</p>
+          </div>
+        ))}
+      </div>
+
+      <figure>
+        <Image src={clubMeeting} alt={page.figure_meeting_alt ?? ''} {...fullImageProps(clubMeeting)} loading="lazy" />
+        {page.figure_meeting_caption && <figcaption>{page.figure_meeting_caption}</figcaption>}
+      </figure>
+
+      <h2>{page.affiliates_heading}</h2>
+      <Fragment set:html={md(page.affiliates_text)} />
+      <div class="logo-row">
+        {affiliates.map(({ data }) => {
+          // Logos are colour by day and white at night: either the editor-supplied night
+          // version, or (without one) the day logo filtered to solid white in CSS.
+          const img = data.logo_night ? (
+            <>
+              <Image class="logo-day" src={data.logo} alt={data.name} loading="lazy" {...affiliateImageProps(data.logo)} />
+              <Image class="logo-night" src={data.logo_night} alt={data.name} loading="lazy" {...affiliateImageProps(data.logo_night)} />
+            </>
+          ) : (
+            <Image class="logo-mono" src={data.logo} alt={data.name} loading="lazy" {...affiliateImageProps(data.logo)} />
+          );
+          return <div class="logo-tile">{data.link ? <a href={data.link}>{img}</a> : img}</div>;
+        })}
+      </div>
+
+      <h2>{page.leadership_heading}</h2>
+      <div class="leaders">
+        {leadership.map((person) => {
+          const initials = person.name.split(/\s+/).map((w) => w[0]).join('').slice(0, 3);
+          const photo = person.photo ? (
+            <Image
+              src={person.photo}
+              alt={person.link ? '' : person.name}
+              width={320}
+              height={320}
+              fit="cover"
+              position="top"
+              widths={[160, 320, 480]}
+              sizes={leaderSizes}
+              format="webp"
+              loading="lazy"
+            />
+          ) : (
+            <div class="leader-placeholder" aria-hidden="true">{initials}</div>
+          );
+          const roles = person.roles.length > 1 ? person.roles.slice(0, -1).join(', ') + ' and ' + person.roles.at(-1) : person.roles[0];
+          return (
+            <div class="leader">
+              {person.link ? <a href={person.link} tabindex="-1" aria-hidden="true">{photo}</a> : photo}
+              <p>{person.link ? <a href={person.link}>{person.name}</a> : person.name}, {roles}</p>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* The homepage used to end here, with no way to act on 5,000px of reading. */}
+      <section class="cta cta--closing">
+        <h2>{page.closing_heading ?? 'Come to a meeting'}</h2>
+        {page.closing_text && <p>{page.closing_text}</p>}
+        <p>{connect.meetings_address}</p>
+        <div class="cta-actions">
+          <a class="btn btn--primary" href="/connect/#join">{page.cta_label ?? 'Join the club'}</a>
+          <a class="btn btn--secondary" href="/connect/#meetings">Find a meeting</a>
+        </div>
+      </section>
+    </div>
   </main>
 </Base>

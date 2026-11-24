@@ -2,7 +2,7 @@
 import { getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 
-const page = (await getEntry('pages', 'resources'))!.data as Record<string, any>;
+const page = (await getEntry('pages', 'resources'))!.data;
 ---
 
 <Base title={page.seo_title} description={page.seo_description}>
@@ -10,7 +10,7 @@ const page = (await getEntry('pages', 'resources'))!.data as Record<string, any>
     <h1 class="page-title">{page.projects_heading}</h1>
     {page.projects_text && <p class="lede">{page.projects_text}</p>}
     <div class="embed">
-      <iframe title="Urbanism Club proposals, projects and plans" src={page.projects_sheet_src} style="border:solid 1px #007ea3" frameborder="0" scrolling="yes" loading="lazy"></iframe>
+      <iframe title="Urbanism Club proposals, projects and plans" src={page.projects_sheet_src} loading="lazy"></iframe>
     </div>
     <p><a href={page.projects_form_url}>{page.projects_form_label}</a></p>
   </main>

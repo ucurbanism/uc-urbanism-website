@@ -34,13 +34,17 @@
 
 html.night {
   --bg: #007ea3;
+  /* Night mode headings and links use solid white (the old Geocities stroke-on-blue
+     was a 1:1 contrast failure). --ink-muted keeps >= 4.5:1 WCAG AA contrast on #007ea3. */
   --fg: #ffffff;
   --oval: var(--oval-dark);
   --ink: #ffffff;
-  --ink-muted: #d6ecf3;
+  --ink-muted: #fafdfe;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -52,6 +56,11 @@ html.night {
   html.smooth-scroll {
     scroll-behavior: smooth;
   }
+
+  .btn,
+  .nav a.nav-cta {
+    transition: background-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
+  }
 }
 
 body {
@@ -62,6 +71,7 @@ body {
   padding: 0;
   line-height: var(--leading);
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* ---------- Focus ---------- */
@@ -116,15 +126,6 @@ h1, h2, h3, h4, h5, h6 {
   /* One gap under every heading. It was 0.5em, so 11–23px depending on the size. */
   margin: 0 0 var(--space-2);
   color: var(--fg);
-}
-
-/* Night mode: headings are solid white. The previous rule filled them with the
-   page's own background colour (#007ea3 on #007ea3) and relied on a 1px stroke
-   to carry the glyph, which is a 1:1 contrast failure. */
-html.night h1,
-html.night h2,
-html.night h3 {
-  color: #ffffff;
 }
 
 /* One paragraph rhythm site-wide instead of the browser's 1em top + bottom. */
@@ -186,10 +187,15 @@ img {
   display: block;
 }
 
-/* Day: white-on-blue logo. Night: the original blue logo on the white bar. */
-.nav-logo .logo-night { display: none; }
-html.night .nav-logo .logo-day { display: none; }
-html.night .nav-logo .logo-night { display: block; }
+/* Day/night logo pairs (nav wordmark, home hero logo, affiliate logos with a night variant). */
+.logo-night,
+html.night .logo-day {
+  display: none;
+}
+
+html.night .logo-night {
+  display: block;
+}
 
 .nav ul {
   list-style: none;
@@ -225,19 +231,17 @@ html.night .nav-logo .logo-night { display: block; }
 .nav a.nav-cta {
   background-color: var(--nav-fg);
   color: var(--nav-bg);
-  padding: 0.3em 1em;
+  padding: 0.55em 1em;
   border-radius: var(--radius-pill);
   text-decoration: none;
   line-height: 1.2;
   min-height: 0;
-  padding-block: 0.55em;
 }
 
 /* Hover/active used `filter: brightness(1.12)`, which washed the pill's own
    text down to 1.2:1 against its background. Invert the pill instead. */
 .nav a.nav-cta:hover,
-.nav a.nav-cta:focus-visible,
-.nav a.nav-cta[aria-current="page"] {
+.nav a.nav-cta:focus-visible {
   text-decoration: none;
   background-color: transparent;
   color: var(--nav-fg);
@@ -326,6 +330,14 @@ html.night .nav-logo .logo-night { display: block; }
   margin: 0 0 var(--space-2);
 }
 
+.lede > :last-child {
+  margin-bottom: 0;
+}
+
+.title_image img {
+  display: block;
+}
+
 /* The three RSO/APA/Strong Towns lines are trust signals, not the headline. */
 .tagline {
   font-size: var(--text-sm);
@@ -366,6 +378,9 @@ html.night .nav-logo .logo-night { display: block; }
   background-repeat: no-repeat;
   background-position: center;
   aspect-ratio: 4223 / 3039;
+  /* Feather the flattened WebP's outer rectangle so YCbCr rounding never shows a seam at night. */
+  -webkit-mask-image: radial-gradient(ellipse closest-side, #000 78%, transparent 100%);
+  mask-image: radial-gradient(ellipse closest-side, #000 78%, transparent 100%);
 }
 
 /* ---------- Content blocks ---------- */
@@ -415,7 +430,7 @@ figcaption {
   left: 0;
   width: 100%;
   height: 100%;
-  border: 0;
+  border: 1px solid var(--fg);
 }
 
 /* Two calendar views sit together as one block. */
@@ -534,7 +549,11 @@ figcaption {
 }
 
 .logo-tile a {
-  display: contents;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .logo-row img {
@@ -542,10 +561,6 @@ figcaption {
   height: 100%;
   object-fit: contain;
 }
-
-.logo-tile .logo-night { display: none; }
-html.night .logo-tile .logo-day { display: none; }
-html.night .logo-tile .logo-night { display: block; }
 
 /* Logos without a dedicated night version: render the mark solid white. */
 html.night .logo-row .logo-mono {
@@ -703,5 +718,43 @@ html.night .logo-row .logo-mono {
 
   figure img {
     max-height: 320px;
+  }
+}
+
+/* ---------- Print ---------- */
+/* Board reviews happen on paper printouts; keep them crisp and ink-friendly even at night. */
+@media print {
+  :root,
+  html.night {
+    --bg: #ffffff;
+    --fg: #007ea3;
+    --ink: #12333d;
+    --ink-muted: #4a6670;
+  }
+
+  .skip-link,
+  .hero-bg,
+  .logo-night,
+  html.night .logo-night {
+    display: none;
+  }
+
+  html.night .logo-day {
+    display: block;
+  }
+
+  html.night .logo-row .logo-mono {
+    filter: none;
+  }
+
+  .nav {
+    position: static;
+  }
+
+  figure,
+  .leader,
+  .goals > div,
+  .cta--closing {
+    break-inside: avoid;
   }
 }
