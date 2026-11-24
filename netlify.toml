@@ -11,14 +11,47 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# Cache static icons, share image and QR SVGs while letting updates propagate within a day
+[[headers]]
+  for = "/media/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+[[headers]]
+  for = "/favicon.*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+[[headers]]
+  for = "/apple-touch-icon.png"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+[[headers]]
+  for = "/og-image.png"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+# Keep CMS admin assets out of search indexes and ensure schema updates apply immediately
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"
+
+[[headers]]
+  for = "/admin/config.yml"
+  [headers.values]
+    Cache-Control = "no-cache"
+
 # Basic security headers (these govern our pages only; the calendar/Sheets/Instagram
-# embeds we load are unaffected)
+# embeds we load are unaffected; clipboard-write is left allowed for the meeting poll embed)
 [[headers]]
   for = "/*"
   [headers.values]
     X-Content-Type-Options = "nosniff"
     X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
 
 # v1.5 folded the Events page into Connect; v1.6 did the same with Join (the mailing-list
 # section now sits below the QR codes on Connect). Keep old links and QR codes working.
