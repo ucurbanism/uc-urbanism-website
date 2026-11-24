@@ -1,12 +1,10 @@
 ---
-import { Image, getImage } from 'astro:assets';
+import { Image } from 'astro:assets';
 import { getEntry } from 'astro:content';
 import '../styles/global.css';
 // Wordmark only (no skyline): cropped from the full logo PNGs.
 import navLogo from '../assets/urbanism-club-logo-wordmark.png';
 import navLogoInverted from '../assets/urbanism-club-logo-wordmark-inverted.png';
-import ovalLightSrc from '../assets/cincinnati-street-network-oval-light.png';
-import ovalDarkSrc from '../assets/cincinnati-street-network-oval-dark.png';
 
 interface Props {
   title: string;
@@ -32,32 +30,31 @@ const cta = { href: '/connect/#join', label: 'Join' };
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImageUrl = new URL(ogImage, Astro.site).href;
 const gaId = site.google_analytics_id;
-
-const ovalLight = await getImage({ src: ovalLightSrc, width: 1200, format: 'webp', quality: 50 });
-const ovalDark = await getImage({ src: ovalDarkSrc, width: 1200, format: 'webp', quality: 50 });
 ---
 
-<html lang="en" style={`--oval-light: url(${ovalLight.src}); --oval-dark: url(${ovalDark.src});`}>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#007ea3" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {!noindex && <link rel="canonical" href={canonical} />}
     {noindex && <meta name="robots" content="noindex" />}
     {site.google_site_verification && (
       <meta name="google-site-verification" content={site.google_site_verification} />
     )}
 
-    <!-- Share cards -->
+    {/* Share cards */}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.site_name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
+    {!noindex && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={site.site_name} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
@@ -68,39 +65,42 @@ const ovalDark = await getImage({ src: ovalDarkSrc, width: 1200, format: 'webp',
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-    <!-- Night theme (8:00 PM to 7:59 AM) — set before paint to avoid flashing -->
+    {/* Night theme (8:00 PM to 7:59 AM) before paint to avoid flashing, plus post-load
+        smooth scrolling so cross-page #section links still jump straight to the target. */}
     <script is:inline>
       (function () {
-        const hour = new Date().getHours();
-        if (hour >= 20 || hour < 8) {
+        var h = new Date().getHours();
+        if (h >= 20 || h < 8) {
           document.documentElement.classList.add('night');
+          var m = document.querySelector('meta[name="theme-color"]');
+          if (m) m.setAttribute('content', '#ffffff');
         }
+        addEventListener('load', function () {
+          setTimeout(function () {
+            document.documentElement.classList.add('smooth-scroll');
+          });
+        });
       })();
     </script>
 
-    <!-- Smooth scrolling for links within a page, switched on after the page has loaded
-         so arriving at a #section from another page still jumps there (see global.css) -->
-    <script is:inline>
-      addEventListener('load', function () {
-        setTimeout(function () {
-          document.documentElement.classList.add('smooth-scroll');
-        });
-      });
-    </script>
+    {/* Preconnect to font origins to save DNS/TLS latency on the critical path */}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
 
-    <!-- Google Fonts: Body Text Only -->
+    {/* Google Fonts: Body Text Only */}
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet" />
 
-    <!-- Adobe Fonts -->
+    {/* Adobe Fonts */}
     <link rel="stylesheet" href="https://use.typekit.net/ewz8zez.css" />
 
     {gaId && (
       <>
-        <!-- Google tag (gtag.js) -->
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
         <script is:inline define:vars={{ gaId }}>
           window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
+          function gtag() { dataLayer.push(arguments); }
           gtag('js', new Date());
           gtag('config', gaId);
         </script>
@@ -113,8 +113,8 @@ const ovalDark = await getImage({ src: ovalDarkSrc, width: 1200, format: 'webp',
     <nav class="nav" aria-label="Main">
       <div class="nav-inner">
         <a href="/" class="nav-logo" aria-label={`${site.site_name} home`}>
-          <Image class="logo-day" src={navLogoInverted} alt="" width={240} densities={[1, 2]} format="webp" loading="eager" />
-          <Image class="logo-night" src={navLogo} alt="" width={240} densities={[1, 2]} format="webp" loading="eager" />
+          <Image class="logo-day" src={navLogoInverted} alt="" width={200} densities={[1, 2]} format="webp" loading="eager" />
+          <Image class="logo-night" src={navLogo} alt="" width={200} densities={[1, 2]} format="webp" loading="lazy" />
         </a>
         <ul>
           {nav.map((item) => (
@@ -125,7 +125,7 @@ const ovalDark = await getImage({ src: ovalDarkSrc, width: 1200, format: 'webp',
             </li>
           ))}
           <li>
-            <a href={cta.href} class="nav-cta" aria-current={path === cta.href ? 'page' : undefined}>
+            <a href={cta.href} class="nav-cta">
               {cta.label}
             </a>
           </li>
